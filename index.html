@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
-<meta name="theme-color" content="#10152f" />
-<title>COMMUNIY CLASH v0.9</title>
+<meta name="theme-color" content="#19283d" />
+<title>COMMUNIY CLASH v0.13</title>
 <style>
   :root{--ink:#f7f8ff;--muted:#aeb8da;--cyan:#5de9ff;--blue:#5b79ff;--pink:#ff5c98;--gold:#ffd46b;--panel:rgba(18,25,58,.86)}
   *{box-sizing:border-box}
@@ -242,37 +242,423 @@
     .hud-card{padding:4px 6px}
     .touch-controls{padding:0 4px}
   }
+
+  /* Identidade visual mais simples e artesanal: menos brilho, mais contraste e leitura. */
+  :root{--ink:#f3f0e7;--muted:#b9c0b5;--cyan:#9bd2c2;--blue:#7896a3;--pink:#d98782;--gold:#e7c47b;--panel:rgba(27,38,42,.96)}
+  body{background:linear-gradient(155deg,#202d32 0%,#151f27 54%,#101820 100%)}
+  .screen:before{background:repeating-linear-gradient(135deg,transparent 0 34px,rgba(226,220,198,.018) 35px 36px,transparent 37px 70px)}
+  .screen:after{width:32vw;height:32vw;right:-12vw;top:-18vw;border-color:rgba(190,205,190,.07);box-shadow:0 0 0 28px rgba(190,205,190,.012),0 0 0 58px rgba(190,205,190,.009)}
+  .brand{text-shadow:0 2px 0 rgba(0,0,0,.35);letter-spacing:.09em}
+  .brand-mark{background:#9bd2c2;clip-path:polygon(8% 0,100% 0,92% 84%,0 100%);color:#182827;box-shadow:2px 3px 0 #48675f}
+  .brand-name span,.mini-brand span{color:#9bd2c2}
+  .eyebrow{color:#a8cdbd;letter-spacing:.17em;font-size:10px}
+  .hero-ring{border-color:rgba(177,211,192,.46);box-shadow:0 0 0 6px rgba(177,211,192,.025),inset 0 0 20px rgba(177,211,192,.06)}
+  .hero-ring:before{border-color:rgba(231,196,123,.45)}
+  .hero-ring:after{border-color:rgba(217,135,130,.2)}
+  .hero-letter{text-shadow:4px 4px 0 #46645e,-2px -2px 0 #172b31,0 0 16px rgba(155,210,194,.22)}
+  .hero-subtitle{letter-spacing:.11em;color:#c2c8bb;font-weight:700}
+  .primary-btn{background:#a8d1c1;color:#172622;box-shadow:0 4px 0 #55796d,0 8px 18px rgba(0,0,0,.16);letter-spacing:.08em;border-radius:9px}
+  .primary-btn:before{display:none}
+  .secondary-btn{background:#29383d;border:1px solid #56645e;color:#e8e6dc;box-shadow:0 3px 0 rgba(0,0,0,.22);border-radius:9px;letter-spacing:.08em}
+  .primary-btn:hover,.secondary-btn:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 5px 0 #55796d}
+  .primary-btn:active,.secondary-btn:active{transform:translateY(2px);box-shadow:none}
+  .back-btn,.game-small-btn{background:#29383d;border-color:#52615b;border-radius:7px;color:#e6e5da}
+  .preview-panel,.roster-panel,.settings-panel{background:#202e34;border:1px solid #465650;border-radius:10px;box-shadow:0 7px 18px rgba(0,0,0,.16)}
+  .preview-panel:after{background:rgba(155,210,194,.07);filter:blur(15px)}
+  .preview-copy .role{color:#a8d1c1;letter-spacing:.12em}
+  .preview-copy .hint,.player-help,.difficulty-note{color:#c0c5b9}
+  .select-status{color:#e7c47b;letter-spacing:.035em}
+  .roster-panel{gap:8px}
+  .panel-label{color:#d0d0c3;letter-spacing:.12em}
+  .fighter-tile{border-radius:6px;border-color:#52615b;background:#111b21;transition:transform .12s,border-color .12s}
+  .fighter-tile.available{background:#1a2a30;border-color:#708c80}
+  .fighter-tile.is-preview{border-color:#e7c47b;box-shadow:inset 0 0 0 2px rgba(231,196,123,.22);transform:translateY(-1px)}
+  .fighter-tile.is-confirmed{border-color:#a8d1c1;box-shadow:inset 0 0 0 2px rgba(168,209,193,.24)}
+  .fighter-tile .tile-tag{background:rgba(16,27,31,.92);letter-spacing:.04em}
+  .count-btn{background:#25363c;border-color:#52665f;color:#d9e0d5;border-radius:6px}
+  .count-btn.active,.mode-pick button.active,.layout-options button.active{background:#a8d1c1;color:#172622;border-color:#a8d1c1;box-shadow:none}
+  .layout-options{background:#18252a;border-color:#43544e;border-radius:7px}
+  .layout-options button,.mode-pick button{color:#c4cabe;letter-spacing:.04em}
+  .difficulty-row{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap}
+  .difficulty-row strong{font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+  .difficulty-options{display:flex;gap:5px;padding:3px;border-radius:7px;background:#172429;border:1px solid #43534d}
+  .difficulty-options button{min-width:57px;padding:7px 9px;border-radius:5px;background:transparent;color:#c4cabe;font-size:9px;font-weight:900;letter-spacing:.04em}
+  .difficulty-options button.active{background:#a8d1c1;color:#172622}
+  .difficulty-note{font-size:9px;line-height:1.35;margin-top:-5px}
+  .map-card{background:#202e34;border:1px solid #465650;border-radius:9px;box-shadow:0 6px 16px rgba(0,0,0,.17)}
+  .map-card:hover{border-color:#a8d1c1;box-shadow:0 8px 18px rgba(0,0,0,.22)}
+  .map-card-copy{color:#c0c5b9}
+  .map-card-title{color:#f1eddf;letter-spacing:.035em}
+  .arena-shell{border:2px solid #53665e;box-shadow:0 12px 34px rgba(0,0,0,.28)}
+  .hud-card{background:#202e34;border-color:#485a53;border-radius:7px}
+  .hud-card:before{width:2px}
+  .takedown-fill{background:linear-gradient(90deg,#9bd2c2,#e7c47b,#d98782)}
+  .kill-toast{background:rgba(27,39,43,.96);border-color:#5a655d;border-left-color:#e7c47b;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+  .kill-toast b{color:#a8d1c1}
+  .touch-btn{background:#2b4144;border-color:#6b8377;box-shadow:0 3px 0 #142329,inset 0 1px 0 rgba(255,255,255,.09);border-radius:9px}
+  .touch-btn.jump{background:#e7c47b;color:#342818;border-color:#f2dba5}
+  .touch-btn.punch{background:#bf827e;color:#281b1b;border-color:#d6a09b}
+  .touch-btn.fire{background:#91c8b6;color:#182a25;border-color:#b5ddcf}
+  .small-note{color:#aab3a7;letter-spacing:.045em}
+  @media(max-width:600px){.select-screen{overflow-y:auto;align-items:flex-start}.select-wrap{margin:auto}.difficulty-row{gap:5px}.difficulty-row strong{width:100%}.difficulty-options{width:100%}.difficulty-options button{flex:1}}
+
+
+  /* Identidade azul sóbria: tons de ardósia e azul gasto, sem brilho neon. */
+  :root{
+    --ink:#edf2f8;--muted:#b4c1d2;--cyan:#a9bfd8;--blue:#6f89aa;
+    --pink:#879bb8;--gold:#d2bd91;--panel:rgba(28,43,63,.97)
+  }
+  body{background:linear-gradient(155deg,#24364d 0%,#1a2a3e 52%,#121e30 100%);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  .screen:before{background:linear-gradient(115deg,rgba(151,177,205,.025),transparent 42%,rgba(108,139,175,.035))}
+  .screen:after{border-color:rgba(151,177,205,.07);box-shadow:0 0 0 32px rgba(151,177,205,.012),0 0 0 68px rgba(151,177,205,.008)}
+  .brand{text-shadow:0 2px 0 rgba(0,0,0,.35)}
+  .brand-mark{background:#6685a9;color:#101d30;box-shadow:2px 3px 0 #304964}
+  .brand-name span,.mini-brand span,.eyebrow{color:#b5c9df}
+  .hero-ring{border-color:rgba(151,180,210,.48);box-shadow:inset 0 0 18px rgba(151,180,210,.06)}
+  .hero-ring:before{border-color:rgba(196,180,144,.48)}
+  .hero-ring:after{border-color:rgba(141,165,194,.22)}
+  .hero-letter{text-shadow:4px 4px 0 #405d7d,-2px -2px 0 #17283d,0 0 15px rgba(131,159,190,.16)}
+  .hero-subtitle{color:#c3cedb;letter-spacing:.13em}
+  .primary-btn{background:#6685a9;color:#f5f7fa;box-shadow:0 4px 0 #3b5877,0 8px 16px rgba(0,0,0,.16);border-radius:9px;letter-spacing:.075em}
+  .primary-btn:before{display:none}
+  .secondary-btn{background:#2d4058;border:1px solid #566d89;color:#e8eef6;box-shadow:0 3px 0 rgba(0,0,0,.22);border-radius:9px;letter-spacing:.075em}
+  .primary-btn:hover,.secondary-btn:hover{filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 5px 0 #3b5877}
+  .primary-btn:active,.secondary-btn:active{transform:translateY(2px);box-shadow:none}
+  .back-btn,.game-small-btn{background:#2d4058;border-color:#566d89;color:#e8eef6;border-radius:7px}
+  .preview-panel,.roster-panel,.settings-panel{background:#24364d;border:1px solid #4c627c;border-radius:10px;box-shadow:0 7px 18px rgba(0,0,0,.18)}
+  .preview-panel:after{background:rgba(137,164,194,.08);filter:blur(16px)}
+  .preview-copy .role{color:#b5c9df}
+  .preview-copy .hint,.player-help,.difficulty-note,.map-card-desc{color:#c0cad6}
+  .select-status{color:#d2bd91}
+  .panel-label{color:#d5dfeb}
+  .fighter-tile{border-color:#526982;background:#111f31}
+  .fighter-tile.available{background:#1c3048;border-color:#708ba9}
+  .fighter-tile.is-preview{border-color:#d2bd91;box-shadow:inset 0 0 0 2px rgba(210,189,145,.2);transform:translateY(-1px)}
+  .fighter-tile.is-confirmed{border-color:#a9bfd8;box-shadow:inset 0 0 0 2px rgba(169,191,216,.2)}
+  .fighter-tile .tile-tag{background:rgba(13,26,42,.92);color:#edf2f8}
+  .count-btn{background:#293e57;border-color:#59708a;color:#e2eaf3}
+  .count-btn.active,.mode-pick button.active,.layout-options button.active{background:#708cad;color:#fff;border-color:#91a9c4;box-shadow:none}
+  .layout-options{background:#1b2d42;border-color:#4d627b}
+  .layout-options button,.mode-pick button{color:#ccd6e2}
+  .difficulty-options{background:#1b2d42;border-color:#4d627b}
+  .difficulty-options button{color:#ccd6e2}
+  .difficulty-options button.active{background:#708cad;color:#fff}
+  .map-card{background:#24364d;border:1px solid #4c627c;border-radius:9px;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+  .map-card:hover{border-color:#9aafc8;box-shadow:0 8px 18px rgba(0,0,0,.22)}
+  .map-card-title{color:#edf2f8}
+  .arena-shell{border:2px solid #566d89;box-shadow:0 12px 34px rgba(0,0,0,.3)}
+  .hud-card{background:#24364d;border-color:#536a84}
+  .hud-card:before{background:var(--hud-accent,#91abc9)}
+  .takedown-fill{background:linear-gradient(90deg,#7898bb,#c7b48c,#a47e83)}
+  .kill-toast{background:rgba(28,43,63,.97);border-color:#536a84;border-left-color:#d2bd91}
+  .kill-toast b{color:#b5c9df}
+  .touch-btn{background:#344d6c;border-color:#7188a4;box-shadow:0 3px 0 #182a40,inset 0 1px 0 rgba(255,255,255,.08);border-radius:9px}
+  .touch-btn.jump{background:#8298b1;color:#17263a;border-color:#a7b7c9}
+  .touch-btn.punch{background:#526f91;color:#f4f7fa;border-color:#8098b3}
+  .touch-btn.fire{background:#718baa;color:#101d30;border-color:#9db1c9}
+  .small-note{color:#aebdce}
+  .result-card{background:linear-gradient(145deg,#304966,#1a2b40);border-color:#627b98}
+  .result-kicker{color:#b5c9df}
+  .result-title{text-shadow:0 3px 0 #263e5a}
+
+  /* Telefone: só libera o jogo em paisagem. O overlay usa a mesma animação do FD. */
+  .orientation-gate{display:none;position:fixed;inset:0;z-index:100000;background:#111d2d;color:#edf2f8;align-items:center;justify-content:center;flex-direction:column;gap:12px;text-align:center;padding:24px;}
+  .orientation-gate.visible{display:flex}
+  .orientation-phone-wrap{width:112px;height:112px;display:flex;align-items:center;justify-content:center}
+  .orientation-phone{position:relative;width:52px;height:92px;border:5px solid #c9d7e6;border-radius:12px;background:#263c55;box-shadow:0 0 0 3px rgba(201,215,230,.07),0 10px 26px rgba(0,0,0,.35);transform-origin:50% 50%;animation:orientationPhoneRotate 2.8s ease-in-out infinite}
+  .orientation-phone:before{content:"";position:absolute;left:50%;top:6px;width:18px;height:3px;border-radius:999px;background:#c9d7e6;transform:translateX(-50%)}
+  .orientation-phone:after{content:"";position:absolute;left:50%;bottom:5px;width:7px;height:7px;border:2px solid rgba(201,215,230,.9);border-radius:50%;transform:translateX(-50%)}
+  .orientation-text{font-size:18px;font-weight:900;letter-spacing:.02em}
+  .orientation-subtext{font-size:13px;color:#aebed0;font-weight:600}
+  .orientation-fullscreen-btn{margin-top:8px;padding:10px 16px;border-radius:8px;background:#6685a9;color:#fff;font-size:11px;font-weight:900;letter-spacing:.06em}
+  @keyframes orientationPhoneRotate{0%,15%{transform:rotate(0deg)}40%,60%{transform:rotate(90deg)}85%,100%{transform:rotate(0deg)}}
+
+  /* Paisagem mobile: telas de seleção compactas, arena em tela inteira e HUD/controles sobrepostos. */
+  @media (pointer:coarse) and (orientation:landscape), (max-width:1000px) and (orientation:landscape){
+    html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+    .screen{width:100vw;height:100dvh;min-height:0;overflow:hidden;padding:0}
+    .main-screen{padding:5px 0}
+    .main-screen .wrap{width:94vw;height:94dvh;display:grid;grid-template-columns:.9fr 1.1fr;grid-template-rows:auto auto 1fr auto auto;gap:5px 22px;align-content:center;justify-items:center}
+    .main-screen .wrap>.eyebrow{grid-column:1/-1;grid-row:1;font-size:9px}
+    .main-screen .wrap>.brand{grid-column:1/-1;grid-row:2}
+    .main-screen .wrap>.hero-emblem{grid-column:1;grid-row:3/6;width:min(30vh,180px);height:auto;align-self:center}
+    .main-screen .wrap>.hero-subtitle{grid-column:2;grid-row:3;align-self:end;text-align:left;font-size:11px}
+    .main-screen .wrap>.main-actions{grid-column:2;grid-row:4;width:min(330px,100%);display:flex;flex-direction:row;gap:8px}
+    .main-screen .wrap>.main-actions button{flex:1;min-height:40px}
+    .main-screen .wrap>.layout-setting{grid-column:2;grid-row:5;gap:7px;font-size:9px}
+    .main-screen .wrap>.small-note{grid-column:1/-1;grid-row:6;font-size:8px}
+    .select-screen{align-items:center;padding:4px 0;overflow:hidden}
+    .select-wrap{width:97vw;height:97dvh;max-height:97dvh;gap:5px}
+    .screen-heading{min-height:30px;flex:0 0 30px}
+    .screen-heading h1{font-size:20px;margin:0}
+    .screen-heading .eyebrow{font-size:8px}
+    .back-btn{padding:6px 10px;font-size:9px}
+    .select-top{grid-template-columns:minmax(205px,.78fr) minmax(0,1.42fr);gap:7px;flex:1 1 auto;min-height:0}
+    .preview-panel{min-height:0;padding:7px 9px;gap:8px}
+    .preview-art{width:74px;height:100%;max-height:130px}
+    .preview-copy .name{font-size:18px}
+    .preview-copy .role{font-size:8px;margin:2px 0 4px}
+    .preview-copy .hint{font-size:9px;line-height:1.25}
+    .select-status{font-size:8px;margin-top:5px}
+    .roster-panel{padding:7px;gap:5px;min-height:0}
+    .panel-label{font-size:8px}
+    .roster-grid{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:5px;flex:1;min-height:0}
+    .fighter-tile{aspect-ratio:unset;height:100%;min-height:0}
+    .fighter-tile .tile-tag{font-size:6px;padding:2px 0}
+    .select-bottom{grid-template-columns:minmax(0,1fr) 155px;gap:7px;flex:0 0 auto;align-items:stretch}
+    .settings-panel{padding:6px 9px;gap:4px;display:grid;grid-template-columns:1fr 1.05fr;grid-template-rows:auto auto auto}
+    .players-row{grid-column:1;grid-row:1;gap:5px}
+    .players-row strong,.mode-row strong,.difficulty-row strong{font-size:8px}
+    .player-count{gap:3px}.count-btn{width:25px;height:25px;font-size:10px}
+    .mode-row{grid-column:1;grid-row:2;gap:4px}
+    .mode-pick button{padding:5px 7px;font-size:8px}
+    .difficulty-row{grid-column:2;grid-row:1/3;gap:5px;align-content:center}
+    .difficulty-row strong{width:100%}
+    .difficulty-options{width:100%;gap:3px}.difficulty-options button{flex:1;min-width:0;padding:6px 4px;font-size:8px}
+    .difficulty-note{grid-column:2;grid-row:3;font-size:7px;line-height:1.15;margin:0}
+    .player-help{display:none}
+    .select-actions{align-items:stretch}.select-actions .primary-btn{width:100%;min-height:100%;font-size:10px}
+    .map-screen{padding:4px 0;align-items:center;overflow:hidden}
+    .map-wrap{width:97vw;height:97dvh;max-height:97dvh;gap:5px}
+    .map-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:6px;min-height:0}
+    .map-thumb{height:clamp(30px,8.5dvh,48px)}
+    .map-card-copy{padding:4px 6px;gap:2px}
+    .map-card-title{font-size:9px;letter-spacing:.035em}
+    .map-card-desc{font-size:7px;line-height:1.1}
+    .map-actions{gap:7px;flex:0 0 34px}.map-actions button{min-height:34px;font-size:9px}.map-actions .secondary-btn{min-width:95px}
+    .game-screen.active{display:block;position:fixed;inset:0;padding:0;margin:0;width:100vw;height:100dvh;overflow:hidden}
+    .arena-shell{position:absolute;inset:0;width:100vw;height:100dvh;max-width:none;border:0;border-radius:0;box-shadow:none;background:#152654}
+    .arena-shell canvas{width:100%;height:100%;aspect-ratio:auto;max-height:none}
+    .arena-vignette{box-shadow:inset 0 0 38px rgba(4,7,24,.25)}
+    .game-topbar{position:absolute;z-index:8;top:4px;left:0;width:100%;min-height:25px;padding:0 9px;pointer-events:none}
+    .game-topbar button{pointer-events:auto}
+    .mini-brand{font-size:10px}.game-small-btn{padding:5px 8px;font-size:8px}
+    .match-info{display:none}
+    .match-hud{position:absolute;z-index:8;top:32px;left:50%;transform:translateX(-50%);width:calc(100% - 150px);grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;pointer-events:none}
+    .hud-card{padding:3px 5px;gap:4px;min-height:39px;background:rgba(25,40,59,.9);backdrop-filter:blur(2px)}
+    .hud-square{width:27px;height:27px}.hud-portrait{width:30px}.hud-portrait .hud-square{width:27px;height:27px}
+    .hud-name{font-size:6px}.hud-percent{font-size:13px}.hud-stock{font-size:6px}.takedown-wrap{margin-top:2px}.takedown-label{font-size:6px}.takedown-track{height:4px}
+    .kill-feed{top:78px;left:8px;max-width:43%}.kill-toast{padding:4px 6px;font-size:8px}.toast-fighter img,.toast-fighter[data-fallback]::before{width:21px;height:21px;flex-basis:21px}
+    .touch-controls{position:absolute;z-index:9;left:0;right:0;bottom:5px;width:100%;padding:0 8px;align-items:flex-end;pointer-events:none}
+    .touch-left,.touch-right{pointer-events:auto}
+    .touch-left{gap:6px}.touch-directions{gap:6px}
+    .touch-btn{width:49px;height:43px;font-size:15px;border-radius:8px;opacity:.94}
+    .touch-btn.action{font-size:8px}.touch-right{grid-template-columns:repeat(2,50px);grid-template-rows:repeat(2,37px);gap:5px}
+    .touch-btn.fire{height:32px}.touch-caption{display:none}
+    .game-overlay{z-index:10}
+  }
+  @media (pointer:coarse) and (orientation:portrait), (max-width:1000px) and (orientation:portrait){
+    .orientation-gate{display:flex}
+    .orientation-gate:not(.visible){display:none}
+  }
+  @media (pointer:coarse) and (orientation:landscape) and (max-height:430px){
+    .select-wrap,.map-wrap{height:98dvh;gap:3px}
+    .select-top{gap:5px}
+    .preview-panel{padding:4px 7px}
+    .select-bottom{grid-template-columns:minmax(0,1fr) 135px}
+    .settings-panel{padding:4px 7px}
+    .map-thumb{height:30px}
+    .map-card-desc{display:none}
+  }
+
+
+
+  /* v0.12 — layout de arena, HUD e seleção revisados para telas deitadas. */
+  html,body{overflow:hidden!important;width:100%;height:100%;height:100dvh;overscroll-behavior:none;}
+  .screen{overflow:hidden!important;max-height:100dvh;}
+
+  /* Ajuste de retratos da seleção. */
+  .roster-grid{align-items:center;justify-items:center;}
+  .fighter-tile{
+    width:auto!important;height:100%!important;min-height:0!important;max-width:100%;
+    aspect-ratio:4/5!important;justify-self:center;align-self:center;
+    border-radius:7px;overflow:hidden;
+  }
+  .fighter-tile img{width:100%;height:100%;object-fit:contain;object-position:center 44%;padding:3px 2px 15px;}
+  .fighter-tile .tile-tag{min-height:15px;display:flex;align-items:center;justify-content:center;padding:2px 1px;font-size:clamp(6px,.72vw,9px);}
+  .fighter-tile.locked{font-size:clamp(22px,3vw,34px);}
+
+  /* HUD: retrato e nome na primeira linha, percentual sempre abaixo do cartão. */
+  .hud-card{
+    display:grid!important;grid-template-columns:34px minmax(0,1fr);grid-template-rows:auto auto;
+    column-gap:7px;row-gap:4px;align-items:center;padding:6px 8px;min-height:0;
+  }
+  .hud-portrait{grid-column:1;grid-row:1;width:34px;min-width:34px;display:flex;align-items:center;justify-content:center;}
+  .hud-portrait .hud-square,.hud-square{width:34px;height:34px;aspect-ratio:1/1;}
+  .hud-meta{grid-column:2;grid-row:1;min-width:0;width:100%;}
+  .hud-name{font-size:clamp(7px,.68vw,10px);line-height:1.2;}
+  .hud-stock{font-size:8px;line-height:1.1;margin-top:2px;}
+  .takedown-wrap{margin-top:4px;}
+  .takedown-label{font-size:7px;margin-bottom:2px;}
+  .takedown-track{height:5px;}
+  .hud-card>.hud-percent{
+    grid-column:1/-1;grid-row:2;display:block;width:100%;margin:0;padding:3px 1px 0;
+    border-top:1px solid rgba(190,210,232,.18);text-align:left;font-size:17px;line-height:1;
+    font-weight:900;font-variant-numeric:tabular-nums;
+  }
+
+  /* A arena usa toda a área útil. O canvas não pode ser achatado por max-height. */
+  @media (orientation:landscape) and (max-height:1000px){
+    .game-screen.active{
+      display:block!important;position:fixed!important;inset:0!important;
+      width:100vw!important;height:100dvh!important;min-height:0!important;
+      margin:0!important;padding:0!important;overflow:hidden!important;
+    }
+    .game-screen .arena-shell{
+      position:absolute!important;inset:0!important;width:100vw!important;height:100dvh!important;
+      max-width:none!important;min-height:0!important;margin:0!important;padding:0!important;
+      border:0!important;border-radius:0!important;box-shadow:none!important;background:#172b46;
+    }
+    .game-screen .arena-shell>canvas{
+      display:block!important;width:100%!important;height:100%!important;max-width:none!important;
+      max-height:none!important;aspect-ratio:auto!important;object-fit:fill;
+    }
+    .game-screen .game-topbar{
+      position:absolute!important;z-index:14!important;top:5px!important;left:0!important;
+      width:100%!important;min-height:27px!important;padding:0 10px!important;
+      pointer-events:none;display:flex;align-items:center;
+    }
+    .game-screen .game-topbar>*{pointer-events:auto;}
+    .game-screen .mini-brand{font-size:10px;letter-spacing:.08em;}
+    .game-screen .game-small-btn{padding:5px 9px;font-size:8px;border-radius:6px;}
+    .game-screen .match-info{display:none!important;}
+    .game-screen .match-hud{
+      position:absolute!important;z-index:13!important;top:39px!important;left:9px!important;
+      transform:none!important;width:calc(100% - 18px)!important;margin:0!important;
+      display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+      gap:5px!important;pointer-events:none;
+    }
+    .game-screen .hud-card{min-width:0;padding:4px 6px!important;gap:3px!important;border-radius:6px!important;background:rgba(29,48,70,.94)!important;}
+    .game-screen .hud-portrait,.game-screen .hud-portrait .hud-square,.game-screen .hud-square{width:30px;height:30px;}
+    .game-screen .hud-name{font-size:clamp(6px,.68vw,9px);}
+    .game-screen .hud-stock{font-size:7px;}
+    .game-screen .hud-card>.hud-percent{font-size:15px;padding-top:2px;}
+    .game-screen .takedown-label{font-size:6px;}
+    .game-screen .takedown-track{height:4px;}
+    .game-screen .kill-feed{position:absolute!important;z-index:12!important;top:119px!important;left:9px!important;max-width:min(340px,46%)!important;}
+    .game-screen .kill-toast{padding:4px 6px;font-size:8px;}
+    .game-screen .toast-fighter img,.game-screen .toast-fighter[data-fallback]::before{width:22px;height:22px;flex-basis:22px;}
+    .game-screen .touch-controls{
+      position:absolute!important;z-index:15!important;left:0!important;right:0!important;bottom:7px!important;
+      width:100%!important;padding:0 10px!important;margin:0!important;
+      display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;
+    }
+    .game-screen .touch-left,.game-screen .touch-right{pointer-events:auto;}
+    .game-screen .touch-btn{width:51px;height:45px;border-radius:8px;font-size:15px;}
+    .game-screen .touch-btn.action{font-size:8px;}
+    .game-screen .touch-right{grid-template-columns:repeat(2,52px);grid-template-rows:repeat(2,39px);gap:5px;}
+    .game-screen .touch-btn.fire{height:34px;}
+    .game-screen .touch-caption,.game-screen .controls-hint{display:none!important;}
+    .game-screen .game-overlay{position:absolute!important;inset:0!important;z-index:20!important;padding:14px!important;background:rgba(12,25,42,.72)!important;backdrop-filter:blur(3px)!important;}
+  }
+
+  /* Ajuste da seleção e mapa em paisagem: tudo cabe no viewport sem scroll. */
+  @media (orientation:landscape) and (max-height:1000px){
+    .select-screen,.map-screen{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;padding:5px 0!important;overflow:hidden!important;}
+    .select-wrap,.map-wrap{width:97vw!important;height:97dvh!important;max-height:97dvh!important;margin:auto!important;gap:5px!important;min-height:0!important;}
+    .roster-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;gap:5px!important;flex:1 1 auto;min-height:0;}
+    .fighter-tile{height:100%!important;width:auto!important;aspect-ratio:4/5!important;}
+    .fighter-tile .tile-tag{font-size:clamp(6px,.68vw,8px);}
+    .map-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;gap:6px!important;}
+    .map-card{min-height:0;}
+    .map-card-copy{padding:4px 6px!important;gap:2px!important;}
+    .map-thumb{height:clamp(30px,7vh,52px)!important;}
+    .map-card-title{font-size:clamp(8px,.8vw,11px)!important;}
+    .map-card-desc{font-size:clamp(6px,.55vw,8px)!important;line-height:1.15!important;}
+    .map-actions{flex:0 0 34px!important;}
+  }
+
+  /* Overlays consistentes e contidos, inclusive em telas menores. */
+  .game-overlay{overflow:auto;overscroll-behavior:contain;}
+  .result-card{width:min(420px,92vw);max-height:calc(100dvh - 28px);overflow:auto;padding:clamp(14px,3vh,24px);border-radius:12px;background:#243b58;border:1px solid #6b829f;box-shadow:0 16px 42px rgba(0,0,0,.38);}
+  .result-kicker{color:#bfd0e2;letter-spacing:.16em;}
+  .result-title{text-shadow:none;font-size:clamp(24px,5vw,38px);}
+  .result-sub{color:#d0dbe7;line-height:1.45;margin-bottom:14px;}
+  .result-actions{gap:8px;}
+  .result-actions button{min-height:40px;font-size:10px;}
+  .pause-mark{color:#c4d2e1;}
+  .orientation-gate{background:#172b46!important;color:#edf2f8;}
+  .orientation-subtext{color:#b8c9dc;}
+  .orientation-fullscreen-btn{background:#6685a9;border-radius:7px;}
+  .map-card.is-selected{outline:2px solid #9bb4d1;outline-offset:-3px;}
+  @media (max-height:420px) and (orientation:landscape){
+    .game-screen .match-hud{top:35px!important;}
+    .game-screen .hud-card{padding:3px 4px!important;}
+    .game-screen .hud-portrait,.game-screen .hud-portrait .hud-square,.game-screen .hud-square{width:25px;height:25px;}
+    .game-screen .hud-card>.hud-percent{font-size:13px;}
+    .game-screen .touch-btn{width:44px;height:38px;}
+    .game-screen .touch-right{grid-template-columns:repeat(2,45px);grid-template-rows:repeat(2,32px);}
+    .game-screen .touch-btn.fire{height:29px;}
+    .select-wrap,.map-wrap{height:98dvh!important;}
+    .map-card-desc{display:none!important;}
+  }
+
+
+  /* v0.13 — retratos quadrados e percentual de dano abaixo da barra Takedown. */
+  .roster-grid{align-items:center!important;justify-items:center!important;}
+  .fighter-tile{
+    width:100%!important;height:auto!important;min-height:0!important;max-height:100%!important;
+    aspect-ratio:1/1!important;justify-self:center!important;align-self:center!important;
+    border-radius:8px!important;overflow:hidden!important;
+  }
+  .fighter-tile img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;padding:3px!important;}
+  .fighter-tile .tile-tag{left:0;right:0;bottom:0;min-height:13px;padding:2px 1px!important;font-size:clamp(6px,.65vw,8px)!important;}
+  .hud-card{
+    display:grid!important;grid-template-columns:34px minmax(0,1fr)!important;
+    grid-template-rows:minmax(0,1fr) auto!important;align-content:stretch!important;
+    align-items:center!important;row-gap:4px!important;
+  }
+  .hud-card>.hud-percent{
+    grid-column:1/-1!important;grid-row:2!important;align-self:end!important;
+    display:block!important;width:100%!important;margin:0!important;padding:4px 1px 0!important;
+    border-top:1px solid rgba(190,210,232,.2)!important;text-align:left!important;
+    font-size:clamp(13px,1.05vw,17px)!important;line-height:1!important;
+  }
+  .hud-meta{grid-column:2!important;grid-row:1!important;min-width:0!important;}
+  .hud-portrait{grid-column:1!important;grid-row:1!important;}
+  @media (orientation:landscape) and (max-height:1000px){
+    .fighter-tile{width:100%!important;height:auto!important;aspect-ratio:1/1!important;}
+    .game-screen .hud-card{grid-template-rows:minmax(0,1fr) auto!important;}
+    .game-screen .hud-card>.hud-percent{grid-row:2!important;padding-top:3px!important;font-size:clamp(12px,1.1vw,15px)!important;}
+  }
+
 </style>
 </head>
 <body>
+<div id="orientationGate" class="orientation-gate" role="alert" aria-live="assertive">
+  <div class="orientation-phone-wrap" aria-hidden="true"><div class="orientation-phone"></div></div>
+  <div class="orientation-text">Vire o celular para paisagem</div>
+  <div class="orientation-subtext">COMMUNIY CLASH só funciona com a tela deitada.</div>
+  <button id="orientationFullscreenBtn" class="orientation-fullscreen-btn" type="button">TENTAR TELA CHEIA</button>
+</div>
 <section id="mainScreen" class="screen main-screen active">
   <div class="wrap">
-    <div class="eyebrow">Uma batalha. Quatro combatentes. Uma arena.</div>
+    <div class="eyebrow">Uma arena. Seus personagens. Sua comunidade.</div>
     <div class="brand"><div class="brand-mark">C</div><div class="brand-name">COMMUNIY <span>CLASH</span></div></div>
     <div class="hero-emblem"><div class="hero-ring"></div><div class="hero-letter">C!</div></div>
-    <div class="hero-subtitle">Entre na arena e sobreviva ao caos</div>
+    <div class="hero-subtitle">Escolha seu lutador e entre na disputa</div>
     <div class="main-actions">
       <button class="primary-btn" id="playMenuBtn">Jogar</button>
       <button class="secondary-btn" id="fullscreenBtn">Tela cheia</button>
     </div>
     <div class="layout-setting"><span>FORÇAR MODO</span><div class="layout-options" id="layoutOptions"><button data-layout="auto" class="active">AUTO</button><button data-layout="mobile">MOBILE</button><button data-layout="pc">PC</button></div></div>
-    <div class="small-note">PROTÓTIPO • VERSÃO 0.8 • 2 LUTADORES DISPONÍVEIS</div>
+    <div class="small-note">VERSÃO 0.12 • 3 LUTADORES DISPONÍVEIS</div>
   </div>
 </section>
 
 <section id="selectScreen" class="screen select-screen">
   <div class="select-wrap">
     <div class="screen-heading">
-      <div><div class="eyebrow">Monte sua partida</div><h1>Seleção de <span>lutadores</span></h1></div>
+      <div><div class="eyebrow">Antes de começar</div><h1>Seleção de <span>lutadores</span></h1></div>
       <button class="back-btn" id="backMainBtn">← VOLTAR</button>
     </div>
     <div class="select-top">
       <div class="preview-panel">
         <div class="preview-art"><img id="previewSprite" src="sprites/migton_idle.png" alt="Prévia do Migton" /></div>
-        <div class="preview-copy"><div class="eyebrow">Lutador em destaque</div><div class="name" id="previewName">Mestre do Fogo</div><div class="role" id="previewRole">Personagem disponível</div><div class="hint" id="previewHint">Migton luta usando golpes de fogo e projéteis. Toque uma vez no quadrado para confirmar.</div><div class="select-status" id="selectStatus">Toque em um lutador para visualizar</div></div>
+        <div class="preview-copy"><div class="eyebrow">Personagem selecionado</div><div class="name" id="previewName">Mestre do Fogo</div><div class="role" id="previewRole">Personagem disponível</div><div class="hint" id="previewHint">Migton luta usando golpes de fogo e projéteis. Toque no quadrado para escolher seu personagem.</div><div class="select-status" id="selectStatus">Toque em um lutador para visualizar</div></div>
       </div>
       <div class="roster-panel">
-        <div class="panel-label"><span>Lista de personagens</span><span id="rosterCount">3 / 12 DISPONÍVEIS</span></div>
+        <div class="panel-label"><span>Escolha seu lutador</span><span id="rosterCount">3 / 12 DISPONÍVEIS</span></div>
         <div class="roster-grid" id="rosterGrid" aria-label="Personagens"></div>
       </div>
     </div>
@@ -280,6 +666,8 @@
       <div class="settings-panel">
         <div class="players-row"><strong>Combatentes na arena</strong><div class="player-count" id="playerCount"><button class="count-btn active" data-count="1">1</button><button class="count-btn" data-count="2">2</button><button class="count-btn" data-count="3">3</button><button class="count-btn" data-count="4">4</button></div></div>
         <div class="mode-row"><strong>Modo de batalha</strong><div class="mode-pick" id="battleMode"><button class="active" data-mode="ffa">TODOS</button><button data-mode="teams">2V2</button></div></div>
+        <div class="difficulty-row"><strong>Dificuldade dos bots</strong><div class="difficulty-options" id="difficultyOptions"><button data-difficulty="easy">FÁCIL</button><button data-difficulty="medium" class="active">MÉDIO</button><button data-difficulty="hard">DIFÍCIL</button></div></div>
+        <div class="difficulty-note" id="difficultyHelp">Médio: bots atentos, mas dão espaço para reagir.</div>
         <div class="player-help" id="playerHelp">Só você na arena. Use para testar os controles.</div>
       </div>
       <div class="select-actions"><button class="primary-btn" id="startMatchBtn" disabled>Escolher mapa</button></div>
@@ -325,7 +713,7 @@
   <div class="controls-hint" id="controlsHint">PC: A / D mover · ESPAÇO pular · C soco · E bola de fogo</div>
   <div class="touch-controls" id="touchControls">
     <div><div class="touch-left"><div class="touch-directions"><button class="touch-btn" data-control="left" aria-label="Mover para esquerda">◀</button><button class="touch-btn" data-control="right" aria-label="Mover para direita">▶</button></div></div><div class="touch-caption">MOVIMENTO</div></div>
-    <div><div class="touch-right"><button class="touch-btn action punch" data-control="punch">SOCO</button><button class="touch-btn action jump" data-control="jump">PULAR</button><button class="touch-btn action fire" data-control="fire"><span id="fireButtonLabel">BOLA DE FOGO</span></button></div><div class="touch-caption">ATAQUES</div></div>
+    <div><div class="touch-right"><button id="punchButton" class="touch-btn action punch" data-control="punch">SOCO</button><button class="touch-btn action jump" data-control="jump">PULAR</button><button class="touch-btn action fire" data-control="fire"><span id="fireButtonLabel">BOLA DE FOGO</span></button></div><div class="touch-caption">ATAQUES</div></div>
   </div>
 </section>
 
@@ -334,8 +722,30 @@
   'use strict';
   const $ = (s, root=document) => root.querySelector(s);
   const $$ = (s, root=document) => [...root.querySelectorAll(s)];
+  const orientationGate = $('#orientationGate');
+  function isTouchDevice(){return ('ontouchstart' in window) || (navigator.maxTouchPoints||0)>0;}
+  function updateOrientationGate(){
+    if(!orientationGate)return;
+    const portrait=window.matchMedia?window.matchMedia('(orientation: portrait)').matches:window.innerHeight>window.innerWidth;
+    const mustRotate=isTouchDevice()&&portrait;
+    orientationGate.classList.toggle('visible',mustRotate);
+    document.body.classList.toggle('must-landscape',mustRotate);
+  }
+  async function tryLandscapeFullscreen(){
+    try{
+      if(!document.fullscreenElement&&document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();
+      if(screen.orientation&&typeof screen.orientation.lock==='function')await screen.orientation.lock('landscape');
+    }catch(e){/* Girar fisicamente continua sendo o fallback em navegadores sem bloqueio de orientação. */}
+    updateOrientationGate();
+  }
+  $('#orientationFullscreenBtn').addEventListener('click',tryLandscapeFullscreen);
+  window.addEventListener('resize',updateOrientationGate);
+  window.addEventListener('orientationchange',()=>setTimeout(updateOrientationGate,80));
+  document.addEventListener('fullscreenchange',updateOrientationGate);
+  if(screen.orientation&&screen.orientation.addEventListener)screen.orientation.addEventListener('change',updateOrientationGate);
+  updateOrientationGate();
   const screens = {main:$('#mainScreen'), select:$('#selectScreen'), maps:$('#mapScreen'), game:$('#gameScreen')};
-  // Três lutadores disponíveis. Gamer aceita .png e tenta .pnf como extensão alternativa.
+  // Lutadores disponíveis. Gamer aceita .png e tenta .pnf como extensão alternativa.
   const FIGHTERS = {
     migton:{
       id:'migton', name:'MIGTON', title:'Mestre do Fogo', role:'Lutador de fogo',
@@ -354,6 +764,12 @@
       description:'O Robô Gamer tem um soco de alcance maior, uma bola sombria de longo alcance e 15% de chance de paralisar por 1 segundo.',
       assets:{idle:'sprites/gamer_idle.png',right:'sprites/gamer_right.png',left:'sprites/gamer_left.png',punch:'sprites/gamer_punch.png',launcher:'sprites/gamer_launcher.png',jump:'sprites/gamer_jump.png',projectile:'projectiles/shadow_ball.png'},
       square:['square/gamer.png','squares/gamer.png'], rare:['square/gamer_rare.png','squares/gamer_rare.png'], jumpPower:13.2, projectileType:'shadow', punchReach:122, punchCooldown:.43, fireRange:590
+    },
+    davi:{
+      id:'davi', name:'DAVI', title:'Davi', role:'Especialista em combate aéreo',
+      description:'Davi domina o ar com ataques de garras ampliados durante o salto. Seu novelo pesado percorre a arena e quica repetidamente na mesma altura.',
+      assets:{idle:'sprites/davi_idle.png',right:'sprites/davi_right.png',left:'sprites/davi_left.png',punch:'sprites/davi_claw.png',launcher:'sprites/davi_launcher.png',jump:'sprites/davi_jump.png',projectile:'projectiles/wool_ball.png'},
+      square:['squares/davi.png'], rare:['squares/davi_rare.png'], jumpPower:14.8, projectileType:'wool', punchReach:104, punchCooldown:.42, airPunchReach:132, airPunchDamage:11, airPunchVertical:112, airControl:1.12, fireRange:1120
     }
   };
   function spritePaths(fighterId,key){
@@ -380,6 +796,11 @@
     }
     const squareImage=new Image();setImageWithFallback(squareImage,squarePaths(fighterId,false));images[fighterId].square=squareImage;
   }
+  const BOT_DIFFICULTIES = {
+    easy:{label:'FÁCIL',reaction:.58,speed:4.25,accel:.48,punchChance:.24,fireChance:.11,jumpRange:190,randomJump:.008,description:'Fácil: bots mais lentos, demoram para reagir e deixam aberturas.'},
+    medium:{label:'MÉDIO',reaction:.34,speed:5.25,accel:.65,punchChance:.43,fireChance:.23,jumpRange:300,randomJump:.018,description:'Médio: bots atentos, mas dão espaço para reagir.'},
+    hard:{label:'DIFÍCIL',reaction:.21,speed:6.05,accel:.78,punchChance:.66,fireChance:.39,jumpRange:410,randomJump:.03,description:'Difícil: bots pressionam mais e aproveitam melhor as oportunidades.'}
+  };
   const MAPS = {
     midnight:{name:'Meia Noite',style:'midnight'},
     plain:{name:'Planície',style:'plain'},
@@ -400,10 +821,28 @@
   let fighterCount = 1;
   let savedFfaCount = 1;
   let battleMode = 'ffa';
+  let botDifficulty = 'medium';
   let layoutMode = 'auto';
   let game = null;
   let raf = 0;
   const PLAYER_COLORS = ['#5de9ff','#ffca62','#ff68a1','#98f27c'];
+
+  function setBotDifficulty(level){
+    if(!BOT_DIFFICULTIES[level])level='medium';
+    botDifficulty=level;
+    $$('#difficultyOptions [data-difficulty]').forEach(b=>b.classList.toggle('active',b.dataset.difficulty===level));
+    $('#difficultyHelp').textContent=BOT_DIFFICULTIES[level].description;
+    try{localStorage.setItem('communityClashDifficulty',level);}catch(e){}
+  }
+  try{
+    const savedDifficulty=localStorage.getItem('communityClashDifficulty');
+    if(BOT_DIFFICULTIES[savedDifficulty])botDifficulty=savedDifficulty;
+  }catch(e){}
+  $('#difficultyOptions').addEventListener('click',e=>{
+    const b=e.target.closest('[data-difficulty]');
+    if(b)setBotDifficulty(b.dataset.difficulty);
+  });
+  setBotDifficulty(botDifficulty);
 
   function showScreen(which){
     Object.values(screens).forEach(s=>s.classList.remove('active'));
@@ -430,10 +869,10 @@
   // Roster: todos os lutadores cadastrados em FIGHTERS estão disponíveis.
   function buildRoster(){
     const grid=$('#rosterGrid');grid.innerHTML='';
-    const available=['migton','wubbox','gamer'];
+    const available=Object.keys(FIGHTERS);
     $('#rosterCount').textContent=`${available.length} / 12 DISPONÍVEIS`;
     for(let i=0;i<12;i++){
-      const tile=document.createElement('button');tile.type='button';tile.className='fighter-tile '+(i<3?'available':'locked');
+      const tile=document.createElement('button');tile.type='button';tile.className='fighter-tile '+(i<available.length?'available':'locked');
       if(i<available.length){
         const fighterId=available[i],fighter=FIGHTERS[fighterId],rareRoll=Math.random()<.02;
         tile.dataset.fighterId=fighterId;tile.dataset.rare=rareRoll?'1':'0';
@@ -463,7 +902,7 @@
     tile.classList.add('is-confirmed');
     $('#previewName').textContent=fighter.title;
     $('#previewRole').textContent=fighter.role;
-    $('#previewHint').textContent=fighter.description+' Toque uma vez para confirmar.';
+    $('#previewHint').textContent=fighter.description+' Personagem escolhido.';
     const preview=$('#previewSprite');preview.style.display='';preview.dataset.assetMissing='';setImageWithFallback(preview,spritePaths(fighterId,'idle'),()=>{preview.style.display='none';$('#selectStatus').textContent='Sprite ausente: confira os arquivos da pasta sprites/';});
     $('#mapSelectedName').textContent=fighter.name;
     $('#selectStatus').textContent=fighter.name+(selectedSquareRare?' raro':'')+' confirmado • escolha uma arena';
@@ -584,7 +1023,7 @@
       x:300+id*220, y:logicalH*.77, vx:0,vy:0,w:54,h:70, facing:id%2?1:-1,
       damage:0,stocks:3,kills:0,alive:true,respawn:0,invuln:0,
       attackCd:0,fireCd:0,attackTimer:0,launcherTimer:0,hitStun:0,paralyze:0,lastHitBy:-1,
-      onGround:false,walkTime:Math.random()*500,aiThink:0,aiTarget:-1,aiJumpCd:0
+      onGround:false,walkTime:Math.random()*500,aiThink:Math.random()*.25,aiTarget:-1,aiJumpCd:.25+Math.random()*.4,aiMoveDir:0
     };
   }
   function startMatch(mapId=selectedMap||'midnight'){
@@ -600,7 +1039,7 @@
     $('#matchHud').innerHTML='';
     game.fighters.forEach((p,i)=>{
       const card=document.createElement('div');card.className='hud-card';card.style.setProperty('--hud-accent',PLAYER_COLORS[i]);card.id=`hud-${i}`;
-      card.innerHTML=`<div class="hud-portrait"><div class="hud-square"><img alt="${p.fighterName}"></div><div class="hud-percent" id="percent-${i}">0%</div></div><div class="hud-meta"><div class="hud-name">${p.label} · ${p.fighterName}${battleMode==='teams'?' · EQUIPE '+(p.team+1):''}</div><div class="hud-stock" id="stock-${i}">◆ ◆ ◆</div><div class="takedown-wrap"><div class="takedown-label">TAKEDOWN</div><div class="takedown-track"><i class="takedown-fill" id="takedown-${i}"></i></div></div></div>`;
+      card.innerHTML=`<div class="hud-portrait"><div class="hud-square"><img alt="${p.fighterName}"></div></div><div class="hud-meta"><div class="hud-name">${p.label} · ${p.fighterName}${battleMode==='teams'?' · EQUIPE '+(p.team+1):''}</div><div class="hud-stock" id="stock-${i}">◆ ◆ ◆</div><div class="takedown-wrap"><div class="takedown-label">TAKEDOWN</div><div class="takedown-track"><i class="takedown-fill" id="takedown-${i}"></i></div></div></div><div class="hud-percent" id="percent-${i}">0%</div>`;
       $('#matchHud').appendChild(card);
       const portraitImg=$('.hud-square img',card);
       if(portraitImg)setImageWithFallback(portraitImg,squarePaths(p.fighterId,p.squareRare),()=>{portraitImg.remove();$('.hud-square',card)?.setAttribute('data-fallback',p.fighterName.charAt(0));});
@@ -609,10 +1048,11 @@
     $('#gameOverlay').classList.remove('show');
     $('#pauseBtn').textContent='Ⅱ PAUSAR';
     setHumanCount(fighterCount);
-    $('#matchInfo').textContent += ' • ' + MAPS[selectedMap].name.toUpperCase();
+    $('#matchInfo').textContent += ' • ' + BOT_DIFFICULTIES[botDifficulty].label + ' • ' + MAPS[selectedMap].name.toUpperCase();
     const humanCharacter=FIGHTERS[selectedFighterId];
-    $('#fireButtonLabel').textContent=selectedFighterId==='wubbox'?'NOTA MUSICAL':selectedFighterId==='gamer'?'BOLA SOMBRIA':'BOLA DE FOGO';
-    $('#controlsHint').textContent=selectedFighterId==='wubbox'?'PC: A / D mover · ESPAÇO pular · C socar · E nota musical':selectedFighterId==='gamer'?'PC: A / D mover · ESPAÇO pular · C socar · E bola sombria':'PC: A / D mover · ESPAÇO pular · C socar · E bola de fogo';
+    $('#fireButtonLabel').textContent=selectedFighterId==='wubbox'?'NOTA MUSICAL':selectedFighterId==='gamer'?'BOLA SOMBRIA':selectedFighterId==='davi'?'NOVELO':'BOLA DE FOGO';
+    $('#punchButton').textContent=selectedFighterId==='davi'?'GARRAS':'SOCO';
+    $('#controlsHint').textContent=selectedFighterId==='wubbox'?'PC: A / D mover · ESPAÇO pular · C socar · E nota musical':selectedFighterId==='gamer'?'PC: A / D mover · ESPAÇO pular · C socar · E bola sombria':selectedFighterId==='davi'?'PC: A / D mover · ESPAÇO pular · C garras · E novelo':'PC: A / D mover · ESPAÇO pular · C socar · E bola de fogo';
     showScreen('game');
     resizeCanvas();
     game.fighters.forEach((p,i)=>{p.spawnX=logicalW*spawnX[i];p.x=p.spawnX;p.y=game.groundY;});
@@ -657,13 +1097,20 @@
   function punch(p){
     if(!p.alive||p.respawn>0||p.attackCd>0)return;
     const fighter=FIGHTERS[p.fighterId]||FIGHTERS.migton;
-    p.attackCd=fighter.punchCooldown||.37;p.attackTimer=.18;
-    spawnBurst(p.x+p.facing*(fighter.punchReach||86)*.42,p.y-40,p.fighterId==='gamer'?'#a98cff':'#ff9f5a',5);
-    // Active frame: check fighters immediately; the brief swing remains visible.
+    const daviAir=p.fighterId==='davi'&&!p.onGround;
+    const reach=daviAir?(fighter.airPunchReach||132):(fighter.punchReach||86);
+    const vertical=daviAir?(fighter.airPunchVertical||112):65;
+    const damage=daviAir?(fighter.airPunchDamage||11):8;
+    p.attackCd=fighter.punchCooldown||.37;p.attackTimer=daviAir ? .24 : .18;
+    const clawColor=p.fighterId==='davi'?'#d6dce8':p.fighterId==='gamer'?'#a98cff':'#ff9f5a';
+    spawnBurst(p.x+p.facing*reach*.42,p.y-(daviAir?48:40),clawColor,daviAir?9:5);
+    // Davi's claws gain range, height and force while airborne.
     for(const t of game.fighters){
       if(t===p||!t.alive||t.respawn>0||t.invuln>0||(battleMode==='teams'&&t.team===p.team))continue;
       const dx=t.x-p.x,dy=(t.y-t.h/2)-(p.y-p.h/2);
-      if(Math.abs(dx)<(fighter.punchReach||86)&&Math.abs(dy)<65&&dx*p.facing>0){hit(t,p,8,8.4,-6.0);}
+      if(Math.abs(dx)<reach&&Math.abs(dy)<vertical&&dx*p.facing>0){
+        hit(t,p,damage,daviAir?9.1:8.4,daviAir?-7.1:-6.0);
+      }
     }
   }
   function shoot(p){
@@ -680,6 +1127,12 @@
       p.fireCd=.67;
       game.projectiles.push({type:'shadow',x,y,vx:p.facing*11.4,vy:0,owner:p.id,life:2.55,r:19,damage:12,paralyzeChance:.15});
       spawnBurst(x,y,'#9d79ff',9);
+    }else if(p.fighterId==='davi'){
+      // Novelo pesado: gravidade alta e quique constante no mesmo plano do chão.
+      const gravity=.82, bounceHeight=78;
+      p.fireCd=.82;
+      game.projectiles.push({type:'wool',x,y:p.onGround?y:y-13,vx:p.facing*10.7,vy:-1.8,owner:p.id,life:4.5,r:20,damage:13,gravity,bounceFloor:game.groundY-14,bounceVy:-Math.sqrt(2*gravity*bounceHeight),range:1120,traveled:0,bounces:0,maxBounces:12});
+      spawnBurst(x,y,'#e5e7eb',10);
     }else{
       p.fireCd=.56;
       game.projectiles.push({type:'fireball',x,y,vx:p.facing*10.8,vy:-.7,owner:p.id,life:2.0,r:18,damage:10});
@@ -710,42 +1163,79 @@
     if(hasControl(s,'left'))dir--;if(hasControl(s,'right'))dir++;
     if(s===0){if(touchHeld.left)dir--;if(touchHeld.right)dir++;}
     const fs=Math.min(3,dt*60);
-    if(dir!==0){p.vx+=dir*.78*fs;p.facing=dir>0?1:-1;}else p.vx*=Math.pow(p.onGround?.79:.988,fs);
-    p.vx=Math.max(-6.5,Math.min(6.5,p.vx));
+    const fighter=FIGHTERS[p.fighterId]||FIGHTERS.migton;
+    const airControl=!p.onGround?(fighter.airControl||1):1;
+    if(dir!==0){p.vx+=dir*.78*airControl*fs;p.facing=dir>0?1:-1;}else p.vx*=Math.pow(p.onGround?.79:.988,fs);
+    const maxSpeed=6.5*(!p.onGround?(fighter.airControl||1):1);
+    p.vx=Math.max(-maxSpeed,Math.min(maxSpeed,p.vx));
     if(consumeControl(s,'jump'))jump(p);
     if(consumeControl(s,'punch'))punch(p);
     if(consumeControl(s,'fire'))shoot(p);
   }
   function updateBot(p,dt){
-    const foes=game.fighters.filter(t=>t!==p&&t.alive&&t.respawn<=0&&(battleMode!=='teams'||t.team!==p.team));
-    if(!foes.length){p.vx*=.9;return;}
-    let target=foes.reduce((best,t)=>{
-      const d=Math.hypot(t.x-p.x,(t.y-t.h/2)-(p.y-p.h/2)*.8);
-      return !best||d<best.d?{p:t,d}:best;
-    },null).p;
-    p.aiTarget=target.id;
-    const dx=target.x-p.x,dy=(target.y-target.h)-(p.y-p.h);
-    const dist=Math.abs(dx);const direction=Math.sign(dx)||p.facing;
-    p.facing=direction;
-    // Recover aggressively when drifting toward a blast zone.
-    const nearEdge=p.x<110||p.x>logicalW-110;
-    if(nearEdge&&((p.x<logicalW/2&&p.vx<0)||(p.x>logicalW/2&&p.vx>0))){p.vx+=(p.x<logicalW/2?1:-1)*1.15*Math.min(3,dt*60);if(p.onGround&&p.aiJumpCd<=0){jump(p);p.aiJumpCd=.55;}}
-    else if(dist>70){p.vx+=direction*.72*Math.min(3,dt*60);}
-    else if(dist<40){p.vx-=direction*.38*Math.min(3,dt*60);}
-    else p.vx*=Math.pow(.91,Math.min(3,dt*60));
-    p.vx=Math.max(-5.9,Math.min(5.9,p.vx));
-    // Jump for elevated targets, to evade, or when below a ledge.
-    if(p.aiJumpCd>0)p.aiJumpCd-=dt;
-    const shouldJump=(dy<-55&&dist<430)||(p.onGround&&Math.random()<.0035)||(nearEdge&&p.onGround);
-    if(shouldJump&&p.onGround&&p.aiJumpCd<=0){jump(p);p.aiJumpCd=.8+Math.random()*.45;}
-    // Smart attack timing: don't waste the punch outside its reach.
-    const fighter=FIGHTERS[p.fighterId]||FIGHTERS.migton;
-    if(dist<(fighter.punchReach||86)&&Math.abs(dy)<80&&p.attackCd<=0&&Math.random()<.8)punch(p);
-    else if(p.fighterId==='wubbox'&&dist>95&&dist<315&&Math.abs(dy)<135&&p.fireCd<=0&&Math.random()<.055)shoot(p);
-    else if(p.fighterId==='gamer'&&dist>125&&dist<(fighter.fireRange||590)&&Math.abs(dy)<145&&p.fireCd<=0&&Math.random()<.05)shoot(p);
-    else if(p.fighterId==='migton'&&dist>115&&dist<440&&Math.abs(dy)<115&&p.fireCd<=0&&Math.random()<.035)shoot(p);
-    // Air steer and avoid walking straight through an opponent.
-    if(!p.onGround&&dist<50)p.vx-=direction*.16*Math.min(3,dt*60);
+    const rules=BOT_DIFFICULTIES[botDifficulty]||BOT_DIFFICULTIES.medium;
+    const fs=Math.min(3,dt*60);
+    p.aiThink-=dt;
+
+    // A IA só escolhe alvo e ação no seu tempo de reação. O movimento entre decisões é contínuo.
+    if(p.aiThink<=0){
+      p.aiThink=rules.reaction*(.82+Math.random()*.36);
+      const foes=game.fighters.filter(t=>t!==p&&t.alive&&t.respawn<=0&&(battleMode!=='teams'||t.team!==p.team));
+      if(!foes.length){p.aiMoveDir=0;p.vx*=.94;return;}
+      const target=foes.reduce((best,t)=>{
+        const d=Math.hypot(t.x-p.x,(t.y-t.h/2)-(p.y-p.h/2)*.8);
+        return !best||d<best.d?{p:t,d}:best;
+      },null).p;
+      p.aiTarget=target.id;
+      const dx=target.x-p.x;
+      const dy=(target.y-target.h)-(p.y-p.h);
+      const dist=Math.abs(dx);
+      const direction=Math.sign(dx)||p.facing;
+      p.facing=direction;
+      const nearEdge=p.x<115||p.x>logicalW-115;
+      const fighter=FIGHTERS[p.fighterId]||FIGHTERS.migton;
+      const idealGap=p.fighterId==='gamer'?220:p.fighterId==='wubbox'?165:p.fighterId==='davi'?145:105;
+
+      if(nearEdge&&((p.x<logicalW/2&&p.vx<0)||(p.x>logicalW/2&&p.vx>0))){
+        p.aiMoveDir=p.x<logicalW/2?1:-1;
+        if(p.onGround&&p.aiJumpCd<=0){jump(p);p.aiJumpCd=1.0+rules.reaction;}
+      }else if(dist>idealGap+24){p.aiMoveDir=direction;}
+      else if(dist<idealGap-32){p.aiMoveDir=-direction;}
+      else{p.aiMoveDir=0;}
+
+      // Pulos acontecem por necessidade, com uma pequena chance de erro natural.
+      const elevatedTarget=dy<-60&&dist<rules.jumpRange;
+      const occasionalJump=Math.random()<rules.randomJump;
+      const daviAirApproach=p.fighterId==='davi'&&dist<rules.jumpRange*1.35&&Math.random()<(botDifficulty==='easy'?.14:botDifficulty==='hard'?.38:.26);
+      if(p.onGround&&p.aiJumpCd<=0&&(elevatedTarget||occasionalJump||daviAirApproach)){
+        jump(p);p.aiJumpCd=1.0+Math.random()*.65+rules.reaction;
+      }
+
+      // Ataques dependem da dificuldade e da distância; não há acerto garantido.
+      const punchRange=(p.fighterId==='davi'&&!p.onGround?(fighter.airPunchReach||132):(fighter.punchReach||86))+(botDifficulty==='easy'?-10:botDifficulty==='hard'?8:0);
+      const punchHeight=p.fighterId==='davi'&&!p.onGround?(fighter.airPunchVertical||112):76;
+      if(dist<punchRange&&Math.abs(dy)<punchHeight&&p.attackCd<=0&&Math.random()<rules.punchChance){
+        punch(p);
+      }else{
+        let inShotRange=false,verticalLimit=125;
+        if(p.fighterId==='wubbox')inShotRange=dist>100&&dist<300;
+        else if(p.fighterId==='gamer')inShotRange=dist>145&&dist<(fighter.fireRange||590);
+        else if(p.fighterId==='davi')inShotRange=dist>115&&dist<(fighter.fireRange||1120);
+        else inShotRange=dist>125&&dist<440;
+        if(inShotRange&&Math.abs(dy)<verticalLimit&&p.fireCd<=0&&Math.random()<rules.fireChance)shoot(p);
+      }
+    }
+
+    // Aceleração e frenagem suaves, evitando os bots grudarem no jogador.
+    if(p.aiMoveDir){p.vx+=p.aiMoveDir*rules.accel*fs;}
+    else{p.vx*=Math.pow(p.onGround?.78:.94,fs);}
+    p.vx=Math.max(-rules.speed,Math.min(rules.speed,p.vx));
+    p.aiJumpCd=Math.max(0,p.aiJumpCd-dt);
+    const target=game.fighters[p.aiTarget];
+    if(target&&target.alive&&!p.onGround){
+      const dx=target.x-p.x;
+      if(Math.abs(dx)<52)p.vx-=Math.sign(dx)*.08*fs;
+    }
   }
 
   function updateFighter(p,dt){
@@ -836,13 +1326,22 @@
         b.x+=b.vx*frameScale;b.y+=b.vy*frameScale; // Sem gravidade: voa reto, só corrige levemente a altura.
       }else if(b.type==='shadow'){
         b.x+=b.vx*frameScale;b.y+=b.vy*frameScale; // A bola sombria cruza a arena em linha reta.
+      }else if(b.type==='wool'){
+        b.traveled=(b.traveled||0)+Math.abs(b.vx*frameScale);
+        b.vy+=b.gravity*frameScale;
+        b.x+=b.vx*frameScale;b.y+=b.vy*frameScale;
+        if(b.y>=b.bounceFloor&&b.vy>0&&b.bounces<b.maxBounces){
+          b.y=b.bounceFloor;
+          b.vy=b.bounceVy; // impulso fixo mantém a mesma altura em todos os quiques.
+          b.bounces++;
+        }
       }else{
         b.x+=b.vx*frameScale;b.y+=b.vy*frameScale;b.vy+=.05*frameScale;
       }
       for(const t of game.fighters){
         if(!t.alive||t.respawn>0||t.id===b.owner||t.invuln>0||(battleMode==='teams'&&t.team===game.fighters[b.owner]?.team))continue;
-        if(Math.hypot(t.x-b.x,(t.y-t.h/2)-b.y)<(b.type==='music'?32:34)){
-          const owner=game.fighters[b.owner];if(owner){hit(t,owner,b.damage,b.type==='music'?6.7:b.type==='shadow'?7.6:7.0,b.type==='music'?-4.6:b.type==='shadow'?-5.2:-4.8);
+        if(Math.hypot(t.x-b.x,(t.y-t.h/2)-b.y)<(b.type==='music'?32:b.type==='wool'?36:34)){
+          const owner=game.fighters[b.owner];if(owner){hit(t,owner,b.damage,b.type==='music'?6.7:b.type==='shadow'?7.6:b.type==='wool'?8.2:7.0,b.type==='music'?-4.6:b.type==='shadow'?-5.2:b.type==='wool'?-6.4:-4.8);
             if(b.type==='shadow'&&Math.random()<(b.paralyzeChance||.15)){
               t.paralyze=1;t.hitStun=Math.max(t.hitStun,1);t.vx=0;t.vy=0;
               spawnBurst(t.x,t.y-t.h*.55,'#a987ff',22);
@@ -852,7 +1351,7 @@
         }
       }
     }
-    game.projectiles=game.projectiles.filter(b=>b.life>0&&b.x>-50&&b.x<logicalW+50&&b.y<logicalH+100&&b.y>-100);
+    game.projectiles=game.projectiles.filter(b=>b.life>0&&b.x>-50&&b.x<logicalW+50&&b.y<logicalH+100&&b.y>-100&&(b.type!=='wool'||(b.traveled||0)<(b.range||1120)));
   }
   function updateParticles(dt){
     const frameScale=Math.min(3,dt*60);
@@ -1078,21 +1577,24 @@
 
   function drawProjectiles(){
     for(const b of game.projectiles){
-      const music=b.type==='music', shadow=b.type==='shadow';
+      const music=b.type==='music', shadow=b.type==='shadow', wool=b.type==='wool';
       const owner=game.fighters[b.owner];
       const img=images[owner?.fighterId||'migton']?.projectile;
       if(img&&img.complete&&img.naturalWidth>0){
         ctx.save();ctx.translate(b.x,b.y);ctx.rotate(music?Math.max(-.12,Math.min(.12,b.vy*.035)):Math.atan2(b.vy,b.vx));
-        ctx.shadowColor=music?'#b69cff':shadow?'#9a68ff':'#ff9c42';ctx.shadowBlur=shadow?13:music?5:3;
-        const size=music?36:shadow?48:44;ctx.drawImage(img,-size/2,-size/2,size,size);ctx.restore();
+        ctx.shadowColor=music?'#b69cff':shadow?'#9a68ff':wool?'#e7e9ee':'#ff9c42';ctx.shadowBlur=shadow?13:music?5:wool?2:3;
+        const size=music?36:shadow?48:wool?46:44;ctx.drawImage(img,-size/2,-size/2,size,size);ctx.restore();
       }else if(music){
         ctx.save();ctx.fillStyle='#d5c5ff';ctx.font='bold 38px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor='#9b7cff';ctx.shadowBlur=12;ctx.fillText('♪',b.x,b.y);ctx.restore();
       }else if(shadow){
         const g=ctx.createRadialGradient(b.x-5,b.y-5,2,b.x,b.y,23);g.addColorStop(0,'#f4eaff');g.addColorStop(.28,'#ba8cff');g.addColorStop(.72,'#6024aa');g.addColorStop(1,'rgba(70,22,132,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,23,0,Math.PI*2);ctx.fill();
+      }else if(wool){
+        ctx.save();ctx.fillStyle='#e8e8e4';ctx.strokeStyle='#8b919a';ctx.lineWidth=2;ctx.beginPath();ctx.arc(b.x,b.y,18,0,Math.PI*2);ctx.fill();ctx.stroke();
+        ctx.strokeStyle='#b0b5bc';ctx.lineWidth=2.4;for(let i=0;i<3;i++){ctx.beginPath();ctx.ellipse(b.x,b.y,14-i*3,6+i*3,game.time*4+i,0,Math.PI*2);ctx.stroke();}ctx.restore();
       }else{
         const g=ctx.createRadialGradient(b.x,b.y,2,b.x,b.y,19);g.addColorStop(0,'#fff7c6');g.addColorStop(.35,'#ffd34e');g.addColorStop(1,'rgba(255,77,35,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,19,0,Math.PI*2);ctx.fill();
       }
-      ctx.globalAlpha=.28;ctx.strokeStyle=music?'#b9a6ff':shadow?'#a987ff':'#ffbf69';ctx.lineWidth=shadow?6:music?3:5;ctx.beginPath();ctx.moveTo(b.x-b.vx*2,b.y-b.vy*2);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.globalAlpha=1;
+      ctx.globalAlpha=.28;ctx.strokeStyle=music?'#b9a6ff':shadow?'#a987ff':wool?'#d9dce2':'#ffbf69';ctx.lineWidth=shadow?6:music?3:wool?4:5;ctx.beginPath();ctx.moveTo(b.x-b.vx*2,b.y-b.vy*2);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.globalAlpha=1;
     }
   }
   function drawParticles(){for(const q of game.particles){ctx.globalAlpha=Math.max(0,q.life/q.max);ctx.fillStyle=q.color;ctx.beginPath();ctx.arc(q.x,q.y,q.size,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;}
