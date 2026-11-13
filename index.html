@@ -427,14 +427,14 @@
   $('#layoutOptions').addEventListener('click',e=>{const b=e.target.closest('[data-layout]');if(b)applyLayoutMode(b.dataset.layout);});
   window.addEventListener('resize',()=>{if(layoutMode==='auto')applyLayoutMode('auto');});
 
-  // Roster: Migton, Wubbox e Robô Gamer estão disponíveis.
+  // Roster: todos os lutadores cadastrados em FIGHTERS estão disponíveis.
   function buildRoster(){
     const grid=$('#rosterGrid');grid.innerHTML='';
     const available=['migton','wubbox','gamer'];
-    $('#rosterCount').textContent='3 / 12 DISPONÍVEIS';
+    $('#rosterCount').textContent=`${available.length} / 12 DISPONÍVEIS`;
     for(let i=0;i<12;i++){
       const tile=document.createElement('button');tile.type='button';tile.className='fighter-tile '+(i<3?'available':'locked');
-      if(i<2){
+      if(i<available.length){
         const fighterId=available[i],fighter=FIGHTERS[fighterId],rareRoll=Math.random()<.02;
         tile.dataset.fighterId=fighterId;tile.dataset.rare=rareRoll?'1':'0';
         tile.setAttribute('aria-label',fighter.title);
