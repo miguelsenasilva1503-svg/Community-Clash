@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#19283d" />
-<title>COMMUNIY CLASH v0.17</title>
+<title>COMMUNIY CLASH v0.18</title>
 <style>
   :root{--ink:#f7f8ff;--muted:#aeb8da;--cyan:#5de9ff;--blue:#5b79ff;--pink:#ff5c98;--gold:#ffd46b;--panel:rgba(18,25,58,.86)}
   *{box-sizing:border-box}
@@ -835,6 +835,51 @@
     .tower-tier-card p{font-size:8px;}
     .tower-mini-floor{height:17px;width:20px;}
   }
+
+  /* v0.18 — novos lutadores, rotação da torre e seleções com dimensões previsíveis. */
+  .home-modal-card{max-height:92dvh;overflow-y:auto;overscroll-behavior:contain;}
+  .code-entry{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center;}
+  .code-entry input{min-width:0;width:100%;height:38px;padding:0 10px;border-radius:6px;border:1px solid #637c98;background:#12243a;color:#f1f5fa;font:900 11px system-ui;letter-spacing:.1em;text-transform:uppercase;outline:none;}
+  .code-entry input:focus{border-color:#b7cce2;box-shadow:0 0 0 2px rgba(183,204,226,.16);}
+  .code-entry button{height:38px;padding:0 14px;border-radius:6px;background:#6685a9;color:#fff;font-size:10px;font-weight:1000;letter-spacing:.07em;}
+  .code-status{margin-top:8px;min-height:14px;color:#b8c9dc;font-size:10px;line-height:1.35;}
+  .code-status[data-state="success"]{color:#a8dec6;}
+  .code-status[data-state="error"]{color:#f0a4a4;}
+  .roster-grid{grid-template-columns:repeat(7,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;}
+  .fighter-tile.boss-unlock-tile{border-color:#d2bd91!important;box-shadow:inset 0 0 0 2px rgba(210,189,145,.2)!important;}
+  .fighter-tile.boss-unlock-tile .tile-tag{background:rgba(68,48,40,.94)!important;color:#f4d9a2!important;}
+  .map-screen.active{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-height:0!important;}
+  .map-wrap{width:min(1120px,96vw)!important;height:calc(100dvh - 12px)!important;max-height:calc(100dvh - 12px)!important;min-height:0!important;display:flex!important;flex-direction:column!important;gap:clamp(6px,1.2vh,12px)!important;}
+  .map-grid{width:100%!important;min-height:0!important;flex:1 1 auto!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;align-items:stretch!important;}
+  .map-grid .map-card{display:flex!important;width:100%!important;height:100%!important;min-height:0!important;position:relative!important;z-index:2!important;pointer-events:auto!important;}
+  .map-grid .map-thumb,.map-grid .map-card-copy{pointer-events:none;}
+  .map-actions{flex:0 0 38px;}
+  .tower-mini-floor{position:relative;overflow:hidden;padding:0!important;width:34px;height:32px;flex:0 0 auto;background:#182c43!important;border-color:#718ba6!important;}
+  .tower-mini-floor img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;padding:1px 1px 7px;}
+  .tower-mini-floor small{position:absolute;left:0;right:0;bottom:0;background:rgba(12,27,43,.9);color:#fff;font-size:7px;line-height:10px;text-align:center;}
+  .tower-mini-floor.final-boss{border-color:#d7b477!important;box-shadow:inset 0 0 0 1px rgba(231,196,123,.35);}
+  .tower-mini-floor[data-fallback]::after{content:attr(data-fallback);position:absolute;inset:0;display:grid;place-items:center;color:#f1e0bd;font-size:13px;font-weight:1000;}
+  .tower-rotation-info{display:inline-block;margin-left:6px;color:#c9d5e2;font-size:10px;}
+  .tower-floor{height:28px;gap:6px;transform:translateX(10px);}
+  .tower-floor img{width:23px;height:23px;object-fit:contain;image-rendering:pixelated;margin-left:auto;}
+  .tower-floor small{min-width:65px;text-align:right;}
+  @media(max-width:760px){
+    .roster-grid{grid-template-columns:repeat(7,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;}
+    .tower-mini-floor{width:25px;height:23px;}
+    .tower-mini-floor small{font-size:6px;line-height:8px;}
+    .map-wrap{width:97vw!important;height:97dvh!important;}
+    .map-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;gap:5px!important;}
+    .map-card-desc{font-size:7px!important;}
+    .map-card-copy{padding:4px 5px!important;}
+  }
+  @media(max-height:430px) and (orientation:landscape){
+    .roster-grid{grid-template-columns:repeat(7,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;}
+    .tower-mini-floor{width:21px;height:19px;}
+    .tower-select-wrap{height:97dvh;}
+    .map-wrap{height:98dvh!important;gap:3px!important;}
+    .map-actions{flex-basis:30px;}
+  }
+
 </style>
 </head>
 <body>
@@ -851,7 +896,7 @@
       <button class="home-mode-button" id="modeVsBtn" type="button"><strong>VS</strong><span>2 a 4 combatentes</span></button>
       <button class="home-mode-button" id="mode2v2Btn" type="button"><strong>2V2</strong><span>Duplas contra duplas</span></button>
       <button class="home-mode-button" id="trainingModeBtn" type="button"><strong>CAMPO DE TREINAMENTO</strong><span>Entre sozinho e teste os golpes</span></button>
-      <button class="home-mode-button tower-mode-button" id="towerModeBtn" type="button"><strong>TORRE DO CHEFÃO</strong><span>Enfrente os seis andares</span></button>
+      <button class="home-mode-button tower-mode-button" id="towerModeBtn" type="button"><strong>TORRE DO CHEFÃO</strong><span>Enfrente de 3 a 10 chefes</span></button>
     </aside>
 
     <main class="home-center">
@@ -859,7 +904,7 @@
       <div class="brand"><div class="brand-mark">C</div><div class="brand-name">COMMUNIY <span>CLASH</span></div></div>
       <div class="hero-emblem"><div class="hero-ring"></div><div class="hero-letter">C!</div></div>
       <div class="hero-subtitle">Escolha seu lutador e entre na disputa</div>
-      <div class="home-version">VERSÃO 0.17 · 6 LUTADORES</div>
+      <div class="home-version">VERSÃO 0.18 · 8 LUTADORES + HAVOCTHORN</div>
     </main>
 
     <aside class="home-side home-side-right">
@@ -886,6 +931,10 @@
         </div>
         <div class="keybind-footer"><span id="keybindStatus">Padrão inspirado no esquema B do Brawlhalla.</span><button type="button" id="resetKeybindsBtn" class="keybind-reset">RESTAURAR</button></div>
       </div>
+      <div class="settings-modal-section code-section"><strong>CÓDIGOS</strong><p>Digite um código para liberar recursos especiais.</p>
+        <div class="code-entry"><input id="gameCodeInput" type="text" maxlength="32" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="DIGITE O CÓDIGO"><button type="button" id="redeemCodeBtn">ATIVAR</button></div>
+        <div class="code-status" id="gameCodeStatus" role="status" aria-live="polite">Os códigos não diferenciam maiúsculas de minúsculas.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -896,7 +945,7 @@
       <div><div class="eyebrow">Escadaria de desafios</div><h1>Escolha sua <span>torre</span></h1></div>
       <button class="back-btn" id="backTowerMainBtn" type="button">← VOLTAR</button>
     </div>
-    <p class="tower-select-intro">Cada torre tem uma sequência própria. Os andares com <b>?</b> sorteiam um chefe quando a subida começar.</p>
+    <p class="tower-select-intro">Cada torre tem uma sequência própria, com Havocthorn no último andar. <span id="towerRotationInfo">A rotação muda a cada hora.</span></p>
     <div class="tower-tier-grid" id="towerTierGrid">
       <button class="tower-tier-card" data-tier="novato" type="button"></button>
       <button class="tower-tier-card" data-tier="medio" type="button"></button>
@@ -942,14 +991,14 @@
       <button class="back-btn" id="backSelectBtn">← VOLTAR</button>
     </div>
     <div class="map-grid" id="mapGrid">
-      <button class="map-card" data-map="midnight"><div class="map-thumb midnight"></div><div class="map-card-copy"><span class="map-card-title">Meia Noite</span><span class="map-card-desc">A arena original, agora com nome próprio. Plataformas suspensas sob o céu noturno.</span></div></button>
-      <button class="map-card" data-map="plain"><div class="map-thumb plain"></div><div class="map-card-copy"><span class="map-card-title">Planície</span><span class="map-card-desc">Chão liso e aberto, sem plataformas. Um cenário amplo ao ar livre.</span></div></button>
-      <button class="map-card" data-map="fnaf"><div class="map-thumb fnaf"></div><div class="map-card-copy"><span class="map-card-title">Escritório de pizzaria</span><span class="map-card-desc">Uma sala de segurança antiga, com mesa, ventilador, monitores, cartazes e animatrônicos circulando.</span></div></button>
-      <button class="map-card" data-map="psych"><div class="map-thumb psych"></div><div class="map-card-copy"><span class="map-card-title">Sala 12 do Exudos</span><span class="map-card-desc">Consultório acolhedor, com sofá, estante, janela, luminária e plataformas baixas.</span></div></button>
-      <button class="map-card" data-map="desert"><div class="map-thumb desert"></div><div class="map-card-copy"><span class="map-card-title">Deserto</span><span class="map-card-desc">Dunas quentes, rochas arenosas e plataformas de pedra.</span></div></button>
-      <button class="map-card" data-map="snow"><div class="map-thumb snow"></div><div class="map-card-copy"><span class="map-card-title">Nevasca</span><span class="map-card-desc">Montanhas cobertas de neve e plataformas congeladas.</span></div></button>
-      <button class="map-card" data-map="fractured"><div class="map-thumb fractured"></div><div class="map-card-copy"><span class="map-card-title">Fraturado</span><span class="map-card-desc">Céu roxo, chão roxo-escuro e rachaduras violetas em homenagem a FD.</span></div></button>
-      <button class="map-card" data-map="inferno"><div class="map-thumb inferno"></div><div class="map-card-copy"><span class="map-card-title">Inferno</span><span class="map-card-desc">Céu de brasa, rochas vulcânicas, rios de lava e plataformas de obsidiana.</span></div></button>
+      <button type="button" class="map-card" data-map="midnight"><div class="map-thumb midnight"></div><div class="map-card-copy"><span class="map-card-title">Meia Noite</span><span class="map-card-desc">A arena original, agora com nome próprio. Plataformas suspensas sob o céu noturno.</span></div></button>
+      <button type="button" class="map-card" data-map="plain"><div class="map-thumb plain"></div><div class="map-card-copy"><span class="map-card-title">Planície</span><span class="map-card-desc">Chão liso e aberto, sem plataformas. Um cenário amplo ao ar livre.</span></div></button>
+      <button type="button" class="map-card" data-map="fnaf"><div class="map-thumb fnaf"></div><div class="map-card-copy"><span class="map-card-title">Escritório de pizzaria</span><span class="map-card-desc">Uma sala de segurança antiga, com mesa, ventilador, monitores, cartazes e animatrônicos circulando.</span></div></button>
+      <button type="button" class="map-card" data-map="psych"><div class="map-thumb psych"></div><div class="map-card-copy"><span class="map-card-title">Sala 12 do Exudos</span><span class="map-card-desc">Consultório acolhedor, com sofá, estante, janela, luminária e plataformas baixas.</span></div></button>
+      <button type="button" class="map-card" data-map="desert"><div class="map-thumb desert"></div><div class="map-card-copy"><span class="map-card-title">Deserto</span><span class="map-card-desc">Dunas quentes, rochas arenosas e plataformas de pedra.</span></div></button>
+      <button type="button" class="map-card" data-map="snow"><div class="map-thumb snow"></div><div class="map-card-copy"><span class="map-card-title">Nevasca</span><span class="map-card-desc">Montanhas cobertas de neve e plataformas congeladas.</span></div></button>
+      <button type="button" class="map-card" data-map="fractured"><div class="map-thumb fractured"></div><div class="map-card-copy"><span class="map-card-title">Fraturado</span><span class="map-card-desc">Céu roxo, chão roxo-escuro e rachaduras violetas em homenagem a FD.</span></div></button>
+      <button type="button" class="map-card" data-map="inferno"><div class="map-thumb inferno"></div><div class="map-card-copy"><span class="map-card-title">Inferno</span><span class="map-card-desc">Céu de brasa, rochas vulcânicas, rios de lava e plataformas de obsidiana.</span></div></button>
     </div>
     <div class="map-actions"><button class="primary-btn" id="randomMapBtn">MAPA ALEATÓRIO</button><button class="secondary-btn" id="mapBackToSelectBtn">VOLTAR</button></div>
   </div>
@@ -1012,7 +1061,7 @@
   if(screen.orientation&&screen.orientation.addEventListener)screen.orientation.addEventListener('change',updateOrientationGate);
   updateOrientationGate();
   const screens = {main:$('#mainScreen'), tower:$('#towerSelectScreen'), select:$('#selectScreen'), maps:$('#mapScreen'), game:$('#gameScreen')};
-  // Lutadores disponíveis. Gamer aceita .png e tenta .pnf como extensão alternativa.
+  // Lutadores, atributos e caminhos de arte. Os sprites antigos do Robô Gamer continuam preservados em legacyAssets.
   const FIGHTERS = {
     migton:{
       id:'migton', name:'MIGTON', title:'Mestre do Fogo', role:'Lutador de fogo',
@@ -1029,7 +1078,8 @@
     gamer:{
       id:'gamer', name:'ROBÔ GAMER', title:'Robô Gamer', role:'Lutador de longo alcance',
       description:'O Robô Gamer tem um soco de alcance maior, uma bola sombria de longo alcance e 15% de chance de paralisar por 1 segundo.',
-      assets:{idle:'sprites/gamer_idle.png',right:'sprites/gamer_right.png',left:'sprites/gamer_left.png',punch:'sprites/gamer_punch.png',launcher:'sprites/gamer_launcher.png',jump:'sprites/gamer_jump.png',projectile:'projectiles/shadow_ball.png'},
+      assets:{idle:'sprites/robo_idle.png',right:'sprites/robo_right.png',left:'sprites/robo_left.png',punch:'sprites/robo_punch.png',launcher:'sprites/robo_launcher.png',jump:'sprites/robo_jump.png',projectile:'projectiles/shadow_ball.png'},
+      legacyAssets:{idle:'sprites/gamer_idle.png',right:'sprites/gamer_right.png',left:'sprites/gamer_left.png',punch:'sprites/gamer_punch.png',launcher:'sprites/gamer_launcher.png',jump:'sprites/gamer_jump.png'},
       square:['square/gamer.png','squares/gamer.png'], rare:['square/gamer_rare.png','squares/gamer_rare.png'], jumpPower:13.2, projectileType:'shadow', punchReach:122, punchCooldown:.43, fireRange:590
     },
     davi:{
@@ -1049,18 +1099,105 @@
       description:'Beterraba dispara três balas em sequência simultânea, com pouca dispersão. É um personagem de pressão à distância.',
       assets:{idle:'sprites/beterraba_idle.png',right:'sprites/beterraba_walk.png',left:'sprites/beterraba_walk.png',punch:'sprites/beterraba_punch.png',launcher:'sprites/beterraba_launcher.png',jump:'sprites/beterraba_jump.png',projectile:'projectiles/bullet.png'},
       square:['square/beterraba.png','squares/beterraba.png'], rare:['square/beterraba_rare.png','squares/beterraba_rare.png'], jumpPower:13.2, projectileType:'bullet', punchReach:88, punchCooldown:.39, fireRange:700
+    },
+    allinone:{
+      id:'allinone', name:'ALL IN ONE', title:'Tudo em Um', role:'Controlador de água',
+      description:'Seus socos e projéteis de água desaceleram os adversários por 1 segundo.',
+      assets:{idle:'sprites/wooper_idle.png',right:'sprites/wooper_right.png',left:'sprites/wooper_left.png',punch:'sprites/wooper_punch.png',launcher:'sprites/wooper_launcher.png',jump:'sprites/wooper_jump.png',projectile:'projectiles/water.png'},
+      square:['square/allinone.png'], rare:['square/allinone_rare.png'], jumpPower:13.8, projectileType:'water', punchReach:94, punchCooldown:.4, fireRange:680
+    },
+    bombasticus:{
+      id:'bombasticus', name:'BOMBASTICUS', title:'Bombasticus', role:'Especialista em explosões',
+      description:'Arremessa uma bomba rasteira que rola pela arena e explode em área, causando alto knockback.',
+      assets:{idle:'sprites/bombasticus_idle.png',right:'sprites/bombasticus_right.png',left:'sprites/bombasticus_left.png',punch:'sprites/bombasticus_punch.png',launcher:'sprites/bombasticus_launcher.png',jump:'sprites/bombasticus_jump.png',projectile:'projectiles/bomb.png'},
+      square:['square/bombasticus.png'], rare:['square/bombasticus_rare.png'], jumpPower:13.4, projectileType:'bomb', punchReach:90, punchCooldown:.4, fireRange:1250
+    },
+    havocthorn:{
+      id:'havocthorn', name:'HAVOCTHORN', title:'Havocthorn', role:'Chefe jogável',
+      description:'Um chefe jogável: hitbox ampliada, resistência a knockback e ataques que empurram mais. É pesado, mas não imune a impactos.',
+      assets:{idle:'sprites/havocthorn_idle.png',right:'sprites/havocthorn_right.png',left:'sprites/havocthorn_left.png',punch:'sprites/havocthorn_punch.png',launcher:'sprites/havocthorn_launcher.png',jump:'sprites/havocthorn_jump.png',projectile:'projectiles/havocthorn.png'},
+      square:['square/havocthorn.png'], rare:['square/havocthorn_rare.png'], jumpPower:12.8, projectileType:'havoc', punchReach:112, punchCooldown:.48, fireRange:760,
+      bossCharacter:true,bossDamageMultiplier:1.18,bossKnockbackResistance:.62,bossSpeedMultiplier:.88
     }
   };
   const TOWER_TIERS = {
-    novato:{label:'NOVATO',count:3,bot:'easy',speed:.60,resistance:.48,damage:1.00,order:['migton','?','wubbox'],description:'Uma primeira subida, com três chefes e mais espaço para aprender.'},
-    medio:{label:'MÉDIO',count:5,bot:'medium',speed:.64,resistance:.41,damage:1.10,order:['wubbox','?','gamer','?','blu'],description:'Cinco confrontos. Alguns andares escondem surpresas.'},
-    veterano:{label:'VETERANO',count:7,bot:'hard',speed:.68,resistance:.34,damage:1.20,order:['davi','?','gamer','blu','?','beterraba','migton'],description:'Sete chefes, menos margem para errar e mais resistência.'},
-    insano:{label:'INSANO',count:10,bot:'hard',speed:.72,resistance:.28,damage:1.32,order:['gamer','?','blu','?','wubbox','beterraba','?','davi','?','migton'],description:'Dez andares. Chefes agressivos e encontros imprevisíveis.'}
+    novato:{label:'NOVATO',count:3,bot:'medium',speed:.88,resistance:.62,damage:1.04,order:['migton','?','havocthorn'],description:'Três confrontos. Os chefes já reagem como bots de dificuldade média.'},
+    medio:{label:'MÉDIO',count:5,bot:'medium',speed:.92,resistance:.59,damage:1.10,order:['wubbox','?','gamer','?','havocthorn'],description:'Cinco confrontos, com mais pressão e chefes resistentes.'},
+    veterano:{label:'VETERANO',count:7,bot:'hard',speed:.96,resistance:.56,damage:1.17,order:['davi','?','gamer','blu','?','beterraba','havocthorn'],description:'Sete confrontos. Os chefes usam a dificuldade difícil.'},
+    insano:{label:'INSANO',count:10,bot:'spicy',speed:.98,resistance:.52,damage:1.24,order:['gamer','?','blu','?','wubbox','beterraba','?','davi','migton','havocthorn'],description:'Dez andares. A última subida usa a dificuldade difícil-apimentado.'}
   };
+  const TOWER_ROTATION_KEY='communityClashTowerRotation_v2';
+  let towerRotationData=null;
+  function availableFighterIds(){return Object.keys(FIGHTERS).filter(id=>id!=='havocthorn'||unlockedHavocthorn);}
+  function generateTowerRotations(now=Date.now()){
+    const pool=Object.keys(FIGHTERS).filter(id=>id!=='havocthorn');
+    const tiers={};
+    for(const [key,tier] of Object.entries(TOWER_TIERS)){
+      const used=new Set();
+      tiers[key]=tier.order.map((id,index)=>{
+        if(index===tier.order.length-1)return 'havocthorn';
+        if(id!=='?'){used.add(id);return id;}
+        const fresh=pool.filter(candidate=>!used.has(candidate));
+        const choices=fresh.length?fresh:pool;
+        const chosen=choices[Math.floor(Math.random()*choices.length)]||'migton';
+        used.add(chosen);return chosen;
+      });
+      tiers[key][tiers[key].length-1]='havocthorn';
+    }
+    return {createdAt:now,tiers};
+  }
+  function loadTowerRotations(){
+    let saved=null;
+    try{saved=JSON.parse(localStorage.getItem(TOWER_ROTATION_KEY)||'null');}catch(e){}
+    const valid=saved&&Number.isFinite(Number(saved.createdAt))&&saved.tiers&&Object.keys(TOWER_TIERS).every(key=>Array.isArray(saved.tiers[key])&&saved.tiers[key].length===TOWER_TIERS[key].count&&saved.tiers[key][saved.tiers[key].length-1]==='havocthorn');
+    if(!valid||Date.now()-Number(saved.createdAt)>=3600000||Date.now()<Number(saved.createdAt)){
+      towerRotationData=generateTowerRotations();
+      try{localStorage.setItem(TOWER_ROTATION_KEY,JSON.stringify(towerRotationData));}catch(e){}
+    }else towerRotationData=saved;
+    return towerRotationData;
+  }
+  function getTowerBossSequence(tierKey){
+    const data=loadTowerRotations();
+    const sequence=data.tiers[tierKey]||data.tiers.novato;
+    return [...sequence.slice(0,-1),'havocthorn'];
+  }
   function spritePaths(fighterId,key){
-    const src=FIGHTERS[fighterId]?.assets?.[key];
+    const fighter=FIGHTERS[fighterId];
+    if(!fighter)return [];
+    const src=fighter.assets?.[key];
     if(!src)return [];
-    return fighterId==='gamer'&&src.startsWith('sprites/')&&src.endsWith('.png')?[src,src.slice(0,-4)+'.pnf']:[src];
+    if(fighterId==='gamer'&&key!=='projectile'){
+      const legacy=fighter.legacyAssets?.[key];
+      if(useLegacyRoboSprites&&legacy)return [legacy,legacy.slice(0,-4)+'.pnf'];
+      return [src,...(legacy?[legacy,legacy.slice(0,-4)+'.pnf']:[])];
+    }
+    return [src];
+  }
+  let unlockedHavocthorn=false,forceRareSquares=false,useLegacyRoboSprites=false;
+  try{
+    unlockedHavocthorn=localStorage.getItem('communityClashHavocthornUnlocked')==='1';
+    forceRareSquares=localStorage.getItem('communityClashAllRare')==='1';
+    useLegacyRoboSprites=localStorage.getItem('communityClashOldRoboGamer')==='1';
+  }catch(e){}
+  function applySlow(target,duration=1){
+    target.slow=Math.max(target.slow||0,duration);
+    target.slowFactor=Math.min(target.slowFactor||1,.56);
+    spawnBurst(target.x,target.y-target.h*.55,'#8ddce8',9);
+  }
+  function hasBossTraits(fighter){return !!(fighter&&(fighter.isBoss||fighter.bossTraits||FIGHTERS[fighter.fighterId]?.bossCharacter));}
+  function fighterHurtbox(fighter){
+    const boss=hasBossTraits(fighter);
+    const halfW=Math.max(14,(fighter.w||54)*(boss?.53:.46));
+    const top=fighter.y-(fighter.h||70)*(boss?.93:.88);
+    const bottom=fighter.y-(fighter.h||70)*.08;
+    return {left:fighter.x-halfW,right:fighter.x+halfW,top,bottom,halfW,halfH:(bottom-top)/2};
+  }
+  function circleHitsFighter(x,y,radius,fighter){
+    const box=fighterHurtbox(fighter);
+    const nx=Math.max(box.left,Math.min(x,box.right));
+    const ny=Math.max(box.top,Math.min(y,box.bottom));
+    const dx=x-nx,dy=y-ny;
+    return dx*dx+dy*dy<=radius*radius;
   }
   function squarePaths(fighterId, rare=false){
     const f=FIGHTERS[fighterId]||FIGHTERS.migton;
@@ -1080,11 +1217,13 @@
       const im=new Image();setImageWithFallback(im,spritePaths(fighterId,key));images[fighterId][key]=im;
     }
     const squareImage=new Image();setImageWithFallback(squareImage,squarePaths(fighterId,false));images[fighterId].square=squareImage;
+    const rareSquareImage=new Image();setImageWithFallback(rareSquareImage,squarePaths(fighterId,true));images[fighterId].rareSquare=rareSquareImage;
   }
   const BOT_DIFFICULTIES = {
-    easy:{label:'FÁCIL',reaction:.58,speed:4.25,accel:.48,punchChance:.24,fireChance:.11,jumpRange:190,randomJump:.008,description:'Fácil: bots mais lentos, demoram para reagir e deixam aberturas.'},
-    medium:{label:'MÉDIO',reaction:.34,speed:5.25,accel:.65,punchChance:.43,fireChance:.23,jumpRange:300,randomJump:.018,description:'Médio: bots atentos, mas dão espaço para reagir.'},
-    hard:{label:'DIFÍCIL',reaction:.21,speed:6.05,accel:.78,punchChance:.66,fireChance:.39,jumpRange:410,randomJump:.03,description:'Difícil: bots pressionam mais e aproveitam melhor as oportunidades.'}
+    easy:{label:'FÁCIL',reaction:.38,speed:4.55,accel:.55,punchChance:.42,fireChance:.23,jumpRange:220,randomJump:.012,description:'Fácil: bots reagem e atacam com regularidade, mas são mais lentos e cometem erros.'},
+    medium:{label:'MÉDIO',reaction:.29,speed:5.45,accel:.70,punchChance:.52,fireChance:.30,jumpRange:320,randomJump:.022,description:'Médio: bots atentos, equilibrados e com pressão constante.'},
+    hard:{label:'DIFÍCIL',reaction:.20,speed:6.05,accel:.78,punchChance:.67,fireChance:.42,jumpRange:410,randomJump:.03,description:'Difícil: bots pressionam mais e aproveitam melhor as oportunidades.'},
+    spicy:{label:'DIFÍCIL-APIMENTADO',reaction:.175,speed:6.22,accel:.81,punchChance:.71,fireChance:.45,jumpRange:430,randomJump:.036,description:'Difícil-apimentado: pressão maior, sem precisão ou velocidade absurdas.'}
   };
   const MAPS = {
     midnight:{name:'Meia Noite',style:'midnight'},
@@ -1162,23 +1301,26 @@
   // Roster: todos os lutadores cadastrados em FIGHTERS estão disponíveis.
   function buildRoster(){
     const grid=$('#rosterGrid');grid.innerHTML='';
-    const available=Object.keys(FIGHTERS);
-    $('#rosterCount').textContent=`${available.length} / 12 DISPONÍVEIS`;
-    for(let i=0;i<12;i++){
-      const tile=document.createElement('button');tile.type='button';tile.className='fighter-tile '+(i<available.length?'available':'locked');
-      if(i<available.length){
-        const fighterId=available[i],fighter=FIGHTERS[fighterId],rareRoll=Math.random()<.02;
+    const normalIds=availableFighterIds().filter(id=>id!=='havocthorn');
+    const totalAvailable=normalIds.length+(unlockedHavocthorn?1:0);
+    $('#rosterCount').textContent=`${totalAvailable} / 13 DISPONÍVEIS`;
+    for(let i=0;i<13;i++){
+      const tile=document.createElement('button');tile.type='button';tile.className='fighter-tile '+((i<normalIds.length||(i===12&&unlockedHavocthorn))?'available':'locked');
+      const fighterId=i===12?(unlockedHavocthorn?'havocthorn':null):(normalIds[i]||null);
+      if(fighterId){
+        const fighter=FIGHTERS[fighterId],rareRoll=forceRareSquares||Math.random()<.02;
         tile.dataset.fighterId=fighterId;tile.dataset.rare=rareRoll?'1':'0';
         tile.setAttribute('aria-label',fighter.title);
         const img=document.createElement('img');img.alt=fighter.name;img.draggable=false;
         setImageWithFallback(img,squarePaths(fighterId,rareRoll),()=>{img.remove();tile.classList.add('asset-missing');tile.dataset.fallback=fighter.name.charAt(0);});
         tile.appendChild(img);
         const tag=document.createElement('span');tag.className='tile-tag';tag.textContent=(rareRoll?'RARO • ':'')+fighter.name;tile.appendChild(tag);
+        if(fighterId==='havocthorn')tile.classList.add('boss-unlock-tile');
         tile.addEventListener('click',()=>onFighterTap(tile));
       }else{
-        tile.textContent='?';tile.setAttribute('aria-label','Personagem bloqueado');
+        tile.textContent='?';tile.setAttribute('aria-label',i===12?'Havocthorn bloqueado':'Personagem bloqueado');
         tile.addEventListener('click',()=>{
-          $('#selectStatus').textContent='Este personagem ainda está bloqueado';
+          $('#selectStatus').textContent=i===12?'Use o código HAVOCTHORN nas configurações para liberar este chefe.':'Este personagem ainda está bloqueado';
           tile.animate([{transform:'translateX(0)'},{transform:'translateX(-3px)'},{transform:'translateX(3px)'},{transform:'translateX(0)'}],{duration:180});
         });
       }
@@ -1253,11 +1395,25 @@
   }
   function buildTowerSelection(){
     const grid=$('#towerTierGrid');grid.innerHTML='';
+    const rotation=loadTowerRotations();
+    const refreshedAt=new Date(rotation.createdAt+3600000);
+    const refreshLabel=refreshedAt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    $('#towerRotationInfo').textContent=`Elenco fixo por 1 hora · próxima rotação após ${refreshLabel}`;
     for(const [key,tier] of Object.entries(TOWER_TIERS)){
       const card=document.createElement('button');card.type='button';card.className='tower-tier-card';card.dataset.tier=key;
-      const floors=tier.order.map((id,i)=>`<span class="tower-mini-floor ${id==='?'?'random':''}" title="${id==='?'?'Chefe aleatório':(FIGHTERS[id]?.name||id)}">${id==='?'?'?':String(i+1).padStart(2,'0')}</span>`).join('');
-      card.innerHTML=`<div class="tower-tier-top"><strong>${tier.label}</strong><span>${tier.count} ANDARES</span></div><div class="tower-mini-ladder">${floors}</div><p>${tier.description}</p><small>ESCOLHER TORRE →</small>`;
-      grid.appendChild(card);
+      const top=document.createElement('div');top.className='tower-tier-top';top.innerHTML=`<strong>${tier.label}</strong><span>${tier.count} ANDARES</span>`;
+      const ladder=document.createElement('div');ladder.className='tower-mini-ladder';
+      getTowerBossSequence(key).forEach((fighterId,i)=>{
+        const fighter=FIGHTERS[fighterId]||FIGHTERS.havocthorn;
+        const floor=document.createElement('span');floor.className='tower-mini-floor'+(fighterId==='havocthorn'?' final-boss':'');floor.title=`Andar ${i+1}: ${fighter.name}`;
+        const img=document.createElement('img');img.alt=fighter.name;img.draggable=false;
+        setImageWithFallback(img,squarePaths(fighterId,forceRareSquares),()=>{img.remove();floor.dataset.fallback=fighter.name.charAt(0);});
+        const num=document.createElement('small');num.textContent=String(i+1);
+        floor.append(img,num);ladder.appendChild(floor);
+      });
+      const desc=document.createElement('p');desc.textContent=tier.description;
+      const action=document.createElement('small');action.textContent='ESCOLHER TORRE →';
+      card.append(top,ladder,desc,action);grid.appendChild(card);
     }
   }
   $('#modeVsBtn').addEventListener('click',()=>openCharacterSelect('ffa'));
@@ -1272,11 +1428,42 @@
   $('#settingsMenuBtn').addEventListener('click',()=>{const m=$('#settingsModal');m.classList.add('show');m.setAttribute('aria-hidden','false');});
   $('#settingsCloseBtn').addEventListener('click',()=>{const m=$('#settingsModal');m.classList.remove('show');m.setAttribute('aria-hidden','true');});
   $('#settingsModal').addEventListener('click',e=>{if(e.target.id==='settingsModal')$('#settingsCloseBtn').click();});
+  function refreshGamerSpriteBank(){
+    const fighter=FIGHTERS.gamer;
+    for(const key of Object.keys(fighter.assets)){
+      const img=new Image();setImageWithFallback(img,spritePaths('gamer',key));images.gamer[key]=img;
+    }
+  }
+  function redeemGameCode(){
+    const code=$('#gameCodeInput').value.trim().toUpperCase();
+    const status=$('#gameCodeStatus');
+    if(!code){status.textContent='Digite um código.';status.dataset.state='error';return;}
+    if(code==='HAVOCTHORN'){
+      unlockedHavocthorn=true;try{localStorage.setItem('communityClashHavocthornUnlocked','1');}catch(e){}
+      status.textContent='HAVOCTHORN ativado. O 13º quadrado agora libera o chefe jogável.';
+    }else if(code==='OLDROBOGAMER'){
+      useLegacyRoboSprites=true;try{localStorage.setItem('communityClashOldRoboGamer','1');}catch(e){}
+      refreshGamerSpriteBank();
+      status.textContent='OLDROBOGAMER ativado. Os sprites antigos do Robô Gamer foram restaurados.';
+    }else if(code==='VERYVERYRARE'){
+      forceRareSquares=true;try{localStorage.setItem('communityClashAllRare','1');}catch(e){}
+      status.textContent='VERYVERYRARE ativado. Todos os quadrados usarão as versões raras disponíveis.';
+    }else{
+      status.textContent='Código inválido.';status.dataset.state='error';return;
+    }
+    status.dataset.state='success';$('#gameCodeInput').value='';
+    if(screens.select.classList.contains('active')){
+      const previous=selectedFighterId;buildRoster();
+      const tile=$(`#rosterGrid [data-fighter-id="${previous}"]`);if(tile)onFighterTap(tile);
+    }
+  }
+  $('#redeemCodeBtn').addEventListener('click',redeemGameCode);
+  $('#gameCodeInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();redeemGameCode();}});
   $('#backMainBtn').addEventListener('click',()=>showScreen(battleMode==='tower'?'tower':'main'));
   $('#backSelectBtn').addEventListener('click',()=>showScreen('select'));
   $('#mapBackToSelectBtn').addEventListener('click',()=>showScreen('select'));
-  $('#startMatchBtn').addEventListener('click',()=>{if(!confirmed)return;showScreen('maps');});
-  $('#mapGrid').addEventListener('click',e=>{const card=e.target.closest('[data-map]');if(card)startMatch(card.dataset.map);});
+  $('#startMatchBtn').addEventListener('click',()=>{if(!confirmed)return;$$('#mapGrid [data-map]').forEach(item=>item.classList.remove('is-selected'));showScreen('maps');requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')));});
+  $('#mapGrid').addEventListener('click',e=>{const card=e.target.closest('button[data-map]');if(!card||!MAPS[card.dataset.map])return;e.preventDefault();$$('#mapGrid [data-map]').forEach(item=>item.classList.toggle('is-selected',item===card));startMatch(card.dataset.map);});
   $('#randomMapBtn').addEventListener('click',()=>{const options=Object.keys(MAPS);const pick=options[Math.floor(Math.random()*options.length)];startMatch(pick);});
   $('#playerCount').addEventListener('click',e=>{const b=e.target.closest('[data-count]');if(b&&!b.disabled)setHumanCount(Number(b.dataset.count));});
   $('#battleMode').addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(b)setBattleMode(b.dataset.mode);});
@@ -1350,18 +1537,19 @@
     ];
   }
   function makeFighter(id,isHuman,slot,forcedFighterId=null){
-    const fighterIds=Object.keys(FIGHTERS);
+    const fighterIds=availableFighterIds();
     const fighterId=isHuman?selectedFighterId:(forcedFighterId||fighterIds[Math.floor(Math.random()*fighterIds.length)]);
     const fighter=FIGHTERS[fighterId]||FIGHTERS.migton;
-    const rare=isHuman?selectedSquareRare:Math.random()<.02;
+    const rare=isHuman?selectedSquareRare:(forceRareSquares||Math.random()<.02);
+    const bossTraits=!!fighter.bossCharacter;
     return {
       id, label:isHuman?'P1':`BOT ${id}`, isHuman, slot, fighterId, fighterName:fighter.name,
       squareAsset:isHuman?(selectedSquareAsset||firstSquarePath(fighterId,rare)):firstSquarePath(fighterId,rare),
       normalSquareAsset:firstSquarePath(fighterId,false), squareRare:rare, team:battleMode==='teams'?(id<2?0:1):id,
-      x:300+id*220, y:logicalH*.77, vx:0,vy:0,w:54,h:70, facing:id%2?1:-1,
+      x:300+id*220, y:logicalH*.77, vx:0,vy:0,w:bossTraits?104:54,h:bossTraits?122:70, facing:id%2?1:-1,
       damage:0,stocks:3,kills:0,alive:true,respawn:0,invuln:0,
-      attackCd:0,fireCd:0,attackTimer:0,launcherTimer:0,hitStun:0,paralyze:0,lastHitBy:-1,
-      onGround:false,walkTime:Math.random()*500,aiThink:Math.random()*.25,aiTarget:-1,aiJumpCd:.25+Math.random()*.4,aiMoveDir:0,isBoss:false
+      attackCd:0,fireCd:0,attackTimer:0,launcherTimer:0,hitStun:0,paralyze:0,slow:0,slowFactor:1,lastHitBy:-1,
+      onGround:false,walkTime:Math.random()*500,aiThink:Math.random()*.25,aiTarget:-1,aiJumpCd:.25+Math.random()*.4,aiMoveDir:0,isBoss:false,bossTraits
     };
   }
   function startMatch(mapId=selectedMap||'midnight',options={}){
@@ -1373,11 +1561,9 @@
     const level=towerMode?Math.max(1,Math.min(totalFloors,Number(options.level)||towerLevel||1)):1;
     if(towerMode){
       towerLevel=level;
-      if(level===1&&!options.continueRun){
-        const ids=Object.keys(FIGHTERS);
-        towerRunBosses=tier.order.map(id=>id==='?'?ids.filter(x=>x!==selectedFighterId)[Math.floor(Math.random()*Math.max(1,ids.filter(x=>x!==selectedFighterId).length))]:id);
-      }
-      if(!towerRunBosses.length)towerRunBosses=tier.order.map(id=>id==='?'?Object.keys(FIGHTERS)[Math.floor(Math.random()*Object.keys(FIGHTERS).length)]:id);
+      if(level===1&&!options.continueRun)towerRunBosses=getTowerBossSequence(towerDifficulty);
+      if(!towerRunBosses.length)towerRunBosses=getTowerBossSequence(towerDifficulty);
+      towerRunBosses=[...towerRunBosses.slice(0,totalFloors-1),'havocthorn'];
     }
     backgroundCacheHeight=0;stageCacheKey='';
     cancelAnimationFrame(raf);
@@ -1388,11 +1574,11 @@
       const forcedBoss=towerMode&&i===1?resolvedBossId:null;
       fighters.push(makeFighter(i,i===0,i,forcedBoss));
     }
-    game={fighters,projectiles:[],particles:[],time:0,last:0,paused:false,ended:false,groundY:logicalH*.77,platforms:makePlatforms(),feed:[],shake:0,matchCount:total,hudTimer:0,mapId:selectedMap,towerMode,towerLevel:level,towerTotalFloors:totalFloors,towerDifficulty,towerBossId:resolvedBossId,trainingMode:battleMode==='training',readyTimer:2.7,readyStage:''};
+    game={fighters,projectiles:[],particles:[],time:0,last:0,paused:false,ended:false,groundY:logicalH*.77,platforms:makePlatforms(),feed:[],shake:0,matchCount:total,hudTimer:0,mapId:selectedMap,towerMode,towerLevel:level,towerTotalFloors:totalFloors,towerDifficulty,towerBossId:resolvedBossId,towerBosses:towerRunBosses.slice(),trainingMode:battleMode==='training',readyTimer:2.7,readyStage:''};
     if(towerMode){
       const boss=game.fighters[1];
       boss.isBoss=true;boss.label=`CHEFE ${level}/${totalFloors}`;boss.fighterName=`${FIGHTERS[boss.fighterId].name} · CHEFE`;
-      boss.stocks=2;boss.w=126;boss.h=158;boss.bossSpeedMultiplier=tier.speed;boss.bossKnockbackResistance=tier.resistance;boss.bossDamageMultiplier=tier.damage;
+      boss.stocks=2;boss.w=boss.fighterId==='havocthorn'?158:142;boss.h=boss.fighterId==='havocthorn'?184:170;boss.bossTraits=true;boss.bossSpeedMultiplier=tier.speed;boss.bossKnockbackResistance=tier.resistance;boss.bossDamageMultiplier=tier.damage*(boss.fighterId==='havocthorn'?1.04:1);
     }
     const spawnSets={1:[.5],2:[.26,.74],3:[.18,.5,.82],4:[.16,.39,.61,.84]};
     const spawnX=spawnSets[total]||spawnSets[4];
@@ -1410,7 +1596,7 @@
     $('#pauseBtn').textContent='Ⅱ PAUSAR';
     setHumanCount(fighterCount);
     $('#matchInfo').textContent = towerMode ? `TORRE ${tier.label} • CHEFE ${level}/${totalFloors} • ${MAPS[selectedMap].name.toUpperCase()}` : battleMode==='training' ? `CAMPO DE TREINAMENTO • ${MAPS[selectedMap].name.toUpperCase()}` : `${battleMode==='teams'?'2V2':'VS'} • ${BOT_DIFFICULTIES[botDifficulty].label} • ${MAPS[selectedMap].name.toUpperCase()}`;
-    const fireLabels={wubbox:'NOTA MUSICAL',gamer:'BOLA SOMBRIA',davi:'NOVELO',blu:'RAJADA DE VENTO',beterraba:'TRÊS BALAS',migton:'BOLA DE FOGO'};
+    const fireLabels={wubbox:'NOTA MUSICAL',gamer:'BOLA SOMBRIA',davi:'NOVELO',blu:'RAJADA DE VENTO',beterraba:'TRÊS BALAS',migton:'BOLA DE FOGO',allinone:'ÁGUA',bombasticus:'BOMBA',havocthorn:'ENERGIA'};
     $('#fireButtonLabel').textContent=fireLabels[selectedFighterId]||'PROJÉTIL';
     $('#punchButton').textContent=selectedFighterId==='davi'?'GARRAS':selectedFighterId==='beterraba'?'SOCO':'SOCO';
     $('#controlsHint').textContent=`PC: A / D mover · ESPAÇO pular · ${keyLabel(keyMap[0].punch)} soco · ${keyLabel(keyMap[0].fire)} projétil`;
@@ -1547,7 +1733,8 @@
     for(const t of game.fighters){
       if(t===p||!t.alive||t.respawn>0||t.invuln>0||(battleMode==='teams'&&t.team===p.team))continue;
       const dx=t.x-p.x,dy=(t.y-t.h/2)-(p.y-p.h/2);
-      if(Math.abs(dx)<reach&&Math.abs(dy)<vertical&&dx*p.facing>0){
+      const hurtbox=fighterHurtbox(t);
+      if(Math.abs(dx)<reach+hurtbox.halfW&&Math.abs(dy)<vertical+hurtbox.halfH*.3&&dx*p.facing>0){
         hit(t,p,damage,daviAir?9.1:8.4,daviAir?-7.1:-6.0);
       }
     }
@@ -1584,29 +1771,73 @@
         game.projectiles.push({type:'bullet',x,y,vx:p.facing*14.2,vy:spread*14.2,owner:p.id,life:2.05,r:8,damage:5.5});
       }
       spawnBurst(x,y,'#bb5b58',7);
+    }else if(p.fighterId==='allinone'){
+      p.fireCd=.72;
+      game.projectiles.push({type:'water',x,y,vx:p.facing*11.1,vy:-.25,owner:p.id,life:2.25,r:18,damage:8.5});
+      spawnBurst(x,y,'#8cdde8',11);
+    }else if(p.fighterId==='bombasticus'){
+      p.fireCd=1.08;
+      const rollY=p.onGround?p.y-10:game.groundY-10;
+      game.projectiles.push({type:'bomb',x:p.x+p.facing*38,y:rollY,vx:p.facing*10.2,vy:0,owner:p.id,life:3.0,r:22,damage:18,groundY:rollY,maxDistance:1180,traveled:0,rotation:0});
+      spawnBurst(x,rollY,'#d9b18a',10);
     }else{
       p.fireCd=.56;
       game.projectiles.push({type:'fireball',x,y,vx:p.facing*10.8,vy:-.7,owner:p.id,life:2.0,r:18,damage:10});
       spawnBurst(x,y,'#ffb34d',8);
     }
   }
-  function hit(target,attacker,damage,kx,ky){
+  function hit(target,attacker,damage,kx,ky,impactX=null){
     if(!target.alive||target.invuln>0)return;
-    if(attacker.isBoss)damage*=attacker.bossDamageMultiplier||1;
+    const attackerBoss=hasBossTraits(attacker),targetBoss=hasBossTraits(target);
+    if(attackerBoss){
+      const fighter=FIGHTERS[attacker.fighterId]||{};
+      damage*=attacker.bossDamageMultiplier||fighter.bossDamageMultiplier||1.18;
+    }
     target.damage=Math.min(999,target.damage+damage);
     const power=1+target.damage/115;
-    const dir=Math.sign(target.x-attacker.x)||attacker.facing;
+    const dir=Math.sign(target.x-(impactX==null?attacker.x:impactX))||attacker.facing;
     let knockX=kx,knockY=ky;
-    if(attacker.isBoss){knockX*=1.34;knockY*=1.34;}
-    if(target.isBoss){knockX*=target.bossKnockbackResistance||.58;knockY*=target.bossKnockbackResistance||.58;}
-    // Traço do Migton: 15% de chance de aumentar o knockback de qualquer golpe.
+    if(attackerBoss){knockX*=1.34;knockY*=1.34;}
+    if(targetBoss){
+      const fighter=FIGHTERS[target.fighterId]||{};
+      const resistance=target.bossKnockbackResistance??fighter.bossKnockbackResistance??.62;
+      knockX*=resistance;knockY*=resistance;
+    }
     const bonus=attacker.fighterId==='migton'&&Math.random()<.15;
     if(bonus){knockX*=1.42;knockY*=1.22;spawnBurst(target.x,target.y-42,'#ff9d55',17);}
-    target.vx=dir*knockX*power;target.vy=knockY*power;
-    target.onGround=false;target.hitStun=Math.max(target.hitStun,.16);target.lastHitBy=attacker.id;
+    // Chefes acumulam parte do impulso anterior: resistem ao empurrão, mas não ficam imóveis.
+    if(targetBoss){
+      target.vx=Math.max(-17,Math.min(17,(target.vx||0)*.68+dir*knockX*power*.88));
+      target.vy=Math.max(-21,Math.min(7,(target.vy||0)*.42+knockY*power*.82));
+    }else{
+      target.vx=dir*knockX*power;target.vy=knockY*power;
+    }
+    if(attacker.fighterId==='allinone')applySlow(target,1);
+    target.onGround=false;target.hitStun=Math.max(target.hitStun,targetBoss?.11:.16);target.lastHitBy=attacker.id;
     attacker.kills+=0;
-    spawnBurst(target.x,target.y-38,bonus?'#ffb35c':'#ffdf7a',12);
-    game.shake=Math.min(9,game.shake+(bonus?4.4:3.4));
+    spawnBurst(target.x,target.y-38,bonus?'#ffb35c':attacker.fighterId==='allinone'?'#8cdde8':'#ffdf7a',12);
+    game.shake=Math.min(12,game.shake+(bonus?4.4:targetBoss?4.2:3.4));
+  }
+  function explodeBomb(bomb){
+    if(!bomb||bomb.exploded)return;
+    bomb.exploded=true;bomb.life=0;
+    const owner=game.fighters[bomb.owner];
+    if(owner){
+      const radius=172;
+      for(const target of game.fighters){
+        if(!target.alive||target.respawn>0||target.id===bomb.owner||target.invuln>0||(battleMode==='teams'&&target.team===owner.team))continue;
+        const dx=target.x-bomb.x,dy=(target.y-target.h*.52)-bomb.y;
+        const distance=Math.hypot(dx,dy);
+        const reach=radius+(target.w||54)*.18;
+        if(distance<=reach){
+          const strength=Math.max(0,1-distance/reach);
+          const damage=bomb.damage*(.48+strength*.52);
+          hit(target,owner,damage,12.2+strength*5.2,-7.2-strength*2.8,bomb.x);
+        }
+      }
+    }
+    spawnBurst(bomb.x,bomb.y,'#ffd17a',34);spawnBurst(bomb.x,bomb.y,'#8d8c86',18);
+    game.shake=Math.max(game.shake,12);
   }
   function spawnBurst(x,y,color,count){
     for(let i=0;i<count&&game.particles.length<70;i++){const a=Math.random()*Math.PI*2,s=1+Math.random()*4;game.particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-1,life:.28+Math.random()*.35,max:.6,color,size:2+Math.random()*3});}
@@ -1619,16 +1850,19 @@
     const fs=Math.min(3,dt*60);
     const fighter=FIGHTERS[p.fighterId]||FIGHTERS.migton;
     const airControl=!p.onGround?(fighter.airControl||1):1;
-    if(dir!==0){p.vx+=dir*.78*airControl*fs;p.facing=dir>0?1:-1;}else p.vx*=Math.pow(p.onGround?.79:.988,fs);
-    const maxSpeed=6.5*(!p.onGround?(fighter.airControl||1):1);
+    const slowFactor=p.slow>0?(p.slowFactor||.56):1;
+    const bossMove=fighter.bossCharacter?.88:1;
+    if(dir!==0){p.vx+=dir*.78*airControl*slowFactor*bossMove*fs;p.facing=dir>0?1:-1;}else p.vx*=Math.pow(p.onGround?.79:.988,fs);
+    const maxSpeed=6.5*(!p.onGround?(fighter.airControl||1):1)*slowFactor*bossMove;
     p.vx=Math.max(-maxSpeed,Math.min(maxSpeed,p.vx));
     if(consumeControl(s,'jump'))jump(p);
     if(consumeControl(s,'punch'))punch(p);
     if(consumeControl(s,'fire'))shoot(p);
   }
   function updateBot(p,dt){
-    const bossRules={novato:'easy',medio:'medium',veterano:'hard',insano:'hard'};
-    const rules=BOT_DIFFICULTIES[p.isBoss?(bossRules[game.towerDifficulty]||'medium'):botDifficulty]||BOT_DIFFICULTIES.medium;
+    const bossRules={novato:'medium',medio:'medium',veterano:'hard',insano:'spicy'};
+    const difficultyKey=p.isBoss?(bossRules[game.towerDifficulty]||'medium'):botDifficulty;
+    const rules=BOT_DIFFICULTIES[difficultyKey]||BOT_DIFFICULTIES.medium;
     const fs=Math.min(3,dt*60);
     p.aiThink-=dt;
 
@@ -1661,13 +1895,13 @@
       // Pulos acontecem por necessidade, com uma pequena chance de erro natural.
       const elevatedTarget=dy<-60&&dist<rules.jumpRange;
       const occasionalJump=Math.random()<rules.randomJump;
-      const daviAirApproach=p.fighterId==='davi'&&dist<rules.jumpRange*1.35&&Math.random()<(botDifficulty==='easy'?.14:botDifficulty==='hard'?.38:.26);
+      const daviAirApproach=p.fighterId==='davi'&&dist<rules.jumpRange*1.35&&Math.random()<(difficultyKey==='easy'?.18:difficultyKey==='spicy'?.43:difficultyKey==='hard'?.38:.28);
       if(p.onGround&&p.aiJumpCd<=0&&(elevatedTarget||occasionalJump||daviAirApproach)){
         jump(p);p.aiJumpCd=1.0+Math.random()*.65+rules.reaction;
       }
 
       // Ataques dependem da dificuldade e da distância; não há acerto garantido.
-      const punchRange=(p.fighterId==='davi'&&!p.onGround?(fighter.airPunchReach||132):(fighter.punchReach||86))+(botDifficulty==='easy'?-10:botDifficulty==='hard'?8:0);
+      const punchRange=(p.fighterId==='davi'&&!p.onGround?(fighter.airPunchReach||132):(fighter.punchReach||86))+(difficultyKey==='easy'?-8:(difficultyKey==='hard'||difficultyKey==='spicy')?8:0);
       const punchHeight=p.fighterId==='davi'&&!p.onGround?(fighter.airPunchVertical||112):76;
       if(dist<punchRange&&Math.abs(dy)<punchHeight&&p.attackCd<=0&&Math.random()<rules.punchChance){
         punch(p);
@@ -1684,10 +1918,12 @@
     }
 
     // Aceleração e frenagem suaves, evitando os bots grudarem no jogador.
-    const bossFactor=p.isBoss?(p.bossSpeedMultiplier||.72):1;
-    if(p.aiMoveDir){p.vx+=p.aiMoveDir*rules.accel*bossFactor*fs;}
+    const fighter=FIGHTERS[p.fighterId]||{};
+    const slowFactor=p.slow>0?(p.slowFactor||.56):1;
+    const bossFactor=p.isBoss?(p.bossSpeedMultiplier||.9):(fighter.bossCharacter?(fighter.bossSpeedMultiplier||.88):1);
+    if(p.aiMoveDir){p.vx+=p.aiMoveDir*rules.accel*bossFactor*slowFactor*fs;}
     else{p.vx*=Math.pow(p.onGround?.78:.94,fs);}
-    const maxBotSpeed=rules.speed*bossFactor;
+    const maxBotSpeed=rules.speed*bossFactor*slowFactor;
     p.vx=Math.max(-maxBotSpeed,Math.min(maxBotSpeed,p.vx));
     p.aiJumpCd=Math.max(0,p.aiJumpCd-dt);
     const target=game.fighters[p.aiTarget];
@@ -1705,7 +1941,7 @@
       }
       return;
     }
-    p.attackCd=Math.max(0,p.attackCd-dt);p.fireCd=Math.max(0,p.fireCd-dt);p.attackTimer=Math.max(0,p.attackTimer-dt);p.launcherTimer=Math.max(0,p.launcherTimer-dt);p.hitStun=Math.max(0,p.hitStun-dt);p.paralyze=Math.max(0,(p.paralyze||0)-dt);p.invuln=Math.max(0,p.invuln-dt);
+    p.attackCd=Math.max(0,p.attackCd-dt);p.fireCd=Math.max(0,p.fireCd-dt);p.attackTimer=Math.max(0,p.attackTimer-dt);p.launcherTimer=Math.max(0,p.launcherTimer-dt);p.hitStun=Math.max(0,p.hitStun-dt);p.paralyze=Math.max(0,(p.paralyze||0)-dt);p.slow=Math.max(0,(p.slow||0)-dt);if(p.slow<=0)p.slowFactor=1;p.invuln=Math.max(0,p.invuln-dt);
     const frozen=p.paralyze>0;
     if(frozen){p.vx=0;p.vy=0;}
     else if(p.hitStun<=0){if(p.isHuman)updateHuman(p,dt);else updateBot(p,dt);}else p.vx*=.985;
@@ -1801,17 +2037,24 @@
         b.x+=b.vx*frameScale;b.y+=b.vy*frameScale;
         if(b.y>=b.bounceFloor&&b.vy>0&&b.bounces<b.maxBounces){
           b.y=b.bounceFloor;
-          b.vy=b.bounceVy; // impulso fixo mantém a mesma altura em todos os quiques.
+          b.vy=b.bounceVy;
           b.bounces++;
         }
+      }else if(b.type==='bomb'){
+        b.traveled=(b.traveled||0)+Math.abs(b.vx*frameScale);
+        b.x+=b.vx*frameScale;b.y=b.groundY;b.rotation=(b.rotation||0)+(b.vx<0?-1:1)*.34*frameScale;
+        // A bomba sempre detona ao alcançar a borda, em vez de desaparecer pelo filtro de projéteis.
+        if(b.traveled>=(b.maxDistance||1180)||b.life<=0||b.x<-24||b.x>logicalW+24){explodeBomb(b);continue;}
       }else{
         b.x+=b.vx*frameScale;b.y+=b.vy*frameScale;b.vy+=.05*frameScale;
       }
       for(const t of game.fighters){
         if(!t.alive||t.respawn>0||t.id===b.owner||t.invuln>0||(battleMode==='teams'&&t.team===game.fighters[b.owner]?.team)||(b.hitTargets&&b.hitTargets.includes(t.id)))continue;
-        const hitRadius=b.type==='bullet'?25:b.type==='wool'?36:b.type==='music'?32:34;
-        if(Math.hypot(t.x-b.x,(t.y-t.h/2)-b.y)<hitRadius){
-          const owner=game.fighters[b.owner];if(owner){hit(t,owner,b.damage,b.type==='music'?6.7:b.type==='shadow'?7.6:b.type==='wool'?8.2:b.type==='wind'?7.1:b.type==='bullet'?4.6:7.0,b.type==='music'?-4.6:b.type==='shadow'?-5.2:b.type==='wool'?-6.4:b.type==='wind'?-4.8:b.type==='bullet'?-2.2:-4.8);
+        const hitRadius=b.type==='bullet'?10:b.type==='wool'?19:b.type==='bomb'?20:b.type==='water'?18:b.type==='music'?15: b.r||18;
+        if(circleHitsFighter(b.x,b.y,hitRadius,t)){
+          if(b.type==='bomb'){explodeBomb(b);break;}
+          const owner=game.fighters[b.owner];if(owner){
+            hit(t,owner,b.damage,b.type==='music'?6.7:b.type==='shadow'?7.6:b.type==='wool'?8.2:b.type==='wind'?7.1:b.type==='bullet'?4.6:7.0,b.type==='music'?-4.6:b.type==='shadow'?-5.2:b.type==='wool'?-6.4:b.type==='wind'?-4.8:b.type==='bullet'?-2.2:-4.8);
             if(b.type==='shadow'&&Math.random()<(b.paralyzeChance||.15)){
               t.paralyze=1;t.hitStun=Math.max(t.hitStun,1);t.vx=0;t.vy=0;
               spawnBurst(t.x,t.y-t.h*.55,'#a987ff',22);
@@ -1827,7 +2070,7 @@
         }
       }
     }
-    game.projectiles=game.projectiles.filter(b=>b.life>0&&b.x>-50&&b.x<logicalW+50&&b.y<logicalH+100&&b.y>-100&&(b.type!=='wool'||(b.traveled||0)<(b.range||1120)));
+    game.projectiles=game.projectiles.filter(b=>b.life>0&&!b.exploded&&b.x>-50&&b.x<logicalW+50&&b.y<logicalH+100&&b.y>-100&&(b.type!=='wool'||(b.traveled||0)<(b.range||1120)));
   }
   function updateParticles(dt){
     const frameScale=Math.min(3,dt*60);
@@ -2011,12 +2254,12 @@
       ctx.shadowColor=fighterAccent;ctx.shadowBlur=0;
       // Mantém a proporção nativa do PNG: sprites 1:1 são desenhados como quadrados.
       // A altura visual permanece constante; a largura é calculada pelo aspecto real do arquivo.
-      const spriteH=p.isBoss?154:82;
+      const spriteH=p.isBoss?174:(hasBossTraits(p)?136:82);
       const spriteAspect=(img.naturalWidth>0&&img.naturalHeight>0)?img.naturalWidth/img.naturalHeight:1;
       const spriteW=spriteH*spriteAspect;
       ctx.drawImage(img,-spriteW/2,-spriteH/2-7,spriteW,spriteH);ctx.restore();
     }else{
-      ctx.save();ctx.translate(x,y);ctx.scale(p.facing<0?-1:1,1);if(p.isBoss)ctx.scale(1.85,1.85);
+      ctx.save();ctx.translate(x,y);ctx.scale(p.facing<0?-1:1,1);if(p.isBoss)ctx.scale(1.95,1.95);else if(hasBossTraits(p))ctx.scale(1.35,1.35);
       ctx.fillStyle=PLAYER_COLORS[p.id];roundedRect(-18,-31,36,48,10,ctx.fillStyle,'#fff');
       ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(0,-39,17,0,Math.PI*2);ctx.fill();
       ctx.fillStyle='#172044';ctx.fillRect(4,-43,5,4);ctx.restore();
@@ -2028,7 +2271,7 @@
     ctx.fillStyle=fighterAccent;ctx.fillText(p.label,p.x,p.y-p.h-11);
     ctx.globalAlpha=1;
   }
-  // Indicador visual do P1: o quadrado sempre usa o sprite normal, nunca o roll raro.
+  // Indicador visual do P1: respeita o quadrado raro sorteado ou forçado pelo código.
   function drawPlayerPointer(){
     if(!game)return;
     const p=game.fighters.find(f=>f.isHuman);
@@ -2045,7 +2288,7 @@
     ctx.shadowColor='rgba(5,10,30,.8)';ctx.shadowBlur=0;
     roundedRect(bx,by,size,size,9,'rgba(7,13,37,.96)','#ffe18b');
     ctx.shadowBlur=0;
-    const portrait=(images[p.fighterId]||images.migton).square;
+    const portrait=p.squareRare?(images[p.fighterId]||images.migton).rareSquare:(images[p.fighterId]||images.migton).square;
     if(portrait&&portrait.complete&&portrait.naturalWidth>0){
       ctx.save();ctx.beginPath();ctx.rect(bx+3,by+3,size-6,size-6);ctx.clip();ctx.drawImage(portrait,bx+3,by+3,size-6,size-6);ctx.restore();
     }else{
@@ -2067,19 +2310,23 @@
 
   function drawProjectiles(){
     for(const b of game.projectiles){
-      const music=b.type==='music', shadow=b.type==='shadow', wool=b.type==='wool', wind=b.type==='wind', bullet=b.type==='bullet';
+      const music=b.type==='music', shadow=b.type==='shadow', wool=b.type==='wool', wind=b.type==='wind', bullet=b.type==='bullet', water=b.type==='water', bomb=b.type==='bomb';
       const owner=game.fighters[b.owner];
       const img=images[owner?.fighterId||'migton']?.projectile;
       if(img&&img.complete&&img.naturalWidth>0){
-        ctx.save();ctx.translate(b.x,b.y);ctx.rotate(music?Math.max(-.12,Math.min(.12,b.vy*.035)):Math.atan2(b.vy,b.vx));
-        ctx.shadowColor=music?'#b69cff':shadow?'#9a68ff':wool?'#e7e9ee':wind?'#b5d8ef':bullet?'#d76a64':'#ff9c42';ctx.shadowBlur=shadow?13:music?5:wool?2:wind?4:bullet?1:3;
-        const size=music?36:shadow?48:wool?46:wind?42:bullet?18:44;ctx.drawImage(img,-size/2,-size/2,size,size);ctx.restore();
+        ctx.save();ctx.translate(b.x,b.y);ctx.rotate(bomb?(b.rotation||0):music?Math.max(-.12,Math.min(.12,b.vy*.035)):Math.atan2(b.vy,b.vx));
+        ctx.shadowColor=music?'#b69cff':shadow?'#9a68ff':wool?'#e7e9ee':wind?'#b5d8ef':bullet?'#d76a64':water?'#76d9ed':bomb?'#d9a86d':'#ff9c42';ctx.shadowBlur=shadow?13:music?5:wool?2:wind?4:bullet?1:water?6:bomb?5:3;
+        const size=music?36:shadow?48:wool?46:wind?42:bullet?18:water?42:bomb?48:44;ctx.drawImage(img,-size/2,-size/2,size,size);ctx.restore();
       }else if(music){
         ctx.save();ctx.fillStyle='#d5c5ff';ctx.font='bold 38px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor='#9b7cff';ctx.shadowBlur=12;ctx.fillText('♪',b.x,b.y);ctx.restore();
       }else if(shadow){
         const g=ctx.createRadialGradient(b.x-5,b.y-5,2,b.x,b.y,23);g.addColorStop(0,'#f4eaff');g.addColorStop(.28,'#ba8cff');g.addColorStop(.72,'#6024aa');g.addColorStop(1,'rgba(70,22,132,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,23,0,Math.PI*2);ctx.fill();
       }else if(wind){
         ctx.save();ctx.strokeStyle='#b7d9ed';ctx.lineWidth=4;ctx.beginPath();ctx.arc(b.x,b.y,15,game.time*3,game.time*3+Math.PI*1.55);ctx.arc(b.x+3,b.y-2,8,-game.time*4,-game.time*4+Math.PI*1.45);ctx.stroke();ctx.restore();
+      }else if(water){
+        ctx.save();const g=ctx.createRadialGradient(b.x-4,b.y-5,2,b.x,b.y,21);g.addColorStop(0,'#f2ffff');g.addColorStop(.42,'#8cdeeb');g.addColorStop(1,'rgba(55,151,190,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,21,0,Math.PI*2);ctx.fill();ctx.restore();
+      }else if(bomb){
+        ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.rotation||0);ctx.fillStyle='#333941';ctx.strokeStyle='#c8a57b';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,16,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#d9b68c';ctx.fillRect(-4,-18,8,5);ctx.strokeStyle='#f2d78a';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(1,-19);ctx.quadraticCurveTo(10,-28,15,-19);ctx.stroke();ctx.restore();
       }else if(bullet){
         ctx.save();ctx.fillStyle='#e9b4a5';ctx.strokeStyle='#6b2626';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(b.x,b.y,8,4,Math.atan2(b.vy,b.vx),0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore();
       }else if(wool){
@@ -2088,7 +2335,7 @@
       }else{
         const g=ctx.createRadialGradient(b.x,b.y,2,b.x,b.y,19);g.addColorStop(0,'#fff7c6');g.addColorStop(.35,'#ffd34e');g.addColorStop(1,'rgba(255,77,35,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,19,0,Math.PI*2);ctx.fill();
       }
-      ctx.globalAlpha=.28;ctx.strokeStyle=music?'#b9a6ff':shadow?'#a987ff':wool?'#d9dce2':wind?'#b5d8ef':bullet?'#d98782':'#ffbf69';ctx.lineWidth=shadow?6:music?3:wool?4:wind?4:bullet?2:5;ctx.beginPath();ctx.moveTo(b.x-b.vx*2,b.y-b.vy*2);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.globalAlpha=1;
+      ctx.globalAlpha=.28;ctx.strokeStyle=music?'#b9a6ff':shadow?'#a987ff':wool?'#d9dce2':wind?'#b5d8ef':bullet?'#d98782':water?'#8cdeeb':bomb?'#d9a86d':'#ffbf69';ctx.lineWidth=shadow?6:music?3:wool?4:wind?4:bullet?2:water?4:bomb?5:5;ctx.beginPath();ctx.moveTo(b.x-b.vx*2,b.y-b.vy*2);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.globalAlpha=1;
     }
   }
   function drawParticles(){for(const q of game.particles){ctx.globalAlpha=Math.max(0,q.life/q.max);ctx.fillStyle=q.color;ctx.beginPath();ctx.arc(q.x,q.y,q.size,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;}
@@ -2130,12 +2377,14 @@
     if(game.readyTimer<=0){$('#readyOverlay').classList.remove('show');$('#readyOverlay').setAttribute('aria-hidden','true');}
     return true;
   }
-  function towerProgressMarkup(completed,total){
-    const tier=TOWER_TIERS[game?.towerDifficulty||towerDifficulty]||TOWER_TIERS.novato;
+  function towerProgressMarkup(completed,total,runGame=null){
+    const tierKey=runGame?.towerDifficulty||game?.towerDifficulty||towerDifficulty;
+    const bossIds=runGame?.towerBosses||game?.towerBosses||getTowerBossSequence(tierKey);
     return `<div class="tower-progress">${Array.from({length:total},(_,i)=>{
-      const n=i+1,token=tier.order[i]||'?';
-      const label=n<=completed?'DERROTADO':token==='?'?'CHEFE SURPRESA':(FIGHTERS[token]?.name||'CHEFE');
-      return `<div class="tower-floor ${n<=completed?'cleared':n===completed+1?'current':''}"><span>${n}</span><small>${label}</small></div>`;
+      const n=i+1,id=bossIds[i]||'havocthorn',fighter=FIGHTERS[id]||FIGHTERS.havocthorn;
+      const label=n<=completed?'DERROTADO':fighter.name;
+      const image=firstSquarePath(id,forceRareSquares)||'';
+      return `<div class="tower-floor ${n<=completed?'cleared':n===completed+1?'current':''}"><span>${n}</span><img src="${image}" alt="${fighter.name}"><small>${label}</small></div>`;
     }).join('')}</div>`;
   }
   function showTowerClimb(runGame){
@@ -2152,8 +2401,8 @@
     setTimeout(()=>{
       if(game!==runGame)return;
       if(complete){
-        $('#overlayCard').innerHTML=`<div class="result-kicker">TORRE ${TOWER_TIERS[runGame.towerDifficulty].label} · ${total}/${total}</div><div class="tower-clear-mark">★</div><div class="result-title">TORRE CONQUISTADA</div><div class="result-sub">Você chegou ao topo e derrotou todos os ${total} chefes.</div>${towerProgressMarkup(total,total)}<div class="result-actions"><button class="primary-btn" id="towerReplayBtn">RECOMEÇAR TORRE</button><button class="secondary-btn" id="towerMenuBtn">MENU</button></div>`;
-        $('#towerReplayBtn').addEventListener('click',()=>{towerRunBosses=[];startMatch(map,{tower:true,level:1,continueRun:false});});
+        $('#overlayCard').innerHTML=`<div class="result-kicker">TORRE ${TOWER_TIERS[runGame.towerDifficulty].label} · ${total}/${total}</div><div class="tower-clear-mark">★</div><div class="result-title">TORRE CONQUISTADA</div><div class="result-sub">Você chegou ao topo e derrotou todos os ${total} chefes.</div>${towerProgressMarkup(total,total,runGame)}<div class="result-actions"><button class="primary-btn" id="towerReplayBtn">RECOMEÇAR TORRE</button><button class="secondary-btn" id="towerMenuBtn">MENU</button></div>`;
+        $('#towerReplayBtn').addEventListener('click',()=>{towerRunBosses=getTowerBossSequence(runGame.towerDifficulty);startMatch(map,{tower:true,level:1,continueRun:false});});
         $('#towerMenuBtn').addEventListener('click',quitToMenu);
       }else{
         startMatch(map,{tower:true,level:level+1,continueRun:true});
