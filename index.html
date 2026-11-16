@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#19283d" />
-<title>COMMUNIY CLASH v0.16</title>
+<title>COMMUNIY CLASH v0.17</title>
 <style>
   :root{--ink:#f7f8ff;--muted:#aeb8da;--cyan:#5de9ff;--blue:#5b79ff;--pink:#ff5c98;--gold:#ffd46b;--panel:rgba(18,25,58,.86)}
   *{box-sizing:border-box}
@@ -785,6 +785,56 @@
     .touch-right .touch-btn.fire{height:44px!important;}
   }
 
+
+  /* v0.17 — toque sempre visível em aparelhos com touchscreen, mesmo se o layout PC estiver salvo. */
+  body.touch-capable #touchControls,
+  body.touch-capable.layout-pc #touchControls,
+  body.touch-capable.layout-mobile #touchControls{display:flex!important;visibility:visible!important;opacity:1!important;}
+  body.touch-capable #touchControls .touch-left,
+  body.touch-capable #touchControls .touch-right{pointer-events:auto!important;}
+  /* Torre de seleção: quatro escadarias independentes, com andares aleatórios marcados por ?. */
+  .tower-select-screen{align-items:center;justify-content:center;padding:clamp(10px,2vh,22px);}
+  .tower-select-wrap{width:min(1120px,96vw);max-height:96dvh;display:flex;flex-direction:column;gap:14px;min-height:0;}
+  .tower-select-intro{margin:0;color:#bdcadd;font-size:clamp(11px,1.2vw,14px);}
+  .tower-select-intro b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:5px;background:#d2bd91;color:#26384d;}
+  .tower-tier-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-height:0;}
+  .tower-tier-card{min-width:0;text-align:left;padding:clamp(12px,2vw,20px);border-radius:12px;background:#243a53;border:1px solid #59718c;color:#edf3fa;box-shadow:0 5px 0 #172a40;display:flex;flex-direction:column;gap:10px;transition:transform .14s,background .14s,border-color .14s;}
+  .tower-tier-card:hover{transform:translateY(-2px);background:#2e4966;border-color:#9bb4cf;}
+  .tower-tier-card:active{transform:translateY(2px);box-shadow:none;}
+  .tower-tier-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .tower-tier-top strong{font-size:clamp(17px,2.2vw,25px);letter-spacing:.08em;}
+  .tower-tier-top span{font-size:9px;color:#c0cede;letter-spacing:.12em;font-weight:900;}
+  .tower-mini-ladder{display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-height:30px;}
+  .tower-mini-floor{width:29px;height:24px;display:grid;place-items:center;background:#526e8d;border:1px solid #9aafc5;border-radius:4px;color:#fff;font-size:9px;font-weight:1000;}
+  .tower-mini-floor.random{background:#d2bd91;border-color:#eee0ba;color:#2a3a4e;font-size:15px;}
+  .tower-tier-card p{margin:0;color:#c0cede;font-size:11px;line-height:1.4;}
+  .tower-tier-card>small{margin-top:auto;color:#d2bd91;font-size:9px;letter-spacing:.14em;font-weight:1000;}
+  .tower-climb-scene{min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;overflow:hidden;}
+  .tower-climb-ladder{height:145px;width:112px;position:relative;border-left:8px solid #b8c5d2;border-right:8px solid #b8c5d2;border-radius:5px;background:repeating-linear-gradient(to bottom,transparent 0 17px,#8ba1b8 17px 22px,transparent 22px 34px);}
+  .tower-climber{position:absolute;left:50%;bottom:5px;width:43px;height:43px;transform:translateX(-50%);animation:towerClimbUp 2.05s cubic-bezier(.42,0,.4,1) forwards;z-index:2;}
+  .tower-climber img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;border-radius:6px;border:2px solid #e2d5b5;background:#1a2f47;}
+  .tower-climb-label{font-size:12px;font-weight:1000;letter-spacing:.17em;color:#d2bd91;text-align:center;animation:climbPulse .7s ease-in-out infinite alternate;}
+  @keyframes towerClimbUp{0%{bottom:5px;transform:translate(-50%,0) rotate(-4deg)}20%{transform:translate(-50%,-20px) rotate(4deg)}45%{transform:translate(-50%,-55px) rotate(-3deg)}70%{transform:translate(-50%,-92px) rotate(4deg)}100%{bottom:95px;transform:translate(-50%,-30px) rotate(0deg)}}
+  @keyframes climbPulse{from{opacity:.62}to{opacity:1}}
+  .tower-climb-steps{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;max-width:300px;}
+  .tower-climb-steps span{width:20px;height:7px;border-radius:2px;background:#405b78;}
+  .tower-climb-steps span.done{background:#d2bd91;}
+  @media (max-width:760px){
+    .tower-select-wrap{width:98vw;gap:8px;}
+    .tower-tier-grid{gap:7px;}
+    .tower-tier-card{padding:9px;gap:6px;border-radius:8px;}
+    .tower-tier-card p{font-size:9px;}
+    .tower-mini-floor{width:22px;height:19px;font-size:8px;}
+    .tower-tier-top strong{font-size:15px;}
+  }
+  @media (max-height:500px) and (orientation:landscape){
+    .tower-select-wrap{height:96dvh;gap:5px;}
+    .tower-select-intro{font-size:9px;}
+    .tower-tier-grid{flex:1;}
+    .tower-tier-card{padding:7px 10px;gap:4px;}
+    .tower-tier-card p{font-size:8px;}
+    .tower-mini-floor{height:17px;width:20px;}
+  }
 </style>
 </head>
 <body>
@@ -809,7 +859,7 @@
       <div class="brand"><div class="brand-mark">C</div><div class="brand-name">COMMUNIY <span>CLASH</span></div></div>
       <div class="hero-emblem"><div class="hero-ring"></div><div class="hero-letter">C!</div></div>
       <div class="hero-subtitle">Escolha seu lutador e entre na disputa</div>
-      <div class="home-version">VERSÃO 0.16 · 6 LUTADORES</div>
+      <div class="home-version">VERSÃO 0.17 · 6 LUTADORES</div>
     </main>
 
     <aside class="home-side home-side-right">
@@ -836,6 +886,22 @@
         </div>
         <div class="keybind-footer"><span id="keybindStatus">Padrão inspirado no esquema B do Brawlhalla.</span><button type="button" id="resetKeybindsBtn" class="keybind-reset">RESTAURAR</button></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="towerSelectScreen" class="screen tower-select-screen">
+  <div class="tower-select-wrap">
+    <div class="screen-heading">
+      <div><div class="eyebrow">Escadaria de desafios</div><h1>Escolha sua <span>torre</span></h1></div>
+      <button class="back-btn" id="backTowerMainBtn" type="button">← VOLTAR</button>
+    </div>
+    <p class="tower-select-intro">Cada torre tem uma sequência própria. Os andares com <b>?</b> sorteiam um chefe quando a subida começar.</p>
+    <div class="tower-tier-grid" id="towerTierGrid">
+      <button class="tower-tier-card" data-tier="novato" type="button"></button>
+      <button class="tower-tier-card" data-tier="medio" type="button"></button>
+      <button class="tower-tier-card" data-tier="veterano" type="button"></button>
+      <button class="tower-tier-card" data-tier="insano" type="button"></button>
     </div>
   </div>
 </section>
@@ -945,7 +1011,7 @@
   document.addEventListener('fullscreenchange',updateOrientationGate);
   if(screen.orientation&&screen.orientation.addEventListener)screen.orientation.addEventListener('change',updateOrientationGate);
   updateOrientationGate();
-  const screens = {main:$('#mainScreen'), select:$('#selectScreen'), maps:$('#mapScreen'), game:$('#gameScreen')};
+  const screens = {main:$('#mainScreen'), tower:$('#towerSelectScreen'), select:$('#selectScreen'), maps:$('#mapScreen'), game:$('#gameScreen')};
   // Lutadores disponíveis. Gamer aceita .png e tenta .pnf como extensão alternativa.
   const FIGHTERS = {
     migton:{
@@ -985,7 +1051,12 @@
       square:['square/beterraba.png','squares/beterraba.png'], rare:['square/beterraba_rare.png','squares/beterraba_rare.png'], jumpPower:13.2, projectileType:'bullet', punchReach:88, punchCooldown:.39, fireRange:700
     }
   };
-  const TOWER_BOSSES=['wubbox','gamer','davi','blu','beterraba','migton'];
+  const TOWER_TIERS = {
+    novato:{label:'NOVATO',count:3,bot:'easy',speed:.60,resistance:.48,damage:1.00,order:['migton','?','wubbox'],description:'Uma primeira subida, com três chefes e mais espaço para aprender.'},
+    medio:{label:'MÉDIO',count:5,bot:'medium',speed:.64,resistance:.41,damage:1.10,order:['wubbox','?','gamer','?','blu'],description:'Cinco confrontos. Alguns andares escondem surpresas.'},
+    veterano:{label:'VETERANO',count:7,bot:'hard',speed:.68,resistance:.34,damage:1.20,order:['davi','?','gamer','blu','?','beterraba','migton'],description:'Sete chefes, menos margem para errar e mais resistência.'},
+    insano:{label:'INSANO',count:10,bot:'hard',speed:.72,resistance:.28,damage:1.32,order:['gamer','?','blu','?','wubbox','beterraba','?','davi','?','migton'],description:'Dez andares. Chefes agressivos e encontros imprevisíveis.'}
+  };
   function spritePaths(fighterId,key){
     const src=FIGHTERS[fighterId]?.assets?.[key];
     if(!src)return [];
@@ -1036,6 +1107,8 @@
   let savedFfaCount = 2;
   let battleMode = 'ffa';
   let towerLevel = 1;
+  let towerDifficulty = 'novato';
+  let towerRunBosses = [];
   let botDifficulty = 'medium';
   let layoutMode = 'auto';
   let game = null;
@@ -1061,8 +1134,10 @@
   setBotDifficulty(botDifficulty);
 
   function showScreen(which){
+    if(!screens[which])return;
     Object.values(screens).forEach(s=>s.classList.remove('active'));
     screens[which].classList.add('active');
+    if(which==='game'&&isTouchDevice())document.body.classList.add('touch-capable');
   }
   function resolvedLayout(){
     if(layoutMode==='mobile'||layoutMode==='pc')return layoutMode;
@@ -1079,6 +1154,8 @@
   }
   try{const saved=localStorage.getItem('communityClashLayout');if(['auto','mobile','pc'].includes(saved))layoutMode=saved;}catch(e){}
   applyLayoutMode(layoutMode);
+  document.body.classList.toggle('touch-capable',isTouchDevice());
+  if(isTouchDevice())document.body.classList.add('touch-capable');
   $('#layoutOptions').addEventListener('click',e=>{const b=e.target.closest('[data-layout]');if(b)applyLayoutMode(b.dataset.layout);});
   window.addEventListener('resize',()=>{if(layoutMode==='auto')applyLayoutMode('auto');});
 
@@ -1134,9 +1211,9 @@
     const training=battleMode==='training';
     const playerRow=$('.players-row'),modeRow=$('.mode-row'),difficultyRow=$('.difficulty-row'),difficultyNote=$('#difficultyHelp');
     if(playerRow)playerRow.style.display=(battleMode==='tower'||training)?'none':'flex';
-    if(modeRow)modeRow.style.display=training?'none':'flex';
-    if(difficultyRow)difficultyRow.style.display=training?'none':'flex';
-    if(difficultyNote) difficultyNote.style.display=training?'none':'block';
+    if(modeRow)modeRow.style.display=(training||battleMode==='tower')?'none':'flex';
+    if(difficultyRow)difficultyRow.style.display=(training||battleMode==='tower')?'none':'flex';
+    if(difficultyNote) difficultyNote.style.display=(training||battleMode==='tower')?'none':'block';
     $$('.count-btn').forEach(b=>{
       b.classList.toggle('active',Number(b.dataset.count)===fighterCount);
       b.disabled=battleMode!=='ffa';
@@ -1148,8 +1225,9 @@
       $('#playerHelp').textContent='2v2: você e um bot contra uma dupla de bots.';
       $('#matchInfo').textContent='BATALHA EM EQUIPES • 2V2';
     }else if(battleMode==='tower'){
-      $('#playerHelp').textContent='Uma luta por andar. Derrote seis chefes, cada um com duas vidas.';
-      $('#matchInfo').textContent='TORRE DO CHEFÃO • 6 ANDARES';
+      const tier=TOWER_TIERS[towerDifficulty]||TOWER_TIERS.novato;
+      $('#playerHelp').textContent=`${tier.label}: ${tier.count} chefes, dois estoques por chefe. Os ? são sorteados.`;
+      $('#matchInfo').textContent=`TORRE ${tier.label} • ${tier.count} ANDARES`;
     }else{
       const bots=fighterCount-1;
       $('#playerHelp').textContent=`1 jogador + ${bots} bot${bots===1?'':'s'} na arena.`;
@@ -1173,14 +1251,28 @@
     $('#selectStatus').textContent='Toque em um lutador disponível para confirmar';
     setBattleMode(mode);showScreen('select');
   }
+  function buildTowerSelection(){
+    const grid=$('#towerTierGrid');grid.innerHTML='';
+    for(const [key,tier] of Object.entries(TOWER_TIERS)){
+      const card=document.createElement('button');card.type='button';card.className='tower-tier-card';card.dataset.tier=key;
+      const floors=tier.order.map((id,i)=>`<span class="tower-mini-floor ${id==='?'?'random':''}" title="${id==='?'?'Chefe aleatório':(FIGHTERS[id]?.name||id)}">${id==='?'?'?':String(i+1).padStart(2,'0')}</span>`).join('');
+      card.innerHTML=`<div class="tower-tier-top"><strong>${tier.label}</strong><span>${tier.count} ANDARES</span></div><div class="tower-mini-ladder">${floors}</div><p>${tier.description}</p><small>ESCOLHER TORRE →</small>`;
+      grid.appendChild(card);
+    }
+  }
   $('#modeVsBtn').addEventListener('click',()=>openCharacterSelect('ffa'));
   $('#trainingModeBtn').addEventListener('click',()=>openCharacterSelect('training'));
   $('#mode2v2Btn').addEventListener('click',()=>openCharacterSelect('teams'));
-  $('#towerModeBtn').addEventListener('click',()=>{towerLevel=1;openCharacterSelect('tower');});
+  $('#towerModeBtn').addEventListener('click',()=>{buildTowerSelection();showScreen('tower');});
+  $('#backTowerMainBtn').addEventListener('click',()=>showScreen('main'));
+  $('#towerTierGrid').addEventListener('click',e=>{
+    const card=e.target.closest('[data-tier]');if(!card||!TOWER_TIERS[card.dataset.tier])return;
+    towerDifficulty=card.dataset.tier;towerLevel=1;towerRunBosses=[];openCharacterSelect('tower');
+  });
   $('#settingsMenuBtn').addEventListener('click',()=>{const m=$('#settingsModal');m.classList.add('show');m.setAttribute('aria-hidden','false');});
   $('#settingsCloseBtn').addEventListener('click',()=>{const m=$('#settingsModal');m.classList.remove('show');m.setAttribute('aria-hidden','true');});
   $('#settingsModal').addEventListener('click',e=>{if(e.target.id==='settingsModal')$('#settingsCloseBtn').click();});
-  $('#backMainBtn').addEventListener('click',()=>showScreen('main'));
+  $('#backMainBtn').addEventListener('click',()=>showScreen(battleMode==='tower'?'tower':'main'));
   $('#backSelectBtn').addEventListener('click',()=>showScreen('select'));
   $('#mapBackToSelectBtn').addEventListener('click',()=>showScreen('select'));
   $('#startMatchBtn').addEventListener('click',()=>{if(!confirmed)return;showScreen('maps');});
@@ -1275,21 +1367,32 @@
   function startMatch(mapId=selectedMap||'midnight',options={}){
     selectedMap=MAPS[mapId]?mapId:'midnight';
     const towerMode=options.tower===true||battleMode==='tower';
-    const level=Math.max(1,Math.min(6,Number(options.level)||towerLevel||1));
-    if(towerMode)towerLevel=level;
+    if(options.towerDifficulty&&TOWER_TIERS[options.towerDifficulty])towerDifficulty=options.towerDifficulty;
+    const tier=towerMode?(TOWER_TIERS[towerDifficulty]||TOWER_TIERS.novato):null;
+    const totalFloors=tier?tier.count:0;
+    const level=towerMode?Math.max(1,Math.min(totalFloors,Number(options.level)||towerLevel||1)):1;
+    if(towerMode){
+      towerLevel=level;
+      if(level===1&&!options.continueRun){
+        const ids=Object.keys(FIGHTERS);
+        towerRunBosses=tier.order.map(id=>id==='?'?ids.filter(x=>x!==selectedFighterId)[Math.floor(Math.random()*Math.max(1,ids.filter(x=>x!==selectedFighterId).length))]:id);
+      }
+      if(!towerRunBosses.length)towerRunBosses=tier.order.map(id=>id==='?'?Object.keys(FIGHTERS)[Math.floor(Math.random()*Object.keys(FIGHTERS).length)]:id);
+    }
     backgroundCacheHeight=0;stageCacheKey='';
     cancelAnimationFrame(raf);
     const total=towerMode?2:(battleMode==='teams'?4:battleMode==='training'?1:fighterCount);
     const fighters=[];
+    const resolvedBossId=towerMode?(towerRunBosses[level-1]||Object.keys(FIGHTERS)[Math.floor(Math.random()*Object.keys(FIGHTERS).length)]):null;
     for(let i=0;i<total;i++){
-      const forcedBoss=towerMode&&i===1?TOWER_BOSSES[level-1]:null;
+      const forcedBoss=towerMode&&i===1?resolvedBossId:null;
       fighters.push(makeFighter(i,i===0,i,forcedBoss));
     }
-    game={fighters,projectiles:[],particles:[],time:0,last:0,paused:false,ended:false,groundY:logicalH*.77,platforms:makePlatforms(),feed:[],shake:0,matchCount:total,hudTimer:0,mapId:selectedMap,towerMode,towerLevel:level,trainingMode:battleMode==='training',readyTimer:2.7,readyStage:''};
+    game={fighters,projectiles:[],particles:[],time:0,last:0,paused:false,ended:false,groundY:logicalH*.77,platforms:makePlatforms(),feed:[],shake:0,matchCount:total,hudTimer:0,mapId:selectedMap,towerMode,towerLevel:level,towerTotalFloors:totalFloors,towerDifficulty,towerBossId:resolvedBossId,trainingMode:battleMode==='training',readyTimer:2.7,readyStage:''};
     if(towerMode){
       const boss=game.fighters[1];
-      boss.isBoss=true;boss.label=`CHEFE ${level}/6`;boss.fighterName=`${FIGHTERS[boss.fighterId].name} · CHEFE`;
-      boss.stocks=2;boss.w=88;boss.h=110;boss.bossSpeedMultiplier=.72;boss.bossKnockbackResistance=.58;
+      boss.isBoss=true;boss.label=`CHEFE ${level}/${totalFloors}`;boss.fighterName=`${FIGHTERS[boss.fighterId].name} · CHEFE`;
+      boss.stocks=2;boss.w=126;boss.h=158;boss.bossSpeedMultiplier=tier.speed;boss.bossKnockbackResistance=tier.resistance;boss.bossDamageMultiplier=tier.damage;
     }
     const spawnSets={1:[.5],2:[.26,.74],3:[.18,.5,.82],4:[.16,.39,.61,.84]};
     const spawnX=spawnSets[total]||spawnSets[4];
@@ -1306,7 +1409,7 @@
     $('#gameOverlay').classList.remove('show');
     $('#pauseBtn').textContent='Ⅱ PAUSAR';
     setHumanCount(fighterCount);
-    $('#matchInfo').textContent = towerMode ? `TORRE DO CHEFÃO • CHEFE ${level}/6 • ${MAPS[selectedMap].name.toUpperCase()}` : battleMode==='training' ? `CAMPO DE TREINAMENTO • ${MAPS[selectedMap].name.toUpperCase()}` : `${battleMode==='teams'?'2V2':'VS'} • ${BOT_DIFFICULTIES[botDifficulty].label} • ${MAPS[selectedMap].name.toUpperCase()}`;
+    $('#matchInfo').textContent = towerMode ? `TORRE ${tier.label} • CHEFE ${level}/${totalFloors} • ${MAPS[selectedMap].name.toUpperCase()}` : battleMode==='training' ? `CAMPO DE TREINAMENTO • ${MAPS[selectedMap].name.toUpperCase()}` : `${battleMode==='teams'?'2V2':'VS'} • ${BOT_DIFFICULTIES[botDifficulty].label} • ${MAPS[selectedMap].name.toUpperCase()}`;
     const fireLabels={wubbox:'NOTA MUSICAL',gamer:'BOLA SOMBRIA',davi:'NOVELO',blu:'RAJADA DE VENTO',beterraba:'TRÊS BALAS',migton:'BOLA DE FOGO'};
     $('#fireButtonLabel').textContent=fireLabels[selectedFighterId]||'PROJÉTIL';
     $('#punchButton').textContent=selectedFighterId==='davi'?'GARRAS':selectedFighterId==='beterraba'?'SOCO':'SOCO';
@@ -1330,6 +1433,16 @@
   const keys=new Set();
   const pressed=new Set();
   const KEY_ACTIONS=['left','right','jump','punch','fire'];
+  // Input helpers: keep held movement separate from one-shot actions.
+  function hasControl(slot,action){
+    const code=keyMap[slot]?.[action];
+    return !!code&&keys.has(code);
+  }
+  function consumeControl(slot,action){
+    const code=keyMap[slot]?.[action];
+    if(!code||!pressed.has(code))return false;
+    pressed.delete(code);return true;
+  }
   let rebindingAction=null;
   function keyLabel(code){
     if(!code)return '—';
@@ -1479,6 +1592,7 @@
   }
   function hit(target,attacker,damage,kx,ky){
     if(!target.alive||target.invuln>0)return;
+    if(attacker.isBoss)damage*=attacker.bossDamageMultiplier||1;
     target.damage=Math.min(999,target.damage+damage);
     const power=1+target.damage/115;
     const dir=Math.sign(target.x-attacker.x)||attacker.facing;
@@ -1513,7 +1627,8 @@
     if(consumeControl(s,'fire'))shoot(p);
   }
   function updateBot(p,dt){
-    const rules=BOT_DIFFICULTIES[botDifficulty]||BOT_DIFFICULTIES.medium;
+    const bossRules={novato:'easy',medio:'medium',veterano:'hard',insano:'hard'};
+    const rules=BOT_DIFFICULTIES[p.isBoss?(bossRules[game.towerDifficulty]||'medium'):botDifficulty]||BOT_DIFFICULTIES.medium;
     const fs=Math.min(3,dt*60);
     p.aiThink-=dt;
 
@@ -1887,7 +2002,7 @@
     const img=spriteFor(p);const x=p.x,y=p.y-p.h/2;
     // Foot ring. In 2v2, the color identifies the team rather than the individual player.
     const fighterAccent=battleMode==='teams'?TEAM_COLORS[p.team]:PLAYER_COLORS[p.id];
-    ctx.globalAlpha*=.7;ctx.fillStyle=fighterAccent;ctx.beginPath();ctx.ellipse(p.x,p.y+3,27,7,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    ctx.globalAlpha*=.7;ctx.fillStyle=fighterAccent;ctx.beginPath();ctx.ellipse(p.x,p.y+3,p.isBoss?42:27,p.isBoss?11:7,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
     if(battleMode==='teams'){
       const ballY=p.y+10;ctx.save();ctx.fillStyle=fighterAccent;ctx.strokeStyle='rgba(255,255,255,.9)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,ballY,8,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='rgba(255,255,255,.55)';ctx.beginPath();ctx.arc(p.x-2.5,ballY-2.5,2.2,0,Math.PI*2);ctx.fill();ctx.restore();
     }
@@ -1896,12 +2011,12 @@
       ctx.shadowColor=fighterAccent;ctx.shadowBlur=0;
       // Mantém a proporção nativa do PNG: sprites 1:1 são desenhados como quadrados.
       // A altura visual permanece constante; a largura é calculada pelo aspecto real do arquivo.
-      const spriteH=p.isBoss?118:82;
+      const spriteH=p.isBoss?154:82;
       const spriteAspect=(img.naturalWidth>0&&img.naturalHeight>0)?img.naturalWidth/img.naturalHeight:1;
       const spriteW=spriteH*spriteAspect;
       ctx.drawImage(img,-spriteW/2,-spriteH/2-7,spriteW,spriteH);ctx.restore();
     }else{
-      ctx.save();ctx.translate(x,y);ctx.scale(p.facing<0?-1:1,1);if(p.isBoss)ctx.scale(1.55,1.55);
+      ctx.save();ctx.translate(x,y);ctx.scale(p.facing<0?-1:1,1);if(p.isBoss)ctx.scale(1.85,1.85);
       ctx.fillStyle=PLAYER_COLORS[p.id];roundedRect(-18,-31,36,48,10,ctx.fillStyle,'#fff');
       ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(0,-39,17,0,Math.PI*2);ctx.fill();
       ctx.fillStyle='#172044';ctx.fillRect(4,-43,5,4);ctx.restore();
@@ -2015,17 +2130,40 @@
     if(game.readyTimer<=0){$('#readyOverlay').classList.remove('show');$('#readyOverlay').setAttribute('aria-hidden','true');}
     return true;
   }
-  function towerProgressMarkup(completed){
-    return `<div class="tower-progress">${Array.from({length:6},(_,i)=>{const n=i+1;return `<div class="tower-floor ${n<=completed?'cleared':n===completed+1?'current':''}"><span>${n}</span><small>${n<=completed?'DERROTADO':n===completed+1?'PRÓXIMO':'BLOQUEADO'}</small></div>`;}).join('')}</div>`;
+  function towerProgressMarkup(completed,total){
+    const tier=TOWER_TIERS[game?.towerDifficulty||towerDifficulty]||TOWER_TIERS.novato;
+    return `<div class="tower-progress">${Array.from({length:total},(_,i)=>{
+      const n=i+1,token=tier.order[i]||'?';
+      const label=n<=completed?'DERROTADO':token==='?'?'CHEFE SURPRESA':(FIGHTERS[token]?.name||'CHEFE');
+      return `<div class="tower-floor ${n<=completed?'cleared':n===completed+1?'current':''}"><span>${n}</span><small>${label}</small></div>`;
+    }).join('')}</div>`;
+  }
+  function showTowerClimb(runGame){
+    if(!runGame||game!==runGame)return;
+    const level=runGame.towerLevel,total=runGame.towerTotalFloors,map=runGame.mapId,complete=level>=total;
+    const portrait=selectedSquareAsset||firstSquarePath(selectedFighterId,false)||'';
+    const steps=Array.from({length:total},(_,i)=>`<span class="${i<level?'done':''}"></span>`).join('');
+    $('#overlayCard').innerHTML=`<div class="result-kicker">${complete?'ÚLTIMO ANDAR CONCLUÍDO':'CHEFE DERROTADO'} · ${level}/${total}</div>
+      <div class="tower-climb-scene"><div class="tower-climb-ladder"><div class="tower-climber">${portrait?`<img src="${portrait}" alt="P1 subindo a torre">`:'<b>P1</b>'}</div></div><div class="tower-climb-label">${complete?'SUBINDO AO TOPO':'SUBINDO PARA O PRÓXIMO ANDAR'}</div><div class="tower-climb-steps">${steps}</div></div>
+      <div class="result-sub">${complete?'Você venceu todos os chefes desta torre.':'A escadaria está levando você ao próximo confronto.'}</div>
+      <div class="result-actions"><button class="secondary-btn" id="towerExitDuringClimb">SAIR DA TORRE</button></div>`;
+    $('#gameOverlay').classList.add('show');
+    $('#towerExitDuringClimb').addEventListener('click',quitToMenu);
+    setTimeout(()=>{
+      if(game!==runGame)return;
+      if(complete){
+        $('#overlayCard').innerHTML=`<div class="result-kicker">TORRE ${TOWER_TIERS[runGame.towerDifficulty].label} · ${total}/${total}</div><div class="tower-clear-mark">★</div><div class="result-title">TORRE CONQUISTADA</div><div class="result-sub">Você chegou ao topo e derrotou todos os ${total} chefes.</div>${towerProgressMarkup(total,total)}<div class="result-actions"><button class="primary-btn" id="towerReplayBtn">RECOMEÇAR TORRE</button><button class="secondary-btn" id="towerMenuBtn">MENU</button></div>`;
+        $('#towerReplayBtn').addEventListener('click',()=>{towerRunBosses=[];startMatch(map,{tower:true,level:1,continueRun:false});});
+        $('#towerMenuBtn').addEventListener('click',quitToMenu);
+      }else{
+        startMatch(map,{tower:true,level:level+1,continueRun:true});
+      }
+    },2300);
   }
   function handleBossDefeat(){
     if(!game||!game.towerMode||game.ended)return;
     game.ended=true;
-    const level=game.towerLevel,complete=level>=6,map=game.mapId;
-    $('#overlayCard').innerHTML=`<div class="result-kicker">TORRE DO CHEFÃO · ANDAR ${level}/6</div><div class="tower-clear-mark">${complete?'★':'↑'}</div><div class="result-title">${complete?'TORRE CONQUISTADA':'CHEFE DERROTADO'}</div><div class="result-sub">${complete?'Você venceu os seis chefes e chegou ao topo.':`O chefe ${level} caiu. A escadaria sobe para o próximo combate.`}</div>${towerProgressMarkup(level)}<div class="result-actions"><button class="primary-btn" id="towerContinueBtn">${complete?'JOGAR A TORRE NOVAMENTE':`SUBIR PARA O ANDAR ${level+1}`}</button><button class="secondary-btn" id="towerMenuBtn">MENU</button></div>`;
-    $('#gameOverlay').classList.add('show');
-    $('#towerContinueBtn').addEventListener('click',()=>startMatch(map,{tower:true,level:complete?1:level+1}));
-    $('#towerMenuBtn').addEventListener('click',quitToMenu);
+    showTowerClimb(game);
   }
   function finishMatch(){
     if(game.ended)return;game.ended=true;
@@ -2035,9 +2173,9 @@
     const tower=game.towerMode,level=game.towerLevel;
     const title=tower?'TORRE INTERROMPIDA':(winner?(isHuman?'Vitória!':'Derrota!'):'Empate!');
     const subtitle=tower?'O chefe levou a melhor desta vez. Você pode tentar novamente este andar.':(winner?(battleMode==='teams'?`Equipe ${winner.team+1} venceu a batalha.`:`${winner.label} ficou por último na arena.`):'Ninguém sobreviveu à batalha.');
-    $('#overlayCard').innerHTML=`<div class="result-kicker">${tower?`TORRE DO CHEFÃO · ANDAR ${level}/6`:'Fim de partida'}</div><div class="result-title">${title}</div><div class="result-sub">${subtitle}</div><div class="result-actions"><button class="primary-btn" id="rematchBtn">${tower?'TENTAR ESTE ANDAR DE NOVO':'REVANCHE'}</button><button class="secondary-btn" id="resultMenuBtn">MENU</button></div>`;
+    $('#overlayCard').innerHTML=`<div class="result-kicker">${tower?`TORRE ${TOWER_TIERS[endedGame.towerDifficulty]?.label||'DO CHEFÃO'} · ANDAR ${level}/${endedGame.towerTotalFloors}`:'Fim de partida'}</div><div class="result-title">${title}</div><div class="result-sub">${subtitle}</div><div class="result-actions"><button class="primary-btn" id="rematchBtn">${tower?'TENTAR ESTE ANDAR DE NOVO':'REVANCHE'}</button><button class="secondary-btn" id="resultMenuBtn">MENU</button></div>`;
     $('#gameOverlay').classList.add('show');
-    $('#rematchBtn').addEventListener('click',()=>startMatch(endedGame.mapId,tower?{tower:true,level}:{}));
+    $('#rematchBtn').addEventListener('click',()=>startMatch(endedGame.mapId,tower?{tower:true,level,continueRun:true}:{}));
     $('#resultMenuBtn').addEventListener('click',quitToMenu);
   }
   function togglePause(){
