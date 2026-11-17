@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#19283d" />
-<title>COMMUNIY CLASH v0.18</title>
+<title>COMMUNIY CLASH v0.19</title>
 <style>
   :root{--ink:#f7f8ff;--muted:#aeb8da;--cyan:#5de9ff;--blue:#5b79ff;--pink:#ff5c98;--gold:#ffd46b;--panel:rgba(18,25,58,.86)}
   *{box-sizing:border-box}
@@ -792,6 +792,14 @@
   body.touch-capable.layout-mobile #touchControls{display:flex!important;visibility:visible!important;opacity:1!important;}
   body.touch-capable #touchControls .touch-left,
   body.touch-capable #touchControls .touch-right{pointer-events:auto!important;}
+  /* v0.19: botão de descida ocupa o espaço livre ao lado do projétil. */
+  .touch-right{grid-template-columns:repeat(2,84px)!important;grid-template-rows:repeat(2,64px)!important;}
+  .touch-right .touch-btn.drop{grid-column:1!important;grid-row:2!important;width:84px!important;height:64px!important;background:#607b98!important;color:#f4f7fa!important;border-color:#9bb2ca!important;}
+  .touch-right .touch-btn.fire{grid-column:2!important;grid-row:2!important;width:84px!important;height:64px!important;}
+  @media (orientation:landscape) and (max-height:520px){
+    .touch-right{grid-template-columns:repeat(2,76px)!important;grid-template-rows:repeat(2,56px)!important;}
+    .touch-right .touch-btn.drop,.touch-right .touch-btn.fire{width:76px!important;height:56px!important;}
+  }
   /* Torre de seleção: quatro escadarias independentes, com andares aleatórios marcados por ?. */
   .tower-select-screen{align-items:center;justify-content:center;padding:clamp(10px,2vh,22px);}
   .tower-select-wrap{width:min(1120px,96vw);max-height:96dvh;display:flex;flex-direction:column;gap:14px;min-height:0;}
@@ -904,7 +912,7 @@
       <div class="brand"><div class="brand-mark">C</div><div class="brand-name">COMMUNIY <span>CLASH</span></div></div>
       <div class="hero-emblem"><div class="hero-ring"></div><div class="hero-letter">C!</div></div>
       <div class="hero-subtitle">Escolha seu lutador e entre na disputa</div>
-      <div class="home-version">VERSÃO 0.18 · 8 LUTADORES + HAVOCTHORN</div>
+      <div class="home-version">VERSÃO 0.19 · 8 LUTADORES + HAVOCTHORN</div>
     </main>
 
     <aside class="home-side home-side-right">
@@ -928,6 +936,7 @@
           <span>Pular</span><button type="button" data-bind-action="jump">ESPAÇO</button>
           <span>Soco</span><button type="button" data-bind-action="punch">J</button>
           <span>Projétil</span><button type="button" data-bind-action="fire">K</button>
+          <span>Descer plataforma</span><button type="button" data-bind-action="down">S</button>
         </div>
         <div class="keybind-footer"><span id="keybindStatus">Padrão inspirado no esquema B do Brawlhalla.</span><button type="button" id="resetKeybindsBtn" class="keybind-reset">RESTAURAR</button></div>
       </div>
@@ -1028,7 +1037,7 @@
   <div class="controls-hint" id="controlsHint">PC: A / D mover · ESPAÇO pular · C soco · E bola de fogo</div>
   <div class="touch-controls" id="touchControls">
     <div><div class="touch-left"><div class="touch-directions"><button class="touch-btn" data-control="left" aria-label="Mover para esquerda">◀</button><button class="touch-btn" data-control="right" aria-label="Mover para direita">▶</button></div></div><div class="touch-caption">MOVIMENTO</div></div>
-    <div><div class="touch-right"><button id="punchButton" class="touch-btn action punch" data-control="punch">SOCO</button><button class="touch-btn action jump" data-control="jump">PULAR</button><button class="touch-btn action fire" data-control="fire"><span id="fireButtonLabel">PROJÉTIL</span></button></div><div class="touch-caption">ATAQUES</div></div>
+    <div><div class="touch-right"><button id="punchButton" class="touch-btn action punch" data-control="punch">SOCO</button><button class="touch-btn action jump" data-control="jump">PULAR</button><button class="touch-btn action drop" data-control="down" aria-label="Descer pela plataforma">BAIXO</button><button class="touch-btn action fire" data-control="fire"><span id="fireButtonLabel">PROJÉTIL</span></button></div><div class="touch-caption">ATAQUES</div></div>
   </div>
   <div id="readyOverlay" class="ready-overlay" aria-live="assertive" aria-hidden="true"><div class="ready-card"><span class="ready-kicker">PREPARE-SE</span><strong id="readyWord" class="ready-word">READY</strong><span class="ready-subtitle">COMMUNIY CLASH</span></div></div>
 </section>
@@ -1115,7 +1124,7 @@
     havocthorn:{
       id:'havocthorn', name:'HAVOCTHORN', title:'Havocthorn', role:'Chefe jogável',
       description:'Um chefe jogável: hitbox ampliada, resistência a knockback e ataques que empurram mais. É pesado, mas não imune a impactos.',
-      assets:{idle:'sprites/havocthorn_idle.png',right:'sprites/havocthorn_right.png',left:'sprites/havocthorn_left.png',punch:'sprites/havocthorn_punch.png',launcher:'sprites/havocthorn_launcher.png',jump:'sprites/havocthorn_jump.png',projectile:'projectiles/havocthorn.png'},
+      assets:{idle:'sprites/havoc_idle.png',right:'sprites/havoc_right.png',left:'sprites/havoc_left.png',punch:'sprites/havoc_punch.png',launcher:'sprites/havoc_launcher.png',jump:'sprites/havoc_jump.png',projectile:'projectiles/havocthorn.png'},
       square:['square/havocthorn.png'], rare:['square/havocthorn_rare.png'], jumpPower:12.8, projectileType:'havoc', punchReach:112, punchCooldown:.48, fireRange:760,
       bossCharacter:true,bossDamageMultiplier:1.18,bossKnockbackResistance:.62,bossSpeedMultiplier:.88
     }
@@ -1201,7 +1210,22 @@
   }
   function squarePaths(fighterId, rare=false){
     const f=FIGHTERS[fighterId]||FIGHTERS.migton;
-    return rare?[...(f.rare||[]),...(f.square||[])]:[...(f.square||[])];
+    const configured=rare?[...(f.rare||[]),...(f.square||[])]:[...(f.square||[])];
+    const candidates=[];
+    for(const original of configured){
+      if(!original)continue;
+      const names=[original];
+      // Compatibilidade de nomes: o retrato pode usar o prefixo havoc ou all_in_one.
+      if(fighterId==='havocthorn')names.push(original.replace(/havocthorn/g,'havoc'));
+      if(fighterId==='allinone')names.push(original.replace(/allinone/g,'all_in_one'));
+      // Testa os dois caminhos de pasta para cada nome, mantendo square/ como principal.
+      for(const name of names){
+        candidates.push(name);
+        if(name.startsWith('square/'))candidates.push(name.replace(/^square\//,'squares/'));
+        else if(name.startsWith('squares/'))candidates.push(name.replace(/^squares\//,'square/'));
+      }
+    }
+    return [...new Set(candidates)];
   }
   function firstSquarePath(fighterId, rare=false){return squarePaths(fighterId,rare)[0];}
   function setImageWithFallback(img, paths, onFailure){
@@ -1484,16 +1508,45 @@
     const rect=canvas.getBoundingClientRect();
     const dpr=Math.min(window.devicePixelRatio||1,resolvedLayout()==='mobile'?1:1.2);
     const cssW=Math.max(320,rect.width||window.innerWidth||1280), cssH=Math.max(190,rect.height||cssW*9/16);
+    const previousLogicalH=logicalH;
     logicalW=1600; logicalH=1600*(cssH/cssW);
+    const verticalRatio=logicalH/Math.max(1,previousLogicalH);
     const bw=Math.max(320,Math.round(cssW*dpr)),bh=Math.max(190,Math.round(cssH*dpr));
     if(bw!==lastCanvasW||bh!==lastCanvasH){canvas.width=bw;canvas.height=bh;lastCanvasW=bw;lastCanvasH=bh;backgroundCacheHeight=0;stageCacheKey='';}
     scaleX=canvas.width/logicalW; scaleY=canvas.height/logicalH;
-    if(game){game.groundY=logicalH*.77;game.platforms=makePlatforms();}
+    if(game){
+      // O canvas muda de proporção ao entrar/sair da tela cheia. Escalar a arena sem
+      // reposicionar os lutadores fazia o chão se mover por baixo deles.
+      game.groundY=logicalH*.77;
+      game.platforms=makePlatforms();
+      for(const fighter of game.fighters){
+        fighter.y*=verticalRatio;
+        fighter.vy*=verticalRatio;
+        if(fighter.onGround){
+          const support=game.platforms.find(plat=>Math.abs(fighter.y-plat.y)<=Math.max(10,plat.h*.55)&&fighter.x+fighter.w*.34>plat.x&&fighter.x-fighter.w*.34<plat.x+plat.w);
+          if(support){fighter.y=support.y;fighter.vy=0;}
+          else if(Math.abs(fighter.y-game.groundY)<=14){fighter.y=game.groundY;fighter.vy=0;}
+          else fighter.onGround=false;
+        }
+      }
+      for(const projectile of game.projectiles){
+        projectile.y*=verticalRatio;
+        if(Number.isFinite(projectile.vy))projectile.vy*=verticalRatio;
+        if(Number.isFinite(projectile.groundY))projectile.groundY*=verticalRatio;
+        if(Number.isFinite(projectile.bounceFloor))projectile.bounceFloor*=verticalRatio;
+      }
+      for(const particle of game.particles){particle.y*=verticalRatio;particle.vy*=verticalRatio;}
+    }
   }
   if(typeof ResizeObserver!=='undefined'){
     const ro = new ResizeObserver(()=>resizeCanvas());ro.observe(canvas);
   }else{window.addEventListener('resize',resizeCanvas);}
   window.addEventListener('resize',resizeCanvas);
+  document.addEventListener('fullscreenchange',()=>{
+    updateOrientationGate();
+    requestAnimationFrame(()=>{resizeCanvas();requestAnimationFrame(resizeCanvas);});
+    updatePauseFullscreenButton();
+  });
 
   function makePlatforms(){
     const h=logicalH, s=logicalW/1280;
@@ -1549,7 +1602,7 @@
       x:300+id*220, y:logicalH*.77, vx:0,vy:0,w:bossTraits?104:54,h:bossTraits?122:70, facing:id%2?1:-1,
       damage:0,stocks:3,kills:0,alive:true,respawn:0,invuln:0,
       attackCd:0,fireCd:0,attackTimer:0,launcherTimer:0,hitStun:0,paralyze:0,slow:0,slowFactor:1,lastHitBy:-1,
-      onGround:false,walkTime:Math.random()*500,aiThink:Math.random()*.25,aiTarget:-1,aiJumpCd:.25+Math.random()*.4,aiMoveDir:0,isBoss:false,bossTraits
+      onGround:false,dropThroughPlatform:-1,walkTime:Math.random()*500,aiThink:Math.random()*.25,aiTarget:-1,aiJumpCd:.25+Math.random()*.4,aiMoveDir:0,isBoss:false,bossTraits
     };
   }
   function startMatch(mapId=selectedMap||'midnight',options={}){
@@ -1599,7 +1652,7 @@
     const fireLabels={wubbox:'NOTA MUSICAL',gamer:'BOLA SOMBRIA',davi:'NOVELO',blu:'RAJADA DE VENTO',beterraba:'TRÊS BALAS',migton:'BOLA DE FOGO',allinone:'ÁGUA',bombasticus:'BOMBA',havocthorn:'ENERGIA'};
     $('#fireButtonLabel').textContent=fireLabels[selectedFighterId]||'PROJÉTIL';
     $('#punchButton').textContent=selectedFighterId==='davi'?'GARRAS':selectedFighterId==='beterraba'?'SOCO':'SOCO';
-    $('#controlsHint').textContent=`PC: A / D mover · ESPAÇO pular · ${keyLabel(keyMap[0].punch)} soco · ${keyLabel(keyMap[0].fire)} projétil`;
+    $('#controlsHint').textContent=`PC: A/D mover · ESPAÇO pular · ${keyLabel(keyMap[0].down)} descer · ${keyLabel(keyMap[0].punch)} soco · ${keyLabel(keyMap[0].fire)} projétil`;
     showScreen('game');
     resizeCanvas();
     game.fighters.forEach((p,i)=>{p.spawnX=logicalW*spawnX[i];p.x=p.spawnX;p.y=game.groundY;});
@@ -1609,7 +1662,7 @@
     raf=requestAnimationFrame(loop);
   }
 
-  const DEFAULT_P1_KEYS={left:'KeyA',right:'KeyD',jump:'Space',punch:'KeyJ',fire:'KeyK'};
+  const DEFAULT_P1_KEYS={left:'KeyA',right:'KeyD',jump:'Space',punch:'KeyJ',fire:'KeyK',down:'KeyS'};
   const keyMap=[
     {...DEFAULT_P1_KEYS},
     {left:'ArrowLeft',right:'ArrowRight',jump:'ArrowUp',punch:'Numpad1',fire:'Numpad2'},
@@ -1618,7 +1671,7 @@
   ];
   const keys=new Set();
   const pressed=new Set();
-  const KEY_ACTIONS=['left','right','jump','punch','fire'];
+  const KEY_ACTIONS=['left','right','jump','punch','fire','down'];
   // Input helpers: keep held movement separate from one-shot actions.
   function hasControl(slot,action){
     const code=keyMap[slot]?.[action];
@@ -1664,9 +1717,9 @@
       e.preventDefault();
       if(code==='Escape'){rebindingAction=null;$('#keybindStatus').textContent='Alteração cancelada.';refreshKeybinds();return;}
       const conflict=KEY_ACTIONS.find(action=>action!==rebindingAction&&keyMap[0][action]===code);
-      if(conflict){$('#keybindStatus').textContent='Essa tecla já está em uso por '+({left:'Esquerda',right:'Direita',jump:'Pular',punch:'Soco',fire:'Projétil'}[conflict])+'.';return;}
+      if(conflict){$('#keybindStatus').textContent='Essa tecla já está em uso por '+({left:'Esquerda',right:'Direita',jump:'Pular',punch:'Soco',fire:'Projétil',down:'Descer plataforma'}[conflict])+'.';return;}
       keyMap[0][rebindingAction]=code;rebindingAction=null;saveKeybinds();refreshKeybinds();$('#keybindStatus').textContent='Atalho salvo.';
-      $('#controlsHint').textContent=`PC: A/D mover · ${keyLabel(keyMap[0].jump)} pular · ${keyLabel(keyMap[0].punch)} soco · ${keyLabel(keyMap[0].fire)} projétil`;
+      $('#controlsHint').textContent=`PC: A/D mover · ${keyLabel(keyMap[0].jump)} pular · ${keyLabel(keyMap[0].down)} descer · ${keyLabel(keyMap[0].punch)} soco · ${keyLabel(keyMap[0].fire)} projétil`;
       return;
     }
     if(['Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(code))e.preventDefault();
@@ -1688,7 +1741,7 @@
   function triggerTouchAction(action){
     if(!game||game.paused||game.ended)return;
     const p=game.fighters[0];if(!p||!p.alive)return;
-    if(action==='jump')jump(p);else if(action==='punch')punch(p);else if(action==='fire')shoot(p);
+    if(action==='jump')jump(p);else if(action==='down')dropThroughPlatform(p);else if(action==='punch')punch(p);else if(action==='fire')shoot(p);
   }
   function getTouchButtonAt(x,y){
     const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('#touchControls .touch-btn'):null;
@@ -1718,6 +1771,16 @@
   function jump(p){
     if(!p.alive||p.respawn>0)return;
     if(p.onGround){p.vy=-(FIGHTERS[p.fighterId]?.jumpPower||13.2);p.onGround=false;spawnBurst(p.x,p.y-5,PLAYER_COLORS[p.id],7);}
+  }
+  function dropThroughPlatform(p){
+    if(!game||!p||!p.alive||p.respawn>0||!p.onGround)return false;
+    const supportIndex=game.platforms.findIndex((plat,index)=>index>0&&Math.abs(p.y-plat.y)<=Math.max(10,plat.h*.55)&&p.x+p.w*.34>plat.x&&p.x-p.w*.34<plat.x+plat.w);
+    // O piso principal não é atravessável; somente plataformas suspensas.
+    if(supportIndex<1)return false;
+    p.dropThroughPlatform=supportIndex;
+    p.onGround=false;
+    p.vy=Math.max(3.8,p.vy||0);
+    return true;
   }
   function punch(p){
     if(!p.alive||p.respawn>0||p.attackCd>0)return;
@@ -1777,9 +1840,12 @@
       spawnBurst(x,y,'#8cdde8',11);
     }else if(p.fighterId==='bombasticus'){
       p.fireCd=1.08;
-      const rollY=p.onGround?p.y-10:game.groundY-10;
-      game.projectiles.push({type:'bomb',x:p.x+p.facing*38,y:rollY,vx:p.facing*10.2,vy:0,owner:p.id,life:3.0,r:22,damage:18,groundY:rollY,maxDistance:1180,traveled:0,rotation:0});
-      spawnBurst(x,rollY,'#d9b18a',10);
+      // A bomba nasce na mão/peito do Bombasticus, inclusive durante um salto.
+      // Ela recebe gravidade imediatamente e só começa a rolar depois de tocar uma superfície.
+      const bombX=p.x+p.facing*(p.w*.5+7);
+      const bombY=p.y-p.h*.56;
+      game.projectiles.push({type:'bomb',x:bombX,y:bombY,vx:p.facing*10.2,vy:0,gravity:.78,grounded:false,owner:p.id,life:3.0,r:16,damage:18,groundY:null,maxDistance:1180,traveled:0,rotation:0});
+      spawnBurst(bombX,bombY,'#d9b18a',10);
     }else{
       p.fireCd=.56;
       game.projectiles.push({type:'fireball',x,y,vx:p.facing*10.8,vy:-.7,owner:p.id,life:2.0,r:18,damage:10});
@@ -1846,7 +1912,7 @@
   function updateHuman(p,dt){
     const s=p.slot;let dir=0;
     if(hasControl(s,'left'))dir--;if(hasControl(s,'right'))dir++;
-    if(s===0){if(touchHeld.left)dir--;if(touchHeld.right)dir++;}
+    if(s===0){if(touchHeld.left)dir--;if(touchHeld.right)dir++;if(consumeControl(s,'down'))dropThroughPlatform(p);}
     const fs=Math.min(3,dt*60);
     const fighter=FIGHTERS[p.fighterId]||FIGHTERS.migton;
     const airControl=!p.onGround?(fighter.airControl||1):1;
@@ -1958,7 +2024,12 @@
     p.onGround=frozen?p.onGround:false;
     // Main floor and floating platforms (one-way platforms).
     if(!frozen){
-      for(const plat of game.platforms){
+      for(let platformIndex=0;platformIndex<game.platforms.length;platformIndex++){
+        const plat=game.platforms[platformIndex];
+        if(p.dropThroughPlatform===platformIndex){
+          if(p.y>plat.y+12)p.dropThroughPlatform=-1;
+          else continue;
+        }
         if(oldBottom<=plat.y+7&&p.y>=plat.y&&p.vy>=0&&p.x+p.w*.34>plat.x&&p.x-p.w*.34<plat.x+plat.w){p.y=plat.y;p.vy=0;p.onGround=true;}
       }
       if(p.y>game.groundY+190||p.x<-120||p.x>logicalW+120||p.y<-220){eliminate(p);}
@@ -2042,8 +2113,22 @@
         }
       }else if(b.type==='bomb'){
         b.traveled=(b.traveled||0)+Math.abs(b.vx*frameScale);
-        b.x+=b.vx*frameScale;b.y=b.groundY;b.rotation=(b.rotation||0)+(b.vx<0?-1:1)*.34*frameScale;
-        // A bomba sempre detona ao alcançar a borda, em vez de desaparecer pelo filtro de projéteis.
+        const previousY=b.y;
+        b.x+=b.vx*frameScale;
+        b.rotation=(b.rotation||0)+(b.vx<0?-1:1)*.34*frameScale;
+        if(!b.grounded){
+          b.vy=Math.min(18,(b.vy||0)+(b.gravity||.78)*frameScale);
+          b.y+=b.vy*frameScale;
+          // A primeira plataforma abaixo da bomba recebe o impacto; depois ela rola nesse nível.
+          for(const plat of game.platforms){
+            if(previousY+(b.r||16)<=plat.y+3&&b.y+(b.r||16)>=plat.y&&b.vy>=0&&b.x+(b.r||16)>plat.x&&b.x-(b.r||16)<plat.x+plat.w){
+              b.y=plat.y-(b.r||16);b.vy=0;b.grounded=true;b.groundY=b.y;break;
+            }
+          }
+        }else{
+          b.y=b.groundY;
+        }
+        // Detona no fim do alcance, ao sair da arena ou quando o fusível termina.
         if(b.traveled>=(b.maxDistance||1180)||b.life<=0||b.x<-24||b.x>logicalW+24){explodeBomb(b);continue;}
       }else{
         b.x+=b.vx*frameScale;b.y+=b.vy*frameScale;b.vy+=.05*frameScale;
@@ -2383,25 +2468,25 @@
     return `<div class="tower-progress">${Array.from({length:total},(_,i)=>{
       const n=i+1,id=bossIds[i]||'havocthorn',fighter=FIGHTERS[id]||FIGHTERS.havocthorn;
       const label=n<=completed?'DERROTADO':fighter.name;
-      const image=firstSquarePath(id,forceRareSquares)||'';
-      return `<div class="tower-floor ${n<=completed?'cleared':n===completed+1?'current':''}"><span>${n}</span><img src="${image}" alt="${fighter.name}"><small>${label}</small></div>`;
+      return `<div class="tower-floor ${n<=completed?'cleared':n===completed+1?'current':''}"><span>${n}</span><img data-square-fighter="${id}" alt="${fighter.name}"><small>${label}</small></div>`;
     }).join('')}</div>`;
   }
   function showTowerClimb(runGame){
     if(!runGame||game!==runGame)return;
     const level=runGame.towerLevel,total=runGame.towerTotalFloors,map=runGame.mapId,complete=level>=total;
-    const portrait=selectedSquareAsset||firstSquarePath(selectedFighterId,false)||'';
     const steps=Array.from({length:total},(_,i)=>`<span class="${i<level?'done':''}"></span>`).join('');
     $('#overlayCard').innerHTML=`<div class="result-kicker">${complete?'ÚLTIMO ANDAR CONCLUÍDO':'CHEFE DERROTADO'} · ${level}/${total}</div>
-      <div class="tower-climb-scene"><div class="tower-climb-ladder"><div class="tower-climber">${portrait?`<img src="${portrait}" alt="P1 subindo a torre">`:'<b>P1</b>'}</div></div><div class="tower-climb-label">${complete?'SUBINDO AO TOPO':'SUBINDO PARA O PRÓXIMO ANDAR'}</div><div class="tower-climb-steps">${steps}</div></div>
+      <div class="tower-climb-scene"><div class="tower-climb-ladder"><div class="tower-climber"><img data-square-fighter="${selectedFighterId}" alt="P1 subindo a torre"></div></div><div class="tower-climb-label">${complete?'SUBINDO AO TOPO':'SUBINDO PARA O PRÓXIMO ANDAR'}</div><div class="tower-climb-steps">${steps}</div></div>
       <div class="result-sub">${complete?'Você venceu todos os chefes desta torre.':'A escadaria está levando você ao próximo confronto.'}</div>
       <div class="result-actions"><button class="secondary-btn" id="towerExitDuringClimb">SAIR DA TORRE</button></div>`;
+    $$('#overlayCard img[data-square-fighter]').forEach(img=>setImageWithFallback(img,squarePaths(img.dataset.squareFighter,false)));
     $('#gameOverlay').classList.add('show');
     $('#towerExitDuringClimb').addEventListener('click',quitToMenu);
     setTimeout(()=>{
       if(game!==runGame)return;
       if(complete){
         $('#overlayCard').innerHTML=`<div class="result-kicker">TORRE ${TOWER_TIERS[runGame.towerDifficulty].label} · ${total}/${total}</div><div class="tower-clear-mark">★</div><div class="result-title">TORRE CONQUISTADA</div><div class="result-sub">Você chegou ao topo e derrotou todos os ${total} chefes.</div>${towerProgressMarkup(total,total,runGame)}<div class="result-actions"><button class="primary-btn" id="towerReplayBtn">RECOMEÇAR TORRE</button><button class="secondary-btn" id="towerMenuBtn">MENU</button></div>`;
+        $$('#overlayCard img[data-square-fighter]').forEach(img=>setImageWithFallback(img,squarePaths(img.dataset.squareFighter,forceRareSquares)));
         $('#towerReplayBtn').addEventListener('click',()=>{towerRunBosses=getTowerBossSequence(runGame.towerDifficulty);startMatch(map,{tower:true,level:1,continueRun:false});});
         $('#towerMenuBtn').addEventListener('click',quitToMenu);
       }else{
@@ -2427,11 +2512,35 @@
     $('#rematchBtn').addEventListener('click',()=>startMatch(endedGame.mapId,tower?{tower:true,level,continueRun:true}:{}));
     $('#resultMenuBtn').addEventListener('click',quitToMenu);
   }
+  function updatePauseFullscreenButton(){
+    const button=$('#pauseFullscreenBtn');
+    if(button)button.textContent=document.fullscreenElement?'SAIR DA TELA CHEIA':'TELA CHEIA';
+  }
+  async function togglePauseFullscreen(){
+    const button=$('#pauseFullscreenBtn');
+    try{
+      if(document.fullscreenElement){
+        if(document.exitFullscreen)await document.exitFullscreen();
+      }else if(document.documentElement.requestFullscreen){
+        await document.documentElement.requestFullscreen();
+      }else if(button){
+        button.textContent='INDISPONÍVEL';
+      }
+    }catch(error){if(button)button.textContent='INDISPONÍVEL';}
+    updatePauseFullscreenButton();
+  }
   function togglePause(){
     if(!game||game.ended)return;
     game.paused=!game.paused;
-    if(game.paused){$('#overlayCard').innerHTML=`<div class="pause-mark">Ⅱ</div><div class="result-kicker">Partida pausada</div><div class="result-title">Pausa</div><div class="result-sub">Respire. A arena espera por você.</div><div class="result-actions"><button class="primary-btn" id="resumeBtn">CONTINUAR</button><button class="secondary-btn" id="pauseQuitBtn">SAIR</button></div>`;$('#gameOverlay').classList.add('show');$('#resumeBtn').addEventListener('click',togglePause);$('#pauseQuitBtn').addEventListener('click',quitToMenu);$('#pauseBtn').textContent='▶ CONTINUAR';}
-    else{$('#gameOverlay').classList.remove('show');$('#pauseBtn').textContent='Ⅱ PAUSAR';game.last=performance.now();}
+    if(game.paused){
+      $('#overlayCard').innerHTML=`<div class="pause-mark">Ⅱ</div><div class="result-kicker">Partida pausada</div><div class="result-title">Pausa</div><div class="result-sub">Respire. A arena espera por você.</div><div class="result-actions"><button class="primary-btn" id="resumeBtn">CONTINUAR</button><button class="secondary-btn" id="pauseFullscreenBtn">TELA CHEIA</button><button class="secondary-btn" id="pauseQuitBtn">SAIR</button></div>`;
+      $('#gameOverlay').classList.add('show');
+      $('#resumeBtn').addEventListener('click',togglePause);
+      $('#pauseFullscreenBtn').addEventListener('click',togglePauseFullscreen);
+      $('#pauseQuitBtn').addEventListener('click',quitToMenu);
+      updatePauseFullscreenButton();
+      $('#pauseBtn').textContent='▶ CONTINUAR';
+    }else{$('#gameOverlay').classList.remove('show');$('#pauseBtn').textContent='Ⅱ PAUSAR';game.last=performance.now();}
   }
   function quitToMenu(){cancelAnimationFrame(raf);game=null;$('#gameOverlay').classList.remove('show');$('#readyOverlay').classList.remove('show');showScreen('main');}
   $('#pauseBtn').addEventListener('click',togglePause);
