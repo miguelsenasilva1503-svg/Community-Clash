@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#19283d" />
-<title>COMMUNIY CLASH v0.19</title>
+<title>COMMUNIY CLASH v0.21</title>
 <style>
   :root{--ink:#f7f8ff;--muted:#aeb8da;--cyan:#5de9ff;--blue:#5b79ff;--pink:#ff5c98;--gold:#ffd46b;--panel:rgba(18,25,58,.86)}
   *{box-sizing:border-box}
@@ -888,6 +888,163 @@
     .map-actions{flex-basis:30px;}
   }
 
+
+  /* v0.20 — direcional completo, joystick alternativo e botões de ação reorganizados. */
+  #controlStyleOptions{display:flex;gap:5px;}
+  .touch-direction-pad{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(2,48px);gap:4px;align-items:center;justify-items:center;}
+  .touch-direction-pad .dpad-empty{width:1px;height:1px;}
+  .touch-direction-pad .dpad-btn{width:52px!important;height:48px!important;min-width:52px!important;min-height:48px!important;padding:0;border-radius:9px;font-size:17px!important;background:#344d6c;border-color:#7188a4;opacity:.94;}
+  .touch-direction-pad .dpad-up{grid-column:2;grid-row:1;}
+  .touch-direction-pad .dpad-left{grid-column:1;grid-row:2;}
+  .touch-direction-pad .dpad-down{grid-column:2;grid-row:2;background:#607b98;color:#f4f7fa;border-color:#9bb2ca;}
+  .touch-direction-pad .dpad-right{grid-column:3;grid-row:2;}
+  .joystick-control{display:none;width:156px;height:140px;align-items:center;justify-content:center;}
+  .joystick-base{width:126px;height:126px;border-radius:50%;position:relative;display:grid;place-items:center;background:radial-gradient(circle,#526d8a 0 37%,#263d59 39% 68%,#162b43 70%);border:3px solid #8da7c3;box-shadow:inset 0 0 18px rgba(0,0,0,.35),0 4px 10px rgba(0,0,0,.2);touch-action:none;}
+  .joystick-knob{position:absolute;width:48px;height:48px;left:50%;top:50%;margin:-24px 0 0 -24px;border-radius:50%;background:linear-gradient(145deg,#d7e3ef,#7897b5);border:2px solid #e5eff9;box-shadow:0 3px 7px rgba(0,0,0,.35);pointer-events:none;will-change:transform;}
+  body.control-joystick #dpadControl{display:none!important;}
+  body.control-joystick #joystickControl{display:flex!important;}
+  #touchControls .touch-right{display:grid!important;grid-template-columns:84px 84px!important;grid-template-rows:64px 52px!important;gap:6px!important;}
+  #touchControls .touch-right .touch-btn.punch{grid-column:1!important;grid-row:1!important;width:84px!important;height:64px!important;}
+  #touchControls .touch-right .touch-btn.fire{grid-column:2!important;grid-row:1!important;width:84px!important;height:64px!important;}
+  #touchControls .touch-right .touch-btn.jump{grid-column:1 / span 2!important;grid-row:2!important;width:100%!important;height:52px!important;min-height:52px!important;}
+  #touchControls .touch-right .touch-btn.drop{display:none!important;}
+  @media(max-width:760px){
+    .touch-direction-pad{grid-template-columns:repeat(3,50px);grid-template-rows:repeat(2,46px);gap:3px;}
+    .touch-direction-pad .dpad-btn{width:50px!important;height:46px!important;min-width:50px!important;min-height:46px!important;}
+    .joystick-control{width:150px;height:132px;}
+    .joystick-base{width:118px;height:118px;}
+    #touchControls .touch-right{grid-template-columns:76px 76px!important;grid-template-rows:56px 44px!important;gap:5px!important;}
+    #touchControls .touch-right .touch-btn.punch,#touchControls .touch-right .touch-btn.fire{width:76px!important;height:56px!important;}
+    #touchControls .touch-right .touch-btn.jump{height:44px!important;min-height:44px!important;}
+  }
+  @media(max-height:500px) and (orientation:landscape){
+    .touch-direction-pad{grid-template-columns:repeat(3,43px);grid-template-rows:repeat(2,38px);gap:2px;}
+    .touch-direction-pad .dpad-btn{width:43px!important;height:38px!important;min-width:43px!important;min-height:38px!important;font-size:13px!important;}
+    .joystick-control{width:130px;height:105px;}
+    .joystick-base{width:98px;height:98px;}
+    .joystick-knob{width:40px;height:40px;margin:-20px 0 0 -20px;}
+    #touchControls .touch-right{grid-template-columns:66px 66px!important;grid-template-rows:48px 36px!important;}
+    #touchControls .touch-right .touch-btn.punch,#touchControls .touch-right .touch-btn.fire{width:66px!important;height:48px!important;}
+    #touchControls .touch-right .touch-btn.jump{height:36px!important;min-height:36px!important;}
+  }
+
+  /* v0.21 — seleção de lutadores em grade quadrada centralizada, com painel lateral. */
+  .select-wrap{
+    width:min(1360px,97vw)!important;height:96dvh!important;max-height:96dvh!important;
+    display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto minmax(0,1fr) auto!important;
+    gap:clamp(6px,1.1vh,12px)!important;align-content:stretch!important;justify-items:stretch!important;
+  }
+  .select-wrap>.screen-heading,.select-wrap>.select-top,.select-wrap>.select-bottom{width:100%!important;min-width:0!important;}
+  .select-wrap>.screen-heading{min-height:34px!important;flex:0 0 auto!important;}
+  .select-top{
+    display:grid!important;grid-template-columns:minmax(180px,.34fr) minmax(0,1fr)!important;
+    gap:clamp(8px,1.4vw,18px)!important;min-height:0!important;flex:1 1 auto!important;align-items:stretch!important;
+  }
+  .preview-panel{
+    min-height:0!important;height:100%!important;padding:clamp(8px,1.3vw,18px)!important;
+    display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:clamp(7px,1.4vh,14px)!important;
+    text-align:center!important;
+  }
+  .preview-art{width:min(16vw,22vh,185px)!important;height:min(25vh,205px)!important;max-width:100%!important;flex:0 0 auto!important;}
+  .preview-copy{text-align:center!important;width:100%!important;max-width:290px!important;}
+  .preview-copy .name{font-size:clamp(16px,2vw,27px)!important;line-height:1.08!important;}
+  .preview-copy .role,.preview-copy .select-status{display:none!important;}
+  .preview-copy .hint{max-width:260px!important;margin:0 auto!important;font-size:clamp(9px,.9vw,12px)!important;line-height:1.45!important;}
+  .select-status{font-size:clamp(8px,.75vw,10px)!important;line-height:1.3!important;}
+  .roster-panel{
+    min-width:0!important;min-height:0!important;height:100%!important;padding:clamp(7px,1.1vw,14px)!important;
+    display:flex!important;flex-direction:column!important;justify-content:center!important;gap:clamp(5px,.8vh,9px)!important;
+  }
+  .roster-panel>.panel-label{width:100%!important;flex:0 0 auto!important;}
+  .roster-grid{
+    width:min(100%,700px)!important;max-width:700px!important;max-height:min(66vh,520px)!important;
+    margin:auto!important;flex:1 1 auto!important;min-height:0!important;
+    display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    grid-template-rows:repeat(5,minmax(0,1fr))!important;gap:clamp(4px,.75vw,9px)!important;
+    align-items:center!important;justify-items:center!important;justify-content:center!important;align-content:center!important;
+  }
+  .fighter-tile{
+    width:min(100%,min(10.5vh,88px))!important;height:auto!important;max-width:88px!important;min-width:0!important;
+    aspect-ratio:1/1!important;justify-self:center!important;align-self:center!important;border-radius:6px!important;
+    display:grid!important;place-items:center!important;overflow:hidden!important;
+  }
+  .fighter-tile img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;padding:0!important;image-rendering:pixelated!important;}
+  .fighter-tile .tile-tag{display:none!important;}
+  .fighter-tile.rare-square{border-color:#e5c87f!important;box-shadow:inset 0 0 0 2px rgba(229,200,127,.38),0 0 12px rgba(229,200,127,.18)!important;}
+  .fighter-tile.future-slot{background:linear-gradient(145deg,#17283d,#0c192a)!important;border:1px solid #526a83!important;color:#b7c6d8!important;font-size:clamp(24px,4vh,42px)!important;font-weight:500!important;}
+  .fighter-tile.future-slot:hover{border-color:#8ca7c4!important;background:#203851!important;}
+  .fighter-tile.boss-slot{border-color:#9d6f65!important;background:radial-gradient(circle,#3f2730,#111d2d 76%)!important;}
+  .fighter-tile.boss-unlock-tile{border-color:#d2bd91!important;box-shadow:inset 0 0 0 2px rgba(210,189,145,.32),0 0 15px rgba(210,189,145,.2)!important;}
+  .fighter-tile.boss-unlock-tile img{padding:0!important;}
+  .havoc-skull{
+    display:block;position:relative;width:57%;height:66%;
+    background:linear-gradient(145deg,#f0e9d9,#9aa8b7 78%,#5b6878);
+    clip-path:polygon(13% 0,87% 0,100% 22%,94% 66%,80% 82%,75% 100%,25% 100%,20% 82%,6% 66%,0 22%);
+    filter:drop-shadow(0 3px 3px rgba(0,0,0,.5));
+  }
+  .havoc-skull:before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(ellipse at 27% 42%,#17202c 0 12%,transparent 13%),radial-gradient(ellipse at 73% 42%,#17202c 0 12%,transparent 13%),linear-gradient(90deg,transparent 47%,rgba(40,50,62,.35) 49% 51%,transparent 53%);
+  }
+  .havoc-skull:after{
+    content:"";position:absolute;left:29%;right:29%;bottom:2%;height:16%;
+    background:repeating-linear-gradient(90deg,#596676 0 3px,#e3e6e5 3px 5px);
+    border-top:2px solid #4e5a69;
+  }
+  .select-bottom{grid-template-columns:minmax(0,1fr) minmax(135px,210px)!important;gap:10px!important;flex:0 0 auto!important;}
+  .select-bottom .settings-panel{min-width:0!important;}
+  .select-actions .primary-btn{width:100%!important;min-height:54px!important;}
+  /* v0.21 — cards de mapa mostram a arte da arena em vez de uma faixa no topo. */
+  .map-wrap{width:min(1440px,98vw)!important;height:96dvh!important;max-height:96dvh!important;gap:clamp(6px,1.1vh,12px)!important;}
+  .map-wrap>.screen-heading{flex:0 0 auto!important;min-height:34px!important;}
+  .map-grid{flex:1 1 auto!important;min-height:0!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;gap:clamp(6px,.85vw,12px)!important;}
+  .map-grid .map-card{min-height:0!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;}
+  .map-grid .map-thumb{height:auto!important;min-height:0!important;flex:1 1 auto!important;width:100%!important;position:relative!important;}
+  .map-grid .map-card-copy{flex:0 0 auto!important;min-height:0!important;padding:clamp(6px,.8vw,11px)!important;gap:4px!important;}
+  .map-card-title{font-size:clamp(10px,1.1vw,15px)!important;line-height:1.15!important;}
+  .map-card-desc{font-size:clamp(7px,.75vw,10px)!important;line-height:1.3!important;max-height:2.6em!important;overflow:hidden!important;}
+  .map-actions{flex:0 0 42px!important;}
+  @media(max-width:760px){
+    .select-wrap{width:98vw!important;height:97dvh!important;}
+    .select-top{grid-template-columns:minmax(130px,.32fr) minmax(0,1fr)!important;gap:5px!important;}
+    .preview-panel{padding:5px!important;gap:5px!important;}
+    .preview-art{width:min(15vw,18vh,120px)!important;height:min(19vh,130px)!important;}
+    .preview-copy .hint{font-size:8px!important;line-height:1.25!important;}
+    .roster-grid{max-height:min(66vh,440px)!important;gap:3px!important;}
+    .fighter-tile{width:min(100%,min(10.5vh,76px))!important;max-width:76px!important;}
+    .select-bottom{grid-template-columns:minmax(0,1fr) 122px!important;gap:5px!important;}
+    .select-bottom .settings-panel{padding:5px!important;gap:3px!important;}
+    .select-bottom .primary-btn{font-size:9px!important;}
+    .map-wrap{width:98vw!important;height:97dvh!important;}
+    .map-grid{gap:4px!important;}
+    .map-grid .map-card-copy{padding:4px!important;}
+    .map-card-title{font-size:9px!important;}
+    .map-card-desc{font-size:7px!important;line-height:1.15!important;}
+    .map-actions{flex-basis:34px!important;}
+  }
+
+  .feature-options-section{border-top:1px solid rgba(180,202,226,.18);padding-top:12px;}
+  .feature-toggle-list{display:grid;gap:8px;margin-top:9px;}
+  .feature-toggle{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border:1px solid rgba(151,177,205,.22);border-radius:8px;background:rgba(10,25,42,.38);cursor:pointer;}
+  .feature-toggle input{width:18px;height:18px;flex:0 0 18px;margin:1px 0 0;accent-color:#a9bfd8;}
+  .feature-toggle span{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  .feature-toggle strong{font-size:10px;letter-spacing:.08em;color:#eef3f8;}
+  .feature-toggle small{font-size:9px;line-height:1.35;color:#b7c7d9;}
+  .feature-toggle:has(input:checked){border-color:#91b6a8;background:rgba(90,133,122,.17);}
+  @media(max-height:520px) and (orientation:landscape){
+    .select-wrap{height:97dvh!important;gap:4px!important;}
+    .select-top{gap:5px!important;}
+    .preview-art{width:min(13vw,18vh,105px)!important;height:min(19vh,120px)!important;}
+    .roster-grid{max-height:68vh!important;}
+    .fighter-tile{width:min(100%,min(10.5vh,70px))!important;max-width:70px!important;}
+    .select-bottom{gap:5px!important;}
+    .select-bottom .settings-panel{padding:4px 6px!important;}
+    .map-wrap{height:98dvh!important;gap:4px!important;}
+    .map-grid .map-thumb{min-height:0!important;}
+    .map-card-desc{display:none!important;}
+    .map-actions{flex-basis:30px!important;}
+  }
+
 </style>
 </head>
 <body>
@@ -912,7 +1069,7 @@
       <div class="brand"><div class="brand-mark">C</div><div class="brand-name">COMMUNIY <span>CLASH</span></div></div>
       <div class="hero-emblem"><div class="hero-ring"></div><div class="hero-letter">C!</div></div>
       <div class="hero-subtitle">Escolha seu lutador e entre na disputa</div>
-      <div class="home-version">VERSÃO 0.19 · 8 LUTADORES + HAVOCTHORN</div>
+      <div class="home-version">VERSÃO 0.21 · 11 LUTADORES + HAVOCTHORN</div>
     </main>
 
     <aside class="home-side home-side-right">
@@ -929,10 +1086,14 @@
       <div class="settings-modal-section"><strong>DISPOSIÇÃO DA TELA</strong><p>Escolha como o jogo deve organizar a interface.</p>
         <div class="layout-options" id="layoutOptions"><button data-layout="auto" class="active" type="button">AUTO</button><button data-layout="mobile" type="button">MOBILE</button><button data-layout="pc" type="button">PC</button></div>
       </div>
+      <div class="settings-modal-section"><strong>CONTROLES MOBILE</strong><p>Escolha o controle de movimento. Ambos usam as mesmas direções e combinações.</p>
+        <div class="layout-options" id="controlStyleOptions"><button data-control-style="dpad" class="active" type="button">D-PAD</button><button data-control-style="joystick" type="button">JOYSTICK</button></div>
+      </div>
       <div class="settings-modal-section keybind-section"><strong>ATALHOS DO JOGADOR 1</strong><p>Clique em uma tecla e pressione a nova tecla que deseja usar.</p>
         <div class="keybind-grid">
           <span>Esquerda</span><button type="button" data-bind-action="left">A</button>
           <span>Direita</span><button type="button" data-bind-action="right">D</button>
+          <span>Cima / mirar</span><button type="button" data-bind-action="up">W</button>
           <span>Pular</span><button type="button" data-bind-action="jump">ESPAÇO</button>
           <span>Soco</span><button type="button" data-bind-action="punch">J</button>
           <span>Projétil</span><button type="button" data-bind-action="fire">K</button>
@@ -940,9 +1101,12 @@
         </div>
         <div class="keybind-footer"><span id="keybindStatus">Padrão inspirado no esquema B do Brawlhalla.</span><button type="button" id="resetKeybindsBtn" class="keybind-reset">RESTAURAR</button></div>
       </div>
-      <div class="settings-modal-section code-section"><strong>CÓDIGOS</strong><p>Digite um código para liberar recursos especiais.</p>
-        <div class="code-entry"><input id="gameCodeInput" type="text" maxlength="32" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="DIGITE O CÓDIGO"><button type="button" id="redeemCodeBtn">ATIVAR</button></div>
-        <div class="code-status" id="gameCodeStatus" role="status" aria-live="polite">Os códigos não diferenciam maiúsculas de minúsculas.</div>
+      <div class="settings-modal-section feature-options-section"><strong>RECURSOS OPCIONAIS</strong><p>Ative ou desative recursos especiais. As escolhas ficam salvas neste navegador.</p>
+        <div class="feature-toggle-list" id="featureToggleList">
+          <label class="feature-toggle" for="settingHavocthornPlayable"><input id="settingHavocthornPlayable" type="checkbox"><span><strong>HAVOCTHORN JOGÁVEL</strong><small>Mostra o chefe no quadrado central da seleção de personagens.</small></span></label>
+          <label class="feature-toggle" for="settingLegacyRoboSprites"><input id="settingLegacyRoboSprites" type="checkbox"><span><strong>ROBÔ GAMER OST</strong><small>Usa os sprites clássicos do Robô Gamer em vez dos novos.</small></span></label>
+          <label class="feature-toggle" for="settingRareSquares"><input id="settingRareSquares" type="checkbox"><span><strong>QUADRADOS RAROS</strong><small>Força a versão rara dos quadrados sempre que ela existir.</small></span></label>
+        </div>
       </div>
     </div>
   </div>
@@ -967,16 +1131,16 @@
 <section id="selectScreen" class="screen select-screen">
   <div class="select-wrap">
     <div class="screen-heading">
-      <div><div class="eyebrow">Antes de começar</div><h1>Seleção de <span>lutadores</span></h1></div>
+      <div><div class="eyebrow">ESCOLHA SEU COMBATENTE</div><h1>Seleção de <span>personagem</span></h1></div>
       <button class="back-btn" id="backMainBtn">← VOLTAR</button>
     </div>
     <div class="select-top">
       <div class="preview-panel">
         <div class="preview-art"><img id="previewSprite" src="sprites/migton_idle.png" alt="Prévia do Migton" /></div>
-        <div class="preview-copy"><div class="eyebrow">Personagem selecionado</div><div class="name" id="previewName">Mestre do Fogo</div><div class="role" id="previewRole">Personagem disponível</div><div class="hint" id="previewHint">Migton luta usando golpes de fogo e projéteis. Toque no quadrado para escolher seu personagem.</div><div class="select-status" id="selectStatus">Toque em um lutador para visualizar</div></div>
+        <div class="preview-copy"><div class="eyebrow">PERSONAGEM EM DESTAQUE</div><div class="name" id="previewName">Mestre do Fogo</div><div class="role" id="previewRole">Lutador de fogo</div><div class="hint" id="previewHint">Migton combina socos de fogo e bolas de fogo.</div><div class="select-status" id="selectStatus">Toque em um lutador para visualizar</div></div>
       </div>
       <div class="roster-panel">
-        <div class="panel-label"><span>Escolha seu lutador</span><span id="rosterCount">3 / 12 DISPONÍVEIS</span></div>
+        <div class="panel-label"><span>ELENCO</span><span id="rosterCount">12 LUTADORES</span></div>
         <div class="roster-grid" id="rosterGrid" aria-label="Personagens"></div>
       </div>
     </div>
@@ -1034,10 +1198,20 @@
     </div>
   </div>
   <div class="match-hud" id="matchHud"></div>
-  <div class="controls-hint" id="controlsHint">PC: A / D mover · ESPAÇO pular · C soco · E bola de fogo</div>
+  <div class="controls-hint" id="controlsHint">PC: A / D mover · W / S mirar · ESPAÇO pular · J soco · K projétil</div>
   <div class="touch-controls" id="touchControls">
-    <div><div class="touch-left"><div class="touch-directions"><button class="touch-btn" data-control="left" aria-label="Mover para esquerda">◀</button><button class="touch-btn" data-control="right" aria-label="Mover para direita">▶</button></div></div><div class="touch-caption">MOVIMENTO</div></div>
-    <div><div class="touch-right"><button id="punchButton" class="touch-btn action punch" data-control="punch">SOCO</button><button class="touch-btn action jump" data-control="jump">PULAR</button><button class="touch-btn action drop" data-control="down" aria-label="Descer pela plataforma">BAIXO</button><button class="touch-btn action fire" data-control="fire"><span id="fireButtonLabel">PROJÉTIL</span></button></div><div class="touch-caption">ATAQUES</div></div>
+    <div><div class="touch-left">
+      <div class="touch-direction-pad" id="dpadControl" aria-label="Direcional">
+        <span class="dpad-empty"></span><button class="touch-btn dpad-btn dpad-up" data-control="up" aria-label="Cima / mirar para cima">▲</button><span class="dpad-empty"></span>
+        <button class="touch-btn dpad-btn dpad-left" data-control="left" aria-label="Mover para esquerda">◀</button><button class="touch-btn dpad-btn dpad-down" data-control="down" aria-label="Baixo / descer plataforma">▼</button><button class="touch-btn dpad-btn dpad-right" data-control="right" aria-label="Mover para direita">▶</button>
+      </div>
+      <div class="joystick-control" id="joystickControl" aria-label="Joystick"><div class="joystick-base" id="joystickBase"><div class="joystick-knob" id="joystickKnob"></div></div></div>
+    </div><div class="touch-caption">MOVIMENTO</div></div>
+    <div><div class="touch-right">
+      <button id="punchButton" class="touch-btn action punch" data-control="punch">SOCO</button>
+      <button class="touch-btn action fire" data-control="fire"><span id="fireButtonLabel">PROJÉTIL</span></button>
+      <button class="touch-btn action jump" data-control="jump">PULAR</button>
+    </div><div class="touch-caption">ATAQUES</div></div>
   </div>
   <div id="readyOverlay" class="ready-overlay" aria-live="assertive" aria-hidden="true"><div class="ready-card"><span class="ready-kicker">PREPARE-SE</span><strong id="readyWord" class="ready-word">READY</strong><span class="ready-subtitle">COMMUNIY CLASH</span></div></div>
 </section>
@@ -1074,58 +1248,76 @@
   const FIGHTERS = {
     migton:{
       id:'migton', name:'MIGTON', title:'Mestre do Fogo', role:'Lutador de fogo',
-      description:'Migton combina socos de fogo e bolas de fogo. Seus ataques têm 15% de chance de causar knockback extra.',
+      description:'Migton combina socos de fogo e bolas de fogo. Seus ataques têm 15% de chance de causar knockback extra e 20% de chance de incendiar o alvo por 3 segundos, aumentando o knockback recebido em 2% por segundo.',
       assets:{idle:'sprites/migton_idle.png',right:'sprites/migton_right.png',left:'sprites/migton_left.png',punch:'sprites/migton_punch.png',launcher:'sprites/migton_launcher.png',jump:'sprites/migton_jump.png',projectile:'projectiles/fireball.png'},
-      square:['squares/migton.png'], rare:['squares/migton_rare.png'], jumpPower:13.2, projectileType:'fireball', punchReach:86, punchCooldown:.37
+      square:['squares/migton.png'], rare:['squares/migton_rare.png'], jumpPower:13.2, projectileType:'fireball', punchReach:86, punchCooldown:0
     },
     wubbox:{
       id:'wubbox', name:'WUBBOX', title:'Wubbox', role:'Atirador musical',
       description:'Wubbox dispara notas musicais em linha reta, com curto alcance e leve rastreamento. Também salta um pouco mais alto.',
       assets:{idle:'sprites/wubbox_idle.png',right:'sprites/wubbox_right.png',left:'sprites/wubbox_left.png',punch:'sprites/wubbox_punchlaunch.png',launcher:'sprites/wubbox_punchlaunch.png',jump:'sprites/wubbox_jump.png',projectile:'projectiles/music.png'},
-      square:['square/wubbox.png','squares/wubbox.png'], rare:['square/wubbox_rare.png','squares/wubbox_rare.png'], jumpPower:17.4, projectileType:'music', punchReach:86, punchCooldown:.37
+      square:['square/wubbox.png','squares/wubbox.png'], rare:['square/wubbox_rare.png','squares/wubbox_rare.png'], jumpPower:17.4, projectileType:'music', punchReach:86, punchCooldown:0
     },
     gamer:{
       id:'gamer', name:'ROBÔ GAMER', title:'Robô Gamer', role:'Lutador de longo alcance',
       description:'O Robô Gamer tem um soco de alcance maior, uma bola sombria de longo alcance e 15% de chance de paralisar por 1 segundo.',
       assets:{idle:'sprites/robo_idle.png',right:'sprites/robo_right.png',left:'sprites/robo_left.png',punch:'sprites/robo_punch.png',launcher:'sprites/robo_launcher.png',jump:'sprites/robo_jump.png',projectile:'projectiles/shadow_ball.png'},
       legacyAssets:{idle:'sprites/gamer_idle.png',right:'sprites/gamer_right.png',left:'sprites/gamer_left.png',punch:'sprites/gamer_punch.png',launcher:'sprites/gamer_launcher.png',jump:'sprites/gamer_jump.png'},
-      square:['square/gamer.png','squares/gamer.png'], rare:['square/gamer_rare.png','squares/gamer_rare.png'], jumpPower:13.2, projectileType:'shadow', punchReach:122, punchCooldown:.43, fireRange:590
+      square:['square/gamer.png','squares/gamer.png'], rare:['square/gamer_rare.png','squares/gamer_rare.png'], jumpPower:13.2, projectileType:'shadow', punchReach:122, punchCooldown:0, fireRange:590
     },
     davi:{
       id:'davi', name:'DAVI', title:'Davi', role:'Especialista em combate aéreo',
       description:'Davi domina o ar com ataques de garras ampliados durante o salto. Seu novelo pesado percorre a arena e quica repetidamente na mesma altura.',
       assets:{idle:'sprites/davi_idle.png',right:'sprites/davi_right.png',left:'sprites/davi_left.png',punch:'sprites/davi_claw.png',launcher:'sprites/davi_launcher.png',jump:'sprites/davi_jump.png',projectile:'projectiles/wool_ball.png'},
-      square:['squares/davi.png'], rare:['squares/davi_rare.png'], jumpPower:14.8, projectileType:'wool', punchReach:104, punchCooldown:.42, airPunchReach:132, airPunchDamage:11, airPunchVertical:112, airControl:1.12, fireRange:1120
+      square:['squares/davi.png'], rare:['squares/davi_rare.png'], jumpPower:14.8, projectileType:'wool', punchReach:104, punchCooldown:0, airPunchReach:132, airPunchDamage:11, airPunchVertical:112, airControl:1.12, fireRange:1120
     },
     blu:{
       id:'blu', name:'BLU', title:'Blu', role:'Lutador dos ventos',
       description:'Blu se movimenta com leveza e dispara uma esfera de vento rápida, que atravessa vários adversários.',
       assets:{idle:'sprites/blu_idle.png',right:'sprites/blu_idle.png',left:'sprites/blu_idle.png',punch:'sprites/blu_punch.png',launcher:'sprites/blu_launcher.png',jump:'sprites/blu_jump.png',projectile:'projectiles/wind_ball.png'},
-      square:['square/blu.png','squares/blu.png'], rare:['square/blu_rare.png','squares/blu_rare.png'], jumpPower:14.0, projectileType:'wind', punchReach:92, punchCooldown:.38, fireRange:560
+      square:['square/blu.png','squares/blu.png'], rare:['square/blu_rare.png','squares/blu_rare.png'], jumpPower:14.0, projectileType:'wind', punchReach:92, punchCooldown:0, fireRange:560
     },
     beterraba:{
       id:'beterraba', name:'BETERRABA', title:'Beterraba', role:'Atirador de rajada',
       description:'Beterraba dispara três balas em sequência simultânea, com pouca dispersão. É um personagem de pressão à distância.',
       assets:{idle:'sprites/beterraba_idle.png',right:'sprites/beterraba_walk.png',left:'sprites/beterraba_walk.png',punch:'sprites/beterraba_punch.png',launcher:'sprites/beterraba_launcher.png',jump:'sprites/beterraba_jump.png',projectile:'projectiles/bullet.png'},
-      square:['square/beterraba.png','squares/beterraba.png'], rare:['square/beterraba_rare.png','squares/beterraba_rare.png'], jumpPower:13.2, projectileType:'bullet', punchReach:88, punchCooldown:.39, fireRange:700
+      square:['square/beterraba.png','squares/beterraba.png'], rare:['square/beterraba_rare.png','squares/beterraba_rare.png'], jumpPower:13.2, projectileType:'bullet', punchReach:88, punchCooldown:0, fireRange:700
     },
     allinone:{
       id:'allinone', name:'ALL IN ONE', title:'Tudo em Um', role:'Controlador de água',
       description:'Seus socos e projéteis de água desaceleram os adversários por 1 segundo.',
       assets:{idle:'sprites/wooper_idle.png',right:'sprites/wooper_right.png',left:'sprites/wooper_left.png',punch:'sprites/wooper_punch.png',launcher:'sprites/wooper_launcher.png',jump:'sprites/wooper_jump.png',projectile:'projectiles/water.png'},
-      square:['square/allinone.png'], rare:['square/allinone_rare.png'], jumpPower:13.8, projectileType:'water', punchReach:94, punchCooldown:.4, fireRange:680
+      square:['square/allinone.png'], rare:['square/allinone_rare.png'], jumpPower:13.8, projectileType:'water', punchReach:94, punchCooldown:0, fireRange:680
     },
     bombasticus:{
       id:'bombasticus', name:'BOMBASTICUS', title:'Bombasticus', role:'Especialista em explosões',
       description:'Arremessa uma bomba rasteira que rola pela arena e explode em área, causando alto knockback.',
       assets:{idle:'sprites/bombasticus_idle.png',right:'sprites/bombasticus_right.png',left:'sprites/bombasticus_left.png',punch:'sprites/bombasticus_punch.png',launcher:'sprites/bombasticus_launcher.png',jump:'sprites/bombasticus_jump.png',projectile:'projectiles/bomb.png'},
-      square:['square/bombasticus.png'], rare:['square/bombasticus_rare.png'], jumpPower:13.4, projectileType:'bomb', punchReach:90, punchCooldown:.4, fireRange:1250
+      square:['square/bombasticus.png','squares/bombasticus.png'], rare:['square/bombasticus_rare.png','squares/bombasticus_rare.png'], jumpPower:13.4, projectileType:'bomb', punchReach:90, punchCooldown:0, fireRange:1250
+    },
+    exudos:{
+      id:'exudos', name:'BODE EXUDOS', title:'Bode Exudos', role:'Controlador de confusão',
+      description:'Dispara xícaras de chá. Cada acerto tem 20% de chance de inverter os controles do adversário por 2 segundos. Seu soco tem o mesmo alcance do Robô Gamer.',
+      assets:{idle:'sprites/exudos_idle.png',right:'sprites/exudos_right.png',left:'sprites/exudos_left.png',punch:'sprites/exudos_punch.png',launcher:'sprites/exudos_launcher.png',jump:'sprites/exudos_jump.png',projectile:'projectiles/weed_tea.png'},
+      square:['squares/exudos.png','square/exudos.png'], rare:['squares/exudos_rare.png','square/exudos_rare.png'], jumpPower:13.2, projectileType:'weedTea', punchReach:122, punchCooldown:0, fireRange:720
+    },
+    jhon:{
+      id:'jhon', name:'JHON PLACE', title:'Jhon Place', role:'Lutador veloz',
+      description:'É um pouco mais rápido que os demais e lança uma coroa em formato de bumerangue, que retorna depois de avançar.',
+      assets:{idle:'sprites/jhon_idle.png',right:'sprites/jhon_right.png',left:'sprites/jhon_left.png',punch:'sprites/jhon_punch.png',launcher:'sprites/jhon_launcher.png',jump:'sprites/jhon_jump.png',projectile:'projectiles/crown.png'},
+      square:['squares/jhon.png','square/jhon.png'], rare:['squares/jhon_rare.png','square/jhon_rare.png'], jumpPower:13.2, projectileType:'boomerang', punchReach:90, punchCooldown:0, speedMultiplier:1.16, fireRange:780
+    },
+    ragdoll:{
+      id:'ragdoll', name:'RAGDOLL', title:'Ragdoll', role:'Condutor de tempestades',
+      description:'Salta tão alto quanto Wubbox. Seu raio marca o adversário e, 0,4 segundo depois, chama um relâmpago do céu que o arremessa.',
+      assets:{idle:'sprites/ragdoll_idle.png',right:'sprites/ragdoll_right.png',left:'sprites/ragdoll_left.png',punch:'sprites/ragdoll_punch.png',launcher:'sprites/ragdoll_launcher.png',jump:'sprites/ragdoll_jump.png',projectile:'projectiles/thunderbolt.png'},
+      square:['squares/ragdoll.png','square/ragdoll.png'], rare:['squares/ragdoll_rare.png','square/ragdoll_rare.png'], jumpPower:17.4, projectileType:'thunderbolt', punchReach:90, punchCooldown:0, fireRange:760
     },
     havocthorn:{
       id:'havocthorn', name:'HAVOCTHORN', title:'Havocthorn', role:'Chefe jogável',
-      description:'Um chefe jogável: hitbox ampliada, resistência a knockback e ataques que empurram mais. É pesado, mas não imune a impactos.',
-      assets:{idle:'sprites/havoc_idle.png',right:'sprites/havoc_right.png',left:'sprites/havoc_left.png',punch:'sprites/havoc_punch.png',launcher:'sprites/havoc_launcher.png',jump:'sprites/havoc_jump.png',projectile:'projectiles/havocthorn.png'},
-      square:['square/havocthorn.png'], rare:['square/havocthorn_rare.png'], jumpPower:12.8, projectileType:'havoc', punchReach:112, punchCooldown:.48, fireRange:760,
+      description:'Um chefe jogável: hitbox ampliada, resistência a knockback e ataques que empurram mais. Dispara um mini projétil de energia que aumenta o tempo de recarga dos disparos do inimigo atingido por 2 segundos.',
+      assets:{idle:'sprites/havoc_idle.png',right:'sprites/havoc_right.png',left:'sprites/havoc_left.png',punch:'sprites/havoc_punch.png',launcher:'sprites/havoc_launcher.png',jump:'sprites/havoc_jump.png',projectile:'projectiles/mini_havoc.png'},
+      square:['square/havocthorn.png'], rare:['square/havocthorn_rare.png'], jumpPower:12.8, projectileType:'havoc', punchReach:112, punchCooldown:0, fireRange:760,
       bossCharacter:true,bossDamageMultiplier:1.18,bossKnockbackResistance:.62,bossSpeedMultiplier:.88
     }
   };
@@ -1177,8 +1369,8 @@
     if(!src)return [];
     if(fighterId==='gamer'&&key!=='projectile'){
       const legacy=fighter.legacyAssets?.[key];
-      if(useLegacyRoboSprites&&legacy)return [legacy,legacy.slice(0,-4)+'.pnf'];
-      return [src,...(legacy?[legacy,legacy.slice(0,-4)+'.pnf']:[])];
+      if(useLegacyRoboSprites&&legacy)return [legacy,src];
+      return [src,...(legacy?[legacy]:[])];
     }
     return [src];
   }
@@ -1218,6 +1410,7 @@
       // Compatibilidade de nomes: o retrato pode usar o prefixo havoc ou all_in_one.
       if(fighterId==='havocthorn')names.push(original.replace(/havocthorn/g,'havoc'));
       if(fighterId==='allinone')names.push(original.replace(/allinone/g,'all_in_one'));
+      if(fighterId==='jhon')names.push(original.replace(/jhon/g,'jhon_place'));
       // Testa os dois caminhos de pasta para cada nome, mantendo square/ como principal.
       for(const name of names){
         candidates.push(name);
@@ -1321,35 +1514,78 @@
   if(isTouchDevice())document.body.classList.add('touch-capable');
   $('#layoutOptions').addEventListener('click',e=>{const b=e.target.closest('[data-layout]');if(b)applyLayoutMode(b.dataset.layout);});
   window.addEventListener('resize',()=>{if(layoutMode==='auto')applyLayoutMode('auto');});
+  let mobileControlStyle='dpad';
+  try{const savedControlStyle=localStorage.getItem('communityClashControlStyle');if(savedControlStyle==='joystick')mobileControlStyle='joystick';}catch(e){}
+  function applyControlStyle(style){
+    mobileControlStyle=style==='joystick'?'joystick':'dpad';
+    document.body.classList.toggle('control-joystick',mobileControlStyle==='joystick');
+    document.body.classList.toggle('control-dpad',mobileControlStyle==='dpad');
+    $$('#controlStyleOptions [data-control-style]').forEach(b=>b.classList.toggle('active',b.dataset.controlStyle===mobileControlStyle));
+    try{localStorage.setItem('communityClashControlStyle',mobileControlStyle);}catch(e){}
+  }
+  $('#controlStyleOptions').addEventListener('click',e=>{const b=e.target.closest('[data-control-style]');if(b)applyControlStyle(b.dataset.controlStyle);});
+  applyControlStyle(mobileControlStyle);
 
-  // Roster: todos os lutadores cadastrados em FIGHTERS estão disponíveis.
+  // Grade de seleção no estilo de jogos de luta: 25 casas quadradas,
+  // personagens conhecidos, espaços futuros com ?, e Havocthorn no centro.
   function buildRoster(){
     const grid=$('#rosterGrid');grid.innerHTML='';
-    const normalIds=availableFighterIds().filter(id=>id!=='havocthorn');
-    const totalAvailable=normalIds.length+(unlockedHavocthorn?1:0);
-    $('#rosterCount').textContent=`${totalAvailable} / 13 DISPONÍVEIS`;
-    for(let i=0;i<13;i++){
-      const tile=document.createElement('button');tile.type='button';tile.className='fighter-tile '+((i<normalIds.length||(i===12&&unlockedHavocthorn))?'available':'locked');
-      const fighterId=i===12?(unlockedHavocthorn?'havocthorn':null):(normalIds[i]||null);
-      if(fighterId){
-        const fighter=FIGHTERS[fighterId],rareRoll=forceRareSquares||Math.random()<.02;
-        tile.dataset.fighterId=fighterId;tile.dataset.rare=rareRoll?'1':'0';
-        tile.setAttribute('aria-label',fighter.title);
-        const img=document.createElement('img');img.alt=fighter.name;img.draggable=false;
-        setImageWithFallback(img,squarePaths(fighterId,rareRoll),()=>{img.remove();tile.classList.add('asset-missing');tile.dataset.fallback=fighter.name.charAt(0);});
-        tile.appendChild(img);
-        const tag=document.createElement('span');tag.className='tile-tag';tag.textContent=(rareRoll?'RARO • ':'')+fighter.name;tile.appendChild(tag);
-        if(fighterId==='havocthorn')tile.classList.add('boss-unlock-tile');
-        tile.addEventListener('click',()=>onFighterTap(tile));
-      }else{
-        tile.textContent='?';tile.setAttribute('aria-label',i===12?'Havocthorn bloqueado':'Personagem bloqueado');
-        tile.addEventListener('click',()=>{
-          $('#selectStatus').textContent=i===12?'Use o código HAVOCTHORN nas configurações para liberar este chefe.':'Este personagem ainda está bloqueado';
-          tile.animate([{transform:'translateX(0)'},{transform:'translateX(-3px)'},{transform:'translateX(3px)'},{transform:'translateX(0)'}],{duration:180});
-        });
+    const normalIds=Object.keys(FIGHTERS).filter(id=>id!=='havocthorn');
+    const normalPositions=[[1,1],[1,2],[1,4],[1,5],[2,1],[2,2],[2,4],[2,5],[3,1],[3,2],[3,4]];
+    $('#rosterCount').textContent=`${normalIds.length+(unlockedHavocthorn?1:0)} LUTADORES`;
+    let fighterIndex=0;
+    for(let row=1;row<=5;row++){
+      for(let col=1;col<=5;col++){
+        const tile=document.createElement('button');tile.type='button';
+        tile.className='fighter-tile locked';tile.style.gridRow=String(row);tile.style.gridColumn=String(col);
+        if(row===3&&col===3){
+          tile.classList.add('boss-slot');
+          if(unlockedHavocthorn){
+            addRosterFighter(tile,'havocthorn',true);
+          }else{
+            tile.classList.add('boss-locked');tile.setAttribute('aria-label','Havocthorn bloqueado');tile.title='Havocthorn bloqueado';
+            const skull=document.createElement('span');skull.className='havoc-skull';skull.setAttribute('aria-hidden','true');tile.appendChild(skull);
+            tile.addEventListener('click',()=>{
+              $('#selectStatus').textContent='Ative “Havocthorn jogável” nas Configurações para liberar este chefe.';
+              tile.animate([{transform:'translateX(0)'},{transform:'translateX(-3px)'},{transform:'translateX(3px)'},{transform:'translateX(0)'}],{duration:180});
+            });
+          }
+        }else{
+          const positionIndex=normalPositions.findIndex(([r,c])=>r===row&&c===col);
+          if(positionIndex>=0&&fighterIndex<normalIds.length){
+            addRosterFighter(tile,normalIds[fighterIndex++],false);
+          }else{
+            tile.classList.add('future-slot');tile.textContent='?';tile.setAttribute('aria-label','Espaço reservado para personagem futuro');tile.title='Personagem futuro';
+            tile.addEventListener('click',()=>{
+              $('#selectStatus').textContent='Espaço reservado para um futuro personagem.';
+              tile.animate([{transform:'scale(1)'},{transform:'scale(.94)'},{transform:'scale(1)'}],{duration:160});
+            });
+          }
+        }
+        grid.appendChild(tile);
       }
-      grid.appendChild(tile);
     }
+  }
+  function addRosterFighter(tile,fighterId,isBoss){
+    const fighter=FIGHTERS[fighterId];
+    if(!fighter)return;
+    const rareRoll=forceRareSquares||Math.random()<.02;
+    tile.className='fighter-tile available'+(isBoss?' boss-slot boss-unlock-tile':'');
+    if(rareRoll)tile.classList.add('rare-square');
+    tile.dataset.fighterId=fighterId;tile.dataset.rare=rareRoll?'1':'0';
+    tile.setAttribute('aria-label',fighter.title);tile.title=fighter.title;
+    const img=document.createElement('img');img.alt=fighter.name;img.draggable=false;
+    setImageWithFallback(img,squarePaths(fighterId,rareRoll),()=>{img.remove();tile.classList.add('asset-missing');tile.dataset.fallback=fighter.name.charAt(0);});
+    tile.appendChild(img);
+    tile.addEventListener('click',()=>onFighterTap(tile));
+  }
+  function showFighterPreview(fighterId){
+    const fighter=FIGHTERS[fighterId]||FIGHTERS.migton;
+    $('#previewName').textContent=fighter.title;
+    $('#previewRole').textContent=fighter.role;
+    $('#previewHint').textContent=fighter.description;
+    const preview=$('#previewSprite');preview.style.display='';preview.dataset.assetMissing='';
+    setImageWithFallback(preview,spritePaths(fighter.id,'idle'),()=>{preview.style.display='none';});
   }
   function onFighterTap(tile){
     const fighterId=tile.dataset.fighterId;
@@ -1359,12 +1595,9 @@
     previewed=true;confirmed=true;
     $$('.fighter-tile').forEach(t=>t.classList.remove('is-preview','is-confirmed'));
     tile.classList.add('is-confirmed');
-    $('#previewName').textContent=fighter.title;
-    $('#previewRole').textContent=fighter.role;
-    $('#previewHint').textContent=fighter.description+' Personagem escolhido.';
-    const preview=$('#previewSprite');preview.style.display='';preview.dataset.assetMissing='';setImageWithFallback(preview,spritePaths(fighterId,'idle'),()=>{preview.style.display='none';$('#selectStatus').textContent='Sprite ausente: confira os arquivos da pasta sprites/';});
+    showFighterPreview(fighterId);
     $('#mapSelectedName').textContent=fighter.name;
-    $('#selectStatus').textContent=fighter.name+(selectedSquareRare?' raro':'')+' confirmado • escolha uma arena';
+    $('#selectStatus').textContent='Personagem confirmado • escolha uma arena';
     $('#startMatchBtn').disabled=false;$('#startMatchBtn').textContent='Escolher mapa';
   }
   function setHumanCount(n){
@@ -1412,9 +1645,11 @@
     setHumanCount(fighterCount);
   }
   function openCharacterSelect(mode){
+    if(!availableFighterIds().includes(selectedFighterId))selectedFighterId='migton';
     buildRoster();previewed=false;confirmed=false;lastTileTap=0;
     $('#startMatchBtn').disabled=true;$('#startMatchBtn').textContent='Escolher mapa';
-    $('#selectStatus').textContent='Toque em um lutador disponível para confirmar';
+    $('#selectStatus').textContent='Toque em um quadrado para confirmar seu personagem';
+    showFighterPreview(selectedFighterId);
     setBattleMode(mode);showScreen('select');
   }
   function buildTowerSelection(){
@@ -1458,31 +1693,46 @@
       const img=new Image();setImageWithFallback(img,spritePaths('gamer',key));images.gamer[key]=img;
     }
   }
-  function redeemGameCode(){
-    const code=$('#gameCodeInput').value.trim().toUpperCase();
-    const status=$('#gameCodeStatus');
-    if(!code){status.textContent='Digite um código.';status.dataset.state='error';return;}
-    if(code==='HAVOCTHORN'){
-      unlockedHavocthorn=true;try{localStorage.setItem('communityClashHavocthornUnlocked','1');}catch(e){}
-      status.textContent='HAVOCTHORN ativado. O 13º quadrado agora libera o chefe jogável.';
-    }else if(code==='OLDROBOGAMER'){
-      useLegacyRoboSprites=true;try{localStorage.setItem('communityClashOldRoboGamer','1');}catch(e){}
-      refreshGamerSpriteBank();
-      status.textContent='OLDROBOGAMER ativado. Os sprites antigos do Robô Gamer foram restaurados.';
-    }else if(code==='VERYVERYRARE'){
-      forceRareSquares=true;try{localStorage.setItem('communityClashAllRare','1');}catch(e){}
-      status.textContent='VERYVERYRARE ativado. Todos os quadrados usarão as versões raras disponíveis.';
-    }else{
-      status.textContent='Código inválido.';status.dataset.state='error';return;
+  function refreshRosterAfterFeatureChange(){
+    if(!screens.select.classList.contains('active'))return;
+    const previous=selectedFighterId,wasConfirmed=confirmed;
+    if(previous==='havocthorn'&&!unlockedHavocthorn){
+      selectedFighterId='migton';selectedSquareRare=false;selectedSquareAsset='';confirmed=false;previewed=false;
     }
-    status.dataset.state='success';$('#gameCodeInput').value='';
-    if(screens.select.classList.contains('active')){
-      const previous=selectedFighterId;buildRoster();
-      const tile=$(`#rosterGrid [data-fighter-id="${previous}"]`);if(tile)onFighterTap(tile);
+    buildRoster();
+    const preferred=selectedFighterId;
+    const tile=$$('#rosterGrid [data-fighter-id]').find(item=>item.dataset.fighterId===preferred);
+    if(tile&&wasConfirmed)onFighterTap(tile);
+    else{
+      showFighterPreview(preferred);
+      $('#selectStatus').textContent='Toque em um quadrado para confirmar seu personagem';
+      $('#startMatchBtn').disabled=true;
+      $$('.fighter-tile').forEach(item=>item.classList.remove('is-preview','is-confirmed'));
     }
   }
-  $('#redeemCodeBtn').addEventListener('click',redeemGameCode);
-  $('#gameCodeInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();redeemGameCode();}});
+  function persistFeatureOptions(){
+    try{
+      localStorage.setItem('communityClashHavocthornUnlocked',unlockedHavocthorn?'1':'0');
+      localStorage.setItem('communityClashOldRoboGamer',useLegacyRoboSprites?'1':'0');
+      localStorage.setItem('communityClashAllRare',forceRareSquares?'1':'0');
+    }catch(e){}
+  }
+  function syncFeatureOptionInputs(){
+    $('#settingHavocthornPlayable').checked=unlockedHavocthorn;
+    $('#settingLegacyRoboSprites').checked=useLegacyRoboSprites;
+    $('#settingRareSquares').checked=forceRareSquares;
+  }
+  $('#settingHavocthornPlayable').addEventListener('change',e=>{
+    unlockedHavocthorn=e.currentTarget.checked;persistFeatureOptions();refreshRosterAfterFeatureChange();
+  });
+  $('#settingLegacyRoboSprites').addEventListener('change',e=>{
+    useLegacyRoboSprites=e.currentTarget.checked;persistFeatureOptions();refreshGamerSpriteBank();
+    refreshRosterAfterFeatureChange();
+  });
+  $('#settingRareSquares').addEventListener('change',e=>{
+    forceRareSquares=e.currentTarget.checked;persistFeatureOptions();refreshRosterAfterFeatureChange();
+  });
+  syncFeatureOptionInputs();
   $('#backMainBtn').addEventListener('click',()=>showScreen(battleMode==='tower'?'tower':'main'));
   $('#backSelectBtn').addEventListener('click',()=>showScreen('select'));
   $('#mapBackToSelectBtn').addEventListener('click',()=>showScreen('select'));
@@ -1591,7 +1841,8 @@
   }
   function makeFighter(id,isHuman,slot,forcedFighterId=null){
     const fighterIds=availableFighterIds();
-    const fighterId=isHuman?selectedFighterId:(forcedFighterId||fighterIds[Math.floor(Math.random()*fighterIds.length)]);
+    const botFighterIds=Object.keys(FIGHTERS).filter(candidate=>candidate!=='havocthorn');
+    const fighterId=isHuman?selectedFighterId:(forcedFighterId||(botFighterIds[Math.floor(Math.random()*botFighterIds.length)]||'migton'));
     const fighter=FIGHTERS[fighterId]||FIGHTERS.migton;
     const rare=isHuman?selectedSquareRare:(forceRareSquares||Math.random()<.02);
     const bossTraits=!!fighter.bossCharacter;
@@ -1601,7 +1852,7 @@
       normalSquareAsset:firstSquarePath(fighterId,false), squareRare:rare, team:battleMode==='teams'?(id<2?0:1):id,
       x:300+id*220, y:logicalH*.77, vx:0,vy:0,w:bossTraits?104:54,h:bossTraits?122:70, facing:id%2?1:-1,
       damage:0,stocks:3,kills:0,alive:true,respawn:0,invuln:0,
-      attackCd:0,fireCd:0,attackTimer:0,launcherTimer:0,hitStun:0,paralyze:0,slow:0,slowFactor:1,lastHitBy:-1,
+      attackCd:0,fireCd:0,fireRateDebuffTimer:0,fireRateDebuffMultiplier:1.7,attackTimer:0,launcherTimer:0,attackDirection:'forward',hitStun:0,paralyze:0,slow:0,slowFactor:1,invertedControls:0,burnTimer:0,burnElapsed:0,lastHitBy:-1,
       onGround:false,dropThroughPlatform:-1,walkTime:Math.random()*500,aiThink:Math.random()*.25,aiTarget:-1,aiJumpCd:.25+Math.random()*.4,aiMoveDir:0,isBoss:false,bossTraits
     };
   }
@@ -1627,7 +1878,7 @@
       const forcedBoss=towerMode&&i===1?resolvedBossId:null;
       fighters.push(makeFighter(i,i===0,i,forcedBoss));
     }
-    game={fighters,projectiles:[],particles:[],time:0,last:0,paused:false,ended:false,groundY:logicalH*.77,platforms:makePlatforms(),feed:[],shake:0,matchCount:total,hudTimer:0,mapId:selectedMap,towerMode,towerLevel:level,towerTotalFloors:totalFloors,towerDifficulty,towerBossId:resolvedBossId,towerBosses:towerRunBosses.slice(),trainingMode:battleMode==='training',readyTimer:2.7,readyStage:''};
+    game={fighters,projectiles:[],particles:[],lightningWarnings:[],lightningBolts:[],time:0,last:0,paused:false,ended:false,groundY:logicalH*.77,platforms:makePlatforms(),feed:[],shake:0,matchCount:total,hudTimer:0,mapId:selectedMap,towerMode,towerLevel:level,towerTotalFloors:totalFloors,towerDifficulty,towerBossId:resolvedBossId,towerBosses:towerRunBosses.slice(),trainingMode:battleMode==='training',readyTimer:2.7,readyStage:''};
     if(towerMode){
       const boss=game.fighters[1];
       boss.isBoss=true;boss.label=`CHEFE ${level}/${totalFloors}`;boss.fighterName=`${FIGHTERS[boss.fighterId].name} · CHEFE`;
@@ -1649,10 +1900,10 @@
     $('#pauseBtn').textContent='Ⅱ PAUSAR';
     setHumanCount(fighterCount);
     $('#matchInfo').textContent = towerMode ? `TORRE ${tier.label} • CHEFE ${level}/${totalFloors} • ${MAPS[selectedMap].name.toUpperCase()}` : battleMode==='training' ? `CAMPO DE TREINAMENTO • ${MAPS[selectedMap].name.toUpperCase()}` : `${battleMode==='teams'?'2V2':'VS'} • ${BOT_DIFFICULTIES[botDifficulty].label} • ${MAPS[selectedMap].name.toUpperCase()}`;
-    const fireLabels={wubbox:'NOTA MUSICAL',gamer:'BOLA SOMBRIA',davi:'NOVELO',blu:'RAJADA DE VENTO',beterraba:'TRÊS BALAS',migton:'BOLA DE FOGO',allinone:'ÁGUA',bombasticus:'BOMBA',havocthorn:'ENERGIA'};
+    const fireLabels={wubbox:'NOTA MUSICAL',gamer:'BOLA SOMBRIA',davi:'NOVELO',blu:'RAJADA DE VENTO',beterraba:'TRÊS BALAS',migton:'BOLA DE FOGO',allinone:'ÁGUA',bombasticus:'BOMBA',exudos:'XÍCARA',jhon:'COROA',ragdoll:'RAIO',havocthorn:'ENERGIA'};
     $('#fireButtonLabel').textContent=fireLabels[selectedFighterId]||'PROJÉTIL';
     $('#punchButton').textContent=selectedFighterId==='davi'?'GARRAS':selectedFighterId==='beterraba'?'SOCO':'SOCO';
-    $('#controlsHint').textContent=`PC: A/D mover · ESPAÇO pular · ${keyLabel(keyMap[0].down)} descer · ${keyLabel(keyMap[0].punch)} soco · ${keyLabel(keyMap[0].fire)} projétil`;
+    $('#controlsHint').textContent=`PC: A/D mover · ${keyLabel(keyMap[0].up)} mirar cima · ${keyLabel(keyMap[0].jump)} pular · ${keyLabel(keyMap[0].down)} mirar baixo/descer · ${keyLabel(keyMap[0].punch)} soco · ${keyLabel(keyMap[0].fire)} projétil`;
     showScreen('game');
     resizeCanvas();
     game.fighters.forEach((p,i)=>{p.spawnX=logicalW*spawnX[i];p.x=p.spawnX;p.y=game.groundY;});
@@ -1662,16 +1913,16 @@
     raf=requestAnimationFrame(loop);
   }
 
-  const DEFAULT_P1_KEYS={left:'KeyA',right:'KeyD',jump:'Space',punch:'KeyJ',fire:'KeyK',down:'KeyS'};
+  const DEFAULT_P1_KEYS={left:'KeyA',right:'KeyD',up:'KeyW',jump:'Space',punch:'KeyJ',fire:'KeyK',down:'KeyS'};
   const keyMap=[
     {...DEFAULT_P1_KEYS},
-    {left:'ArrowLeft',right:'ArrowRight',jump:'ArrowUp',punch:'Numpad1',fire:'Numpad2'},
-    {left:'KeyJ',right:'KeyL',jump:'KeyI',punch:'KeyU',fire:'KeyO'},
-    {left:'KeyF',right:'KeyH',jump:'KeyT',punch:'KeyG',fire:'KeyY'}
+    {left:'ArrowLeft',right:'ArrowRight',up:'ArrowUp',jump:'Numpad0',punch:'Numpad1',fire:'Numpad2',down:'ArrowDown'},
+    {left:'KeyJ',right:'KeyL',up:'KeyI',jump:'KeyI',punch:'KeyU',fire:'KeyO',down:'KeyK'},
+    {left:'KeyF',right:'KeyH',up:'KeyT',jump:'KeyT',punch:'KeyG',fire:'KeyY',down:'KeyG'}
   ];
   const keys=new Set();
   const pressed=new Set();
-  const KEY_ACTIONS=['left','right','jump','punch','fire','down'];
+  const KEY_ACTIONS=['left','right','up','jump','punch','fire','down'];
   // Input helpers: keep held movement separate from one-shot actions.
   function hasControl(slot,action){
     const code=keyMap[slot]?.[action];
@@ -1717,7 +1968,7 @@
       e.preventDefault();
       if(code==='Escape'){rebindingAction=null;$('#keybindStatus').textContent='Alteração cancelada.';refreshKeybinds();return;}
       const conflict=KEY_ACTIONS.find(action=>action!==rebindingAction&&keyMap[0][action]===code);
-      if(conflict){$('#keybindStatus').textContent='Essa tecla já está em uso por '+({left:'Esquerda',right:'Direita',jump:'Pular',punch:'Soco',fire:'Projétil',down:'Descer plataforma'}[conflict])+'.';return;}
+      if(conflict){$('#keybindStatus').textContent='Essa tecla já está em uso por '+({left:'Esquerda',right:'Direita',up:'Cima / mirar',jump:'Pular',punch:'Soco',fire:'Projétil',down:'Baixo / descer'}[conflict])+'.';return;}
       keyMap[0][rebindingAction]=code;rebindingAction=null;saveKeybinds();refreshKeybinds();$('#keybindStatus').textContent='Atalho salvo.';
       $('#controlsHint').textContent=`PC: A/D mover · ${keyLabel(keyMap[0].jump)} pular · ${keyLabel(keyMap[0].down)} descer · ${keyLabel(keyMap[0].punch)} soco · ${keyLabel(keyMap[0].fire)} projétil`;
       return;
@@ -1729,44 +1980,101 @@
   },{passive:false});
   window.addEventListener('keyup',e=>{keys.delete(e.code);});
 
-  // Multi-touch: cada dedo tem seu próprio ponteiro; deslizar no D-pad troca a direção sem soltar.
-  const touchHeld={left:false,right:false};
+  // Multi-touch: o D-pad e o joystick alimentam o mesmo conjunto de direções.
+  const touchHeld={left:false,right:false,up:false,down:false};
   const activeTouchPointers=new Map();
   const touchRoot=$('#touchControls');
+  const joystickBase=$('#joystickBase'),joystickKnob=$('#joystickKnob');
+  const joystickHeld={left:false,right:false,up:false,down:false};
+  let joystickPointerId=null;
+  let touchDownComboUsed=false;
+  function resetJoystick(){
+    joystickPointerId=null;Object.keys(joystickHeld).forEach(k=>joystickHeld[k]=false);
+    if(joystickKnob)joystickKnob.style.transform='translate(0,0)';
+    refreshTouchPointers();
+  }
+  function updateJoystickAt(clientX,clientY){
+    if(!joystickBase)return;
+    const rect=joystickBase.getBoundingClientRect(),cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
+    const max=Math.max(10,rect.width*.32),dx=clientX-cx,dy=clientY-cy,dist=Math.hypot(dx,dy),scale=dist>max?max/dist:1;
+    const x=dx*scale,y=dy*scale,threshold=rect.width*.14;
+    joystickHeld.left=x<-threshold;joystickHeld.right=x>threshold;joystickHeld.up=y<-threshold;joystickHeld.down=y>threshold;
+    if(joystickKnob)joystickKnob.style.transform=`translate(${x}px,${y}px)`;
+    refreshTouchPointers();
+  }
   function refreshTouchPointers(){
     const actions=[...activeTouchPointers.values()].map(v=>v.action);
-    touchHeld.left=actions.includes('left');touchHeld.right=actions.includes('right');
-    $$('.touch-btn').forEach(btn=>btn.classList.toggle('pressed',actions.includes(btn.dataset.control)));
+    touchHeld.left=actions.includes('left')||joystickHeld.left;touchHeld.right=actions.includes('right')||joystickHeld.right;
+    touchHeld.up=actions.includes('up')||joystickHeld.up;touchHeld.down=actions.includes('down')||joystickHeld.down;
+    $$('.touch-btn').forEach(btn=>btn.classList.toggle('pressed',actions.includes(btn.dataset.control)||!!joystickHeld[btn.dataset.control]));
+  }
+  function humanAimDirection(p){
+    const slot=p.slot??0;
+    let up=hasControl(slot,'up')||(p.isHuman&&slot===0&&touchHeld.up);
+    let down=hasControl(slot,'down')||(p.isHuman&&slot===0&&touchHeld.down);
+    if(p.invertedControls>0){const swap=up;up=down;down=swap;}
+    if(up&&!down)return 'up';if(down&&!up)return 'down';return 'forward';
+  }
+  function mappedAttackAction(p,rawAction){
+    if(p.invertedControls>0){if(rawAction==='punch')return 'fire';if(rawAction==='fire')return 'punch';}
+    return rawAction;
+  }
+  function executeHumanAttack(p,rawAction){
+    const action=mappedAttackAction(p,rawAction),aim=humanAimDirection(p);
+    if(action==='punch')punch(p,aim);else if(action==='fire')shoot(p,aim);
   }
   function triggerTouchAction(action){
     if(!game||game.paused||game.ended)return;
     const p=game.fighters[0];if(!p||!p.alive)return;
-    if(action==='jump')jump(p);else if(action==='down')dropThroughPlatform(p);else if(action==='punch')punch(p);else if(action==='fire')shoot(p);
+    if(action==='jump')jump(p);
+    else if(action==='punch'||action==='fire'){
+      if(touchHeld.down||touchHeld.up)touchDownComboUsed=true;
+      executeHumanAttack(p,action);
+    }
   }
   function getTouchButtonAt(x,y){
     const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('#touchControls .touch-btn'):null;
   }
   touchRoot.addEventListener('pointerdown',e=>{
+    if(e.target.closest('#joystickBase')){e.preventDefault();joystickPointerId=e.pointerId;try{joystickBase.setPointerCapture(e.pointerId);}catch(err){}updateJoystickAt(e.clientX,e.clientY);return;}
     const btn=e.target.closest('.touch-btn');if(!btn)return;
-    e.preventDefault();
-    try{touchRoot.setPointerCapture(e.pointerId);}catch(err){}
+    e.preventDefault();try{touchRoot.setPointerCapture(e.pointerId);}catch(err){}
     const action=btn.dataset.control;activeTouchPointers.set(e.pointerId,{action});
-    if(!['left','right'].includes(action))triggerTouchAction(action);
+    if(!['left','right','up','down'].includes(action))triggerTouchAction(action);
     refreshTouchPointers();
   });
   touchRoot.addEventListener('pointermove',e=>{
+    if(joystickPointerId===e.pointerId){e.preventDefault();updateJoystickAt(e.clientX,e.clientY);return;}
     if(!activeTouchPointers.has(e.pointerId))return;
     e.preventDefault();
     const btn=getTouchButtonAt(e.clientX,e.clientY),nextAction=btn?btn.dataset.control:null;
-    const prev=activeTouchPointers.get(e.pointerId)?.action;
-    if(prev===nextAction)return;
+    const prev=activeTouchPointers.get(e.pointerId)?.action;if(prev===nextAction)return;
     activeTouchPointers.set(e.pointerId,{action:nextAction});
-    if(nextAction&&!['left','right'].includes(nextAction))triggerTouchAction(nextAction);
+    if(nextAction&&!['left','right','up','down'].includes(nextAction))triggerTouchAction(nextAction);
     refreshTouchPointers();
   });
-  const finishTouch=e=>{if(activeTouchPointers.delete(e.pointerId))refreshTouchPointers();};
+  const finishTouch=e=>{
+    if(joystickPointerId===e.pointerId){
+      const releasedDown=joystickHeld.down,releasedUp=joystickHeld.up;
+      const p=game?.fighters[0];
+      resetJoystick();
+      const dropInput=p&&((releasedDown&&p.invertedControls<=0)||(releasedUp&&p.invertedControls>0));
+      if(dropInput&&!touchDownComboUsed&&game&&!game.paused&&!game.ended)dropThroughPlatform(p);
+      if(!touchHeld.down&&!touchHeld.up)touchDownComboUsed=false;
+      return;
+    }
+    const held=activeTouchPointers.get(e.pointerId)?.action;
+    if(activeTouchPointers.delete(e.pointerId)){
+      refreshTouchPointers();
+      if((held==='down'||held==='up')&&!touchDownComboUsed&&game&&!game.paused&&!game.ended){
+        const p=game.fighters[0],dropInput=p&&((held==='down'&&p.invertedControls<=0)||(held==='up'&&p.invertedControls>0));
+        if(dropInput)dropThroughPlatform(p);
+      }
+      if(!touchHeld.down&&!touchHeld.up)touchDownComboUsed=false;
+    }
+  };
   touchRoot.addEventListener('pointerup',finishTouch);touchRoot.addEventListener('pointercancel',finishTouch);touchRoot.addEventListener('lostpointercapture',finishTouch);
-  window.addEventListener('blur',()=>{keys.clear();pressed.clear();activeTouchPointers.clear();refreshTouchPointers();});
+  window.addEventListener('blur',()=>{keys.clear();pressed.clear();activeTouchPointers.clear();resetJoystick();refreshTouchPointers();});
 
   function jump(p){
     if(!p.alive||p.respawn>0)return;
@@ -1782,74 +2090,74 @@
     p.vy=Math.max(3.8,p.vy||0);
     return true;
   }
-  function punch(p){
-    if(!p.alive||p.respawn>0||p.attackCd>0)return;
+  function punch(p,aim='forward'){
+    if(!p.alive||p.respawn>0)return;
     const fighter=FIGHTERS[p.fighterId]||FIGHTERS.migton;
     const daviAir=p.fighterId==='davi'&&!p.onGround;
     const reach=daviAir?(fighter.airPunchReach||132):(fighter.punchReach||86);
     const vertical=daviAir?(fighter.airPunchVertical||112):65;
     const damage=daviAir?(fighter.airPunchDamage||11):8;
-    p.attackCd=fighter.punchCooldown||.37;p.attackTimer=daviAir ? .24 : .18;
+    p.attackCd=0;p.attackTimer=daviAir ? .24 : .18;p.attackDirection=aim;
     const clawColor=p.fighterId==='davi'?'#d6dce8':p.fighterId==='gamer'?'#a98cff':'#ff9f5a';
-    spawnBurst(p.x+p.facing*reach*.42,p.y-(daviAir?48:40),clawColor,daviAir?9:5);
-    // Davi's claws gain range, height and force while airborne.
+    const burstX=aim==='forward'?p.x+p.facing*reach*.42:p.x;
+    const burstY=aim==='up'?p.y-p.h*.9:aim==='down'?p.y-8:p.y-(daviAir?48:40);
+    spawnBurst(burstX,burstY,clawColor,daviAir?9:5);
     for(const t of game.fighters){
       if(t===p||!t.alive||t.respawn>0||t.invuln>0||(battleMode==='teams'&&t.team===p.team))continue;
-      const dx=t.x-p.x,dy=(t.y-t.h/2)-(p.y-p.h/2);
-      const hurtbox=fighterHurtbox(t);
-      if(Math.abs(dx)<reach+hurtbox.halfW&&Math.abs(dy)<vertical+hurtbox.halfH*.3&&dx*p.facing>0){
-        hit(t,p,damage,daviAir?9.1:8.4,daviAir?-7.1:-6.0);
-      }
+      const dx=t.x-p.x,dy=(t.y-t.h/2)-(p.y-p.h/2),hurtbox=fighterHurtbox(t);
+      let connected=false,kx=8.4,ky=-6.0;
+      if(aim==='up'){connected=Math.abs(dx)<reach*.72+hurtbox.halfW&&dy<-12&&Math.abs(dy)<reach+hurtbox.halfH*.35;kx=4.8;ky=-9.4;}
+      else if(aim==='down'){connected=Math.abs(dx)<reach*.72+hurtbox.halfW&&dy>12&&Math.abs(dy)<reach+hurtbox.halfH*.35;kx=4.8;ky=8.6;}
+      else connected=Math.abs(dx)<reach+hurtbox.halfW&&Math.abs(dy)<vertical+hurtbox.halfH*.3&&dx*p.facing>0;
+      if(connected)hit(t,p,damage,daviAir?9.1:kx,daviAir?-7.1:ky,aim==='forward'?null:p.x);
     }
   }
-  function shoot(p){
+  function launchProjectile(p,shot,aim='forward'){
+    if(aim==='up'||aim==='down'){
+      const speed=Math.max(7,Math.hypot(shot.vx||0,shot.vy||0));
+      shot.x=p.x+p.facing*8;shot.y=p.y-p.h*.62;shot.vx=(shot.verticalSpread||0)*speed;
+      shot.vy=(aim==='up'?-1:1)*speed;shot.verticalShot=true;shot.verticalGravity=shot.type==='bomb'?.78:(shot.gravity??.28);
+      shot.aimDir=aim;shot.rotation=aim==='up'?-Math.PI/2:Math.PI/2;
+      if(shot.type==='bomb')shot.rollDirection=p.facing;
+      if(shot.type==='boomerang'){shot.startX=shot.x;shot.startY=shot.y;shot.returning=false;}
+    }else{shot.rotation=0;shot.aimDir='forward';}
+    shot.startX=shot.startX??shot.x;shot.startY=shot.startY??shot.y;
+    game.projectiles.push(shot);
+  }
+  function setFireCooldown(p,baseCooldown){
+    const penalty=p.fireRateDebuffTimer>0?(p.fireRateDebuffMultiplier||1.7):1;
+    p.fireCd=baseCooldown*penalty;
+  }
+  function shoot(p,aim='forward'){
     if(!p.alive||p.respawn>0||p.fireCd>0)return;
     p.launcherTimer=.2;
     const x=p.x+p.facing*37,y=p.y-45;
     if(p.fighterId==='wubbox'){
-      // Nota musical: alcance curto, trajetória reta e rastreamento vertical sutil.
-      p.fireCd=.68;
-      game.projectiles.push({type:'music',x,y,vx:p.facing*8.7,vy:0,owner:p.id,life:1.08,r:15,damage:9});
-      spawnBurst(x,y,'#b8a1ff',7);
+      setFireCooldown(p,.68);launchProjectile(p,{type:'music',x,y,vx:p.facing*8.7,vy:0,owner:p.id,life:1.08,r:15,damage:9},aim);spawnBurst(x,y,'#b8a1ff',7);
     }else if(p.fighterId==='gamer'){
-      // Bola sombria: longa distância, dano superior e chance de paralisia no impacto.
-      p.fireCd=.67;
-      game.projectiles.push({type:'shadow',x,y,vx:p.facing*11.4,vy:0,owner:p.id,life:2.55,r:19,damage:12,paralyzeChance:.15});
-      spawnBurst(x,y,'#9d79ff',9);
+      setFireCooldown(p,.67);launchProjectile(p,{type:'shadow',x,y,vx:p.facing*11.4,vy:0,owner:p.id,life:2.55,r:19,damage:12,paralyzeChance:.15},aim);spawnBurst(x,y,'#9d79ff',9);
     }else if(p.fighterId==='davi'){
-      // Novelo pesado: gravidade alta e quique constante no mesmo plano do chão.
-      const gravity=.82, bounceHeight=78;
-      p.fireCd=.82;
-      game.projectiles.push({type:'wool',x,y:p.onGround?y:y-13,vx:p.facing*10.7,vy:-1.8,owner:p.id,life:4.5,r:20,damage:13,gravity,bounceFloor:game.groundY-14,bounceVy:-Math.sqrt(2*gravity*bounceHeight),range:1120,traveled:0,bounces:0,maxBounces:12});
-      spawnBurst(x,y,'#e5e7eb',10);
+      const gravity=.82,bounceHeight=78;setFireCooldown(p,.82);
+      launchProjectile(p,{type:'wool',x,y:p.onGround?y:y-13,vx:p.facing*10.7,vy:-1.8,owner:p.id,life:4.5,r:20,damage:13,gravity,bounceFloor:game.groundY-14,bounceVy:-Math.sqrt(2*gravity*bounceHeight),range:1120,traveled:0,bounces:0,maxBounces:12},aim);spawnBurst(x,y,'#e5e7eb',10);
     }else if(p.fighterId==='blu'){
-      // Vento veloz e perfurante: atravessa cada adversário uma vez, sem desaparecer no primeiro acerto.
-      p.fireCd=.72;
-      game.projectiles.push({type:'wind',x,y,vx:p.facing*18.4,vy:0,age:0,owner:p.id,life:2.35,r:16,damage:9.2,pierce:true,hitTargets:[],maxHits:5});
-      spawnBurst(x,y,'#b7d9ed',10);
+      setFireCooldown(p,.72);launchProjectile(p,{type:'wind',x,y,vx:p.facing*18.4,vy:0,age:0,owner:p.id,life:2.35,r:16,damage:9.2,pierce:true,hitTargets:[],maxHits:5},aim);spawnBurst(x,y,'#b7d9ed',10);
     }else if(p.fighterId==='beterraba'){
-      // Três balas em leque curto, com dispersão pequena e dano individual moderado.
-      p.fireCd=.92;
-      for(const spread of [-.045,0,.045]){
-        game.projectiles.push({type:'bullet',x,y,vx:p.facing*14.2,vy:spread*14.2,owner:p.id,life:2.05,r:8,damage:5.5});
-      }
-      spawnBurst(x,y,'#bb5b58',7);
+      setFireCooldown(p,.92);for(const spread of [-.045,0,.045])launchProjectile(p,{type:'bullet',x,y,vx:p.facing*14.2,vy:spread*14.2,verticalSpread:spread,owner:p.id,life:2.05,r:8,damage:5.5},aim);spawnBurst(x,y,'#bb5b58',7);
     }else if(p.fighterId==='allinone'){
-      p.fireCd=.72;
-      game.projectiles.push({type:'water',x,y,vx:p.facing*11.1,vy:-.25,owner:p.id,life:2.25,r:18,damage:8.5});
-      spawnBurst(x,y,'#8cdde8',11);
+      setFireCooldown(p,.72);launchProjectile(p,{type:'water',x,y,vx:p.facing*11.1,vy:-.25,owner:p.id,life:2.25,r:18,damage:8.5},aim);spawnBurst(x,y,'#8cdde8',11);
     }else if(p.fighterId==='bombasticus'){
-      p.fireCd=1.08;
-      // A bomba nasce na mão/peito do Bombasticus, inclusive durante um salto.
-      // Ela recebe gravidade imediatamente e só começa a rolar depois de tocar uma superfície.
-      const bombX=p.x+p.facing*(p.w*.5+7);
-      const bombY=p.y-p.h*.56;
-      game.projectiles.push({type:'bomb',x:bombX,y:bombY,vx:p.facing*10.2,vy:0,gravity:.78,grounded:false,owner:p.id,life:3.0,r:16,damage:18,groundY:null,maxDistance:1180,traveled:0,rotation:0});
-      spawnBurst(bombX,bombY,'#d9b18a',10);
+      setFireCooldown(p,1.08);const bombX=p.x+p.facing*(p.w*.5+7),bombY=p.y-p.h*.56;
+      launchProjectile(p,{type:'bomb',x:bombX,y:bombY,vx:p.facing*10.2,vy:0,gravity:.78,grounded:false,owner:p.id,life:3.0,r:16,damage:18,groundY:null,maxDistance:1180,traveled:0,rotation:0},aim);spawnBurst(bombX,bombY,'#d9b18a',10);
+    }else if(p.fighterId==='exudos'){
+      setFireCooldown(p,.82);launchProjectile(p,{type:'weedTea',x,y,vx:p.facing*10.4,vy:-.15,owner:p.id,life:2.4,r:17,damage:9,invertChance:.2},aim);spawnBurst(x,y,'#b1b98d',9);
+    }else if(p.fighterId==='jhon'){
+      setFireCooldown(p,.88);launchProjectile(p,{type:'boomerang',x,y,vx:p.facing*12.5,vy:0,owner:p.id,life:3.2,r:18,damage:10,phase:'out',returning:false,traveled:0,maxDistance:410,age:0,spin:0,pierce:true,hitTargets:[],maxHits:4},aim);spawnBurst(x,y,'#e8cf83',8);
+    }else if(p.fighterId==='ragdoll'){
+      setFireCooldown(p,.9);launchProjectile(p,{type:'thunderbolt',x,y,vx:p.facing*11.2,vy:0,owner:p.id,life:2.0,r:17,damage:0},aim);spawnBurst(x,y,'#bdeaff',10);
+    }else if(p.fighterId==='havocthorn'){
+      setFireCooldown(p,.94);launchProjectile(p,{type:'havocBolt',x,y,vx:p.facing*10.3,vy:-.1,owner:p.id,life:2.25,r:19,damage:12,fireDebuffDuration:2},aim);spawnBurst(x,y,'#a9c8e8',12);
     }else{
-      p.fireCd=.56;
-      game.projectiles.push({type:'fireball',x,y,vx:p.facing*10.8,vy:-.7,owner:p.id,life:2.0,r:18,damage:10});
-      spawnBurst(x,y,'#ffb34d',8);
+      setFireCooldown(p,.56);launchProjectile(p,{type:'fireball',x,y,vx:p.facing*10.8,vy:-.7,owner:p.id,life:2.0,r:18,damage:10},aim);spawnBurst(x,y,'#ffb34d',8);
     }
   }
   function hit(target,attacker,damage,kx,ky,impactX=null){
@@ -1871,6 +2179,9 @@
     }
     const bonus=attacker.fighterId==='migton'&&Math.random()<.15;
     if(bonus){knockX*=1.42;knockY*=1.22;spawnBurst(target.x,target.y-42,'#ff9d55',17);}
+    if(attacker.fighterId==='migton'&&Math.random()<.20){target.burnTimer=3;target.burnElapsed=0;spawnBurst(target.x,target.y-target.h*.55,'#ff743b',18);}
+    const burningKnockback=target.burnTimer>0?1+Math.min(3,target.burnElapsed||0)*.02:1;
+    knockX*=burningKnockback;knockY*=burningKnockback;
     // Chefes acumulam parte do impulso anterior: resistem ao empurrão, mas não ficam imóveis.
     if(targetBoss){
       target.vx=Math.max(-17,Math.min(17,(target.vx||0)*.68+dir*knockX*power*.88));
@@ -1911,19 +2222,37 @@
 
   function updateHuman(p,dt){
     const s=p.slot;let dir=0;
-    if(hasControl(s,'left'))dir--;if(hasControl(s,'right'))dir++;
-    if(s===0){if(touchHeld.left)dir--;if(touchHeld.right)dir++;if(consumeControl(s,'down'))dropThroughPlatform(p);}
+    const left=hasControl(s,'left')||(s===0&&touchHeld.left),right=hasControl(s,'right')||(s===0&&touchHeld.right);
+    if(left)dir--;if(right)dir++;
+    if(p.invertedControls>0)dir=-dir;
+    const downPressed=consumeControl(s,'down'),upPressed=consumeControl(s,'up');
+    const dropCommand=p.invertedControls>0?upPressed:downPressed;
+    if(dropCommand&&!hasControl(s,'punch')&&!hasControl(s,'fire'))dropThroughPlatform(p);
     const fs=Math.min(3,dt*60);
     const fighter=FIGHTERS[p.fighterId]||FIGHTERS.migton;
     const airControl=!p.onGround?(fighter.airControl||1):1;
     const slowFactor=p.slow>0?(p.slowFactor||.56):1;
     const bossMove=fighter.bossCharacter?.88:1;
-    if(dir!==0){p.vx+=dir*.78*airControl*slowFactor*bossMove*fs;p.facing=dir>0?1:-1;}else p.vx*=Math.pow(p.onGround?.79:.988,fs);
-    const maxSpeed=6.5*(!p.onGround?(fighter.airControl||1):1)*slowFactor*bossMove;
+    const speedFactor=fighter.speedMultiplier||1;
+    if(dir!==0){p.vx+=dir*.78*airControl*slowFactor*bossMove*speedFactor*fs;p.facing=dir>0?1:-1;}else p.vx*=Math.pow(p.onGround?.79:.988,fs);
+    const maxSpeed=6.5*(!p.onGround?(fighter.airControl||1):1)*slowFactor*bossMove*speedFactor;
     p.vx=Math.max(-maxSpeed,Math.min(maxSpeed,p.vx));
     if(consumeControl(s,'jump'))jump(p);
-    if(consumeControl(s,'punch'))punch(p);
-    if(consumeControl(s,'fire'))shoot(p);
+    if(consumeControl(s,'punch'))executeHumanAttack(p,'punch');
+    if(consumeControl(s,'fire'))executeHumanAttack(p,'fire');
+  }
+  // A IA compensa a inversão: emite o comando oposto e o efeito o converte
+  // no movimento/ataque pretendido, evitando que bots fiquem presos ou ataquem errado.
+  function executeBotCommand(p,desiredAction,desiredAim='forward'){
+    const inverted=p.invertedControls>0;
+    let rawAction=desiredAction,rawAim=desiredAim;
+    if(inverted){
+      rawAction=desiredAction==='punch'?'fire':'punch';
+      rawAim=desiredAim==='up'?'down':desiredAim==='down'?'up':desiredAim;
+    }
+    const actualAction=inverted?(rawAction==='punch'?'fire':'punch'):rawAction;
+    const actualAim=inverted?(rawAim==='up'?'down':rawAim==='down'?'up':rawAim):rawAim;
+    if(actualAction==='punch')punch(p,actualAim);else shoot(p,actualAim);
   }
   function updateBot(p,dt){
     const bossRules={novato:'medium',medio:'medium',veterano:'hard',insano:'spicy'};
@@ -1949,7 +2278,7 @@
       p.facing=direction;
       const nearEdge=p.x<115||p.x>logicalW-115;
       const fighter=FIGHTERS[p.fighterId]||FIGHTERS.migton;
-      const idealGap=p.fighterId==='gamer'?220:p.fighterId==='wubbox'?165:p.fighterId==='davi'?145:p.fighterId==='blu'?175:p.fighterId==='beterraba'?270:105;
+      const idealGap=p.fighterId==='gamer'?220:p.fighterId==='wubbox'?165:p.fighterId==='davi'?145:p.fighterId==='blu'?175:p.fighterId==='beterraba'?270:p.fighterId==='jhon'?135:p.fighterId==='exudos'?235:p.fighterId==='ragdoll'?205:105;
 
       if(nearEdge&&((p.x<logicalW/2&&p.vx<0)||(p.x>logicalW/2&&p.vx>0))){
         p.aiMoveDir=p.x<logicalW/2?1:-1;
@@ -1969,8 +2298,9 @@
       // Ataques dependem da dificuldade e da distância; não há acerto garantido.
       const punchRange=(p.fighterId==='davi'&&!p.onGround?(fighter.airPunchReach||132):(fighter.punchReach||86))+(difficultyKey==='easy'?-8:(difficultyKey==='hard'||difficultyKey==='spicy')?8:0);
       const punchHeight=p.fighterId==='davi'&&!p.onGround?(fighter.airPunchVertical||112):76;
-      if(dist<punchRange&&Math.abs(dy)<punchHeight&&p.attackCd<=0&&Math.random()<rules.punchChance){
-        punch(p);
+      const aimDirection=dy<-62?'up':dy>82?'down':'forward';
+      if(dist<punchRange&&Math.abs(dy)<punchHeight&&Math.random()<rules.punchChance){
+        executeBotCommand(p,'punch',aimDirection);
       }else{
         let inShotRange=false,verticalLimit=125;
         if(p.fighterId==='wubbox')inShotRange=dist>100&&dist<300;
@@ -1978,8 +2308,11 @@
         else if(p.fighterId==='davi')inShotRange=dist>115&&dist<(fighter.fireRange||1120);
         else if(p.fighterId==='blu')inShotRange=dist>115&&dist<(fighter.fireRange||560);
         else if(p.fighterId==='beterraba')inShotRange=dist>175&&dist<(fighter.fireRange||700);
+        else if(p.fighterId==='exudos')inShotRange=dist>145&&dist<(fighter.fireRange||720);
+        else if(p.fighterId==='jhon')inShotRange=dist>100&&dist<(fighter.fireRange||780);
+        else if(p.fighterId==='ragdoll')inShotRange=dist>145&&dist<(fighter.fireRange||760);
         else inShotRange=dist>125&&dist<440;
-        if(inShotRange&&Math.abs(dy)<verticalLimit&&p.fireCd<=0&&Math.random()<rules.fireChance)shoot(p);
+        if(inShotRange&&Math.abs(dy)<verticalLimit&&p.fireCd<=0&&Math.random()<rules.fireChance)executeBotCommand(p,'fire',aimDirection);
       }
     }
 
@@ -1987,9 +2320,11 @@
     const fighter=FIGHTERS[p.fighterId]||{};
     const slowFactor=p.slow>0?(p.slowFactor||.56):1;
     const bossFactor=p.isBoss?(p.bossSpeedMultiplier||.9):(fighter.bossCharacter?(fighter.bossSpeedMultiplier||.88):1);
-    if(p.aiMoveDir){p.vx+=p.aiMoveDir*rules.accel*bossFactor*slowFactor*fs;}
+    const rawBotMove=p.invertedControls>0?-p.aiMoveDir:p.aiMoveDir;
+    const effectiveBotMove=p.invertedControls>0?-rawBotMove:rawBotMove;
+    if(effectiveBotMove){p.vx+=effectiveBotMove*rules.accel*bossFactor*slowFactor*(fighter.speedMultiplier||1)*fs;}
     else{p.vx*=Math.pow(p.onGround?.78:.94,fs);}
-    const maxBotSpeed=rules.speed*bossFactor*slowFactor;
+    const maxBotSpeed=rules.speed*bossFactor*slowFactor*(fighter.speedMultiplier||1);
     p.vx=Math.max(-maxBotSpeed,Math.min(maxBotSpeed,p.vx));
     p.aiJumpCd=Math.max(0,p.aiJumpCd-dt);
     const target=game.fighters[p.aiTarget];
@@ -2007,7 +2342,7 @@
       }
       return;
     }
-    p.attackCd=Math.max(0,p.attackCd-dt);p.fireCd=Math.max(0,p.fireCd-dt);p.attackTimer=Math.max(0,p.attackTimer-dt);p.launcherTimer=Math.max(0,p.launcherTimer-dt);p.hitStun=Math.max(0,p.hitStun-dt);p.paralyze=Math.max(0,(p.paralyze||0)-dt);p.slow=Math.max(0,(p.slow||0)-dt);if(p.slow<=0)p.slowFactor=1;p.invuln=Math.max(0,p.invuln-dt);
+    p.attackCd=0;p.fireCd=Math.max(0,p.fireCd-dt);p.fireRateDebuffTimer=Math.max(0,(p.fireRateDebuffTimer||0)-dt);p.attackTimer=Math.max(0,p.attackTimer-dt);p.launcherTimer=Math.max(0,p.launcherTimer-dt);p.hitStun=Math.max(0,p.hitStun-dt);p.paralyze=Math.max(0,(p.paralyze||0)-dt);p.slow=Math.max(0,(p.slow||0)-dt);if(p.slow<=0)p.slowFactor=1;p.invertedControls=Math.max(0,(p.invertedControls||0)-dt);if(p.invertedControls<=0)p.invertedControls=0;if(p.burnTimer>0){p.burnTimer=Math.max(0,p.burnTimer-dt);p.burnElapsed=(p.burnElapsed||0)+dt;}else p.burnElapsed=0;p.invuln=Math.max(0,p.invuln-dt);
     const frozen=p.paralyze>0;
     if(frozen){p.vx=0;p.vy=0;}
     else if(p.hitStun<=0){if(p.isHuman)updateHuman(p,dt);else updateBot(p,dt);}else p.vx*=.985;
@@ -2075,11 +2410,77 @@
     while($('#killFeed').children.length>4)$('#killFeed').lastElementChild.remove();
     setTimeout(()=>el.remove(),4400);
   }
+  function updateLightningEffects(dt){
+    if(!game)return;
+    for(const warning of game.lightningWarnings){
+      warning.timer-=dt;
+      if(warning.timer<=0){
+        const target=game.fighters[warning.targetId],owner=game.fighters[warning.ownerId];
+        if(target&&owner&&target.alive&&target.respawn<=0&&target.invuln<=0){
+          const box=fighterHurtbox(target);
+          hit(target,owner,8.5,13.5,-11.5,target.x);
+          game.lightningBolts.push({x:target.x,yTop:0,yBottom:box.top,life:.22,maxLife:.22,seed:(target.id+1)*13});
+          spawnBurst(target.x,box.top,'#c7f0ff',22);game.shake=Math.max(game.shake,8);
+        }
+        warning.done=true;
+      }
+    }
+    game.lightningWarnings=game.lightningWarnings.filter(w=>!w.done);
+    for(const bolt of game.lightningBolts)bolt.life-=dt;
+    game.lightningBolts=game.lightningBolts.filter(b=>b.life>0);
+  }
+  function drawLightningEffects(){
+    if(!game)return;
+    for(const warning of game.lightningWarnings){
+      const target=game.fighters[warning.targetId];if(!target||!target.alive)continue;
+      const pulse=.55+.35*Math.sin(game.time*25);ctx.save();ctx.strokeStyle=`rgba(190,232,255,${pulse})`;ctx.lineWidth=3;ctx.beginPath();ctx.arc(target.x,target.y-target.h*.55,23+Math.sin(game.time*18)*3,0,Math.PI*2);ctx.stroke();ctx.restore();
+    }
+    for(const bolt of game.lightningBolts){
+      const alpha=Math.max(0,bolt.life/bolt.maxLife);ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle='#d8f6ff';ctx.lineWidth=7;ctx.shadowColor='#74cfff';ctx.shadowBlur=18;ctx.beginPath();
+      const steps=9,dx=(bolt.x%71)-35;ctx.moveTo(bolt.x+dx*.3,0);for(let i=1;i<=steps;i++){const yy=bolt.yBottom*i/steps;const xx=bolt.x+Math.sin(i*9.3+bolt.seed)*17;ctx.lineTo(xx,yy);}ctx.stroke();ctx.strokeStyle='#ffffff';ctx.lineWidth=2.5;ctx.stroke();ctx.restore();
+    }
+  }
   function updateProjectiles(dt){
     const frameScale=Math.min(3,dt*60);
+    updateLightningEffects(dt);
     for(const b of game.projectiles){
       b.life-=dt;
-      if(b.type==='music'){
+      if(b.type==='boomerang'){
+        b.age=(b.age||0)+dt;b.spin=(b.spin||0)+.42*frameScale;
+        if(!b.returning){
+          if(b.verticalShot){b.vy+=(b.verticalGravity||.22)*frameScale;b.rotation=b.vy<0?-Math.PI/2:Math.PI/2;}
+          b.x+=b.vx*frameScale;b.y+=b.vy*frameScale;b.traveled=(b.traveled||0)+Math.hypot(b.vx,b.vy)*frameScale;
+          if(b.traveled>=(b.maxDistance||410)||b.age>.78)b.returning=true;
+        }
+        if(b.returning){
+          const owner=game.fighters[b.owner];
+          if(!owner){b.life=0;}else{
+            const dx=owner.x-b.x,dy=(owner.y-owner.h*.55)-b.y,dist=Math.max(1,Math.hypot(dx,dy));
+            b.vx=dx/dist*14.2;b.vy=dy/dist*14.2;b.x+=b.vx*frameScale;b.y+=b.vy*frameScale;b.rotation=Math.atan2(b.vy,b.vx)+b.spin;
+            if(dist<34)b.life=0;
+          }
+        }else if(!b.verticalShot)b.rotation=b.spin;
+      }else if(b.verticalShot&&b.type!=='bomb'){
+        // Tiro vertical mantém os comportamentos próprios: rastreamento musical,
+        // oscilação do vento e ricochetes do novelo continuam ativos.
+        if(b.type==='music'){
+          const owner=game.fighters[b.owner];let target=null,best=Infinity;
+          if(owner)for(const t of game.fighters){
+            if(!t.alive||t.respawn>0||t.id===b.owner||t.invuln>0||(battleMode==='teams'&&t.team===owner.team))continue;
+            const d=Math.hypot(t.x-b.x,(t.y-t.h*.5)-b.y);if(d<best){best=d;target=t;}
+          }
+          if(target)b.vx+=(target.x-b.x)*.00055*frameScale;
+          b.vx=Math.max(-1.2,Math.min(1.2,b.vx));
+        }
+        if(b.type==='wind'){b.age=(b.age||0)+dt;b.x+=Math.sin(b.age*8)*.18*frameScale;}
+        const gravity=b.verticalGravity??(b.gravity??.28);
+        b.vy+=gravity*frameScale;b.x+=b.vx*frameScale;b.y+=b.vy*frameScale;
+        if(b.type==='wool'){
+          b.traveled=(b.traveled||0)+Math.hypot(b.vx,b.vy)*frameScale;
+          if(b.y>=b.bounceFloor&&b.vy>0&&b.bounces<b.maxBounces){b.y=b.bounceFloor;b.vy=b.bounceVy;b.bounces++;}
+        }
+        b.rotation=b.vy<0?-Math.PI/2:Math.PI/2;
+      }else if(b.type==='music'){
         const owner=game.fighters[b.owner];
         if(owner){
           let target=null,best=Infinity;
@@ -2112,22 +2513,23 @@
           b.bounces++;
         }
       }else if(b.type==='bomb'){
-        b.traveled=(b.traveled||0)+Math.abs(b.vx*frameScale);
         const previousY=b.y;
-        b.x+=b.vx*frameScale;
-        b.rotation=(b.rotation||0)+(b.vx<0?-1:1)*.34*frameScale;
         if(!b.grounded){
-          b.vy=Math.min(18,(b.vy||0)+(b.gravity||.78)*frameScale);
-          b.y+=b.vy*frameScale;
+          if(!b.verticalShot){b.x+=b.vx*frameScale;b.rotation=(b.rotation||0)+(b.vx<0?-1:1)*.34*frameScale;}
+          b.vy=Math.min(18,(b.vy||0)+(b.gravity||.78)*frameScale);b.y+=b.vy*frameScale;
+          if(b.verticalShot)b.rotation=b.vy<0?-Math.PI/2:Math.PI/2;
           // A primeira plataforma abaixo da bomba recebe o impacto; depois ela rola nesse nível.
           for(const plat of game.platforms){
             if(previousY+(b.r||16)<=plat.y+3&&b.y+(b.r||16)>=plat.y&&b.vy>=0&&b.x+(b.r||16)>plat.x&&b.x-(b.r||16)<plat.x+plat.w){
-              b.y=plat.y-(b.r||16);b.vy=0;b.grounded=true;b.groundY=b.y;break;
+              b.y=plat.y-(b.r||16);b.vy=0;b.grounded=true;b.groundY=b.y;
+              if(b.verticalShot){b.verticalShot=false;b.vx=(b.rollDirection||1)*7.2;b.rotation=0;}
+              break;
             }
           }
         }else{
-          b.y=b.groundY;
+          b.x+=b.vx*frameScale;b.rotation=(b.rotation||0)+(b.vx<0?-1:1)*.34*frameScale;b.y=b.groundY;
         }
+        b.traveled=(b.traveled||0)+Math.abs(b.vx*frameScale);
         // Detona no fim do alcance, ao sair da arena ou quando o fusível termina.
         if(b.traveled>=(b.maxDistance||1180)||b.life<=0||b.x<-24||b.x>logicalW+24){explodeBomb(b);continue;}
       }else{
@@ -2135,11 +2537,20 @@
       }
       for(const t of game.fighters){
         if(!t.alive||t.respawn>0||t.id===b.owner||t.invuln>0||(battleMode==='teams'&&t.team===game.fighters[b.owner]?.team)||(b.hitTargets&&b.hitTargets.includes(t.id)))continue;
-        const hitRadius=b.type==='bullet'?10:b.type==='wool'?19:b.type==='bomb'?20:b.type==='water'?18:b.type==='music'?15: b.r||18;
+        const hitRadius=b.type==='bullet'?10:b.type==='wool'?19:b.type==='bomb'?20:b.type==='water'?18:b.type==='music'?15:b.type==='boomerang'?20:b.r||18;
         if(circleHitsFighter(b.x,b.y,hitRadius,t)){
           if(b.type==='bomb'){explodeBomb(b);break;}
           const owner=game.fighters[b.owner];if(owner){
-            hit(t,owner,b.damage,b.type==='music'?6.7:b.type==='shadow'?7.6:b.type==='wool'?8.2:b.type==='wind'?7.1:b.type==='bullet'?4.6:7.0,b.type==='music'?-4.6:b.type==='shadow'?-5.2:b.type==='wool'?-6.4:b.type==='wind'?-4.8:b.type==='bullet'?-2.2:-4.8);
+            if(b.type==='thunderbolt'){
+              game.lightningWarnings.push({targetId:t.id,ownerId:owner.id,timer:.4,done:false});spawnBurst(t.x,t.y-t.h*.65,'#c8efff',12);b.life=0;break;
+            }
+            hit(t,owner,b.damage,b.type==='music'?6.7:b.type==='shadow'?7.6:b.type==='wool'?8.2:b.type==='wind'?7.1:b.type==='bullet'?4.6:b.type==='boomerang'?7.8:b.type==='havocBolt'?8.8:7.0,b.type==='music'?-4.6:b.type==='shadow'?-5.2:b.type==='wool'?-6.4:b.type==='wind'?-4.8:b.type==='bullet'?-2.2:b.type==='boomerang'?-5.5:b.type==='havocBolt'?-5.8:-4.8);
+            if(b.type==='havocBolt'){
+              t.fireRateDebuffTimer=Math.max(t.fireRateDebuffTimer||0,b.fireDebuffDuration||2);
+              t.fireCd=Math.min(2.5,(t.fireCd||0)+.45);
+              spawnBurst(t.x,t.y-t.h*.58,'#a9c8e8',16);
+            }
+            if(b.type==='weedTea'&&Math.random()<(b.invertChance||.2)){t.invertedControls=2;spawnBurst(t.x,t.y-t.h*.58,'#b7a6df',20);}
             if(b.type==='shadow'&&Math.random()<(b.paralyzeChance||.15)){
               t.paralyze=1;t.hitStun=Math.max(t.hitStun,1);t.vx=0;t.vy=0;
               spawnBurst(t.x,t.y-t.h*.55,'#a987ff',22);
@@ -2318,7 +2729,7 @@
   function spriteFor(p){
     if(p.respawn>0||!p.alive)return null;
     const bank=images[p.fighterId]||images.migton;
-    if(p.attackTimer>0)return bank.punch;
+    if(p.attackTimer>0)return p.attackDirection&&p.attackDirection!=='forward'?bank.jump:bank.punch;
     if(p.launcherTimer>0)return bank.launcher;
     if(!p.onGround)return bank.jump;
     if(Math.abs(p.vx)>.65){const frame=Math.floor(p.walkTime/0.17);if(p.fighterId==='blu')return bank.idle;if(p.fighterId==='beterraba')return frame%2===0?bank.idle:bank.right;if(p.fighterId==='gamer')return frame%2===0?bank.right:bank.left;if(frame%4===0)return bank.right;if(frame%4===2)return bank.left;return bank.idle;}
@@ -2349,8 +2760,10 @@
       ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(0,-39,17,0,Math.PI*2);ctx.fill();
       ctx.fillStyle='#172044';ctx.fillRect(4,-43,5,4);ctx.restore();
     }
-    // Paralisia do Robô Gamer: anel roxo pulsante ao redor do alvo.
+    // Efeitos de status: paralisia, controles invertidos e queimadura.
     if(p.paralyze>0){ctx.save();ctx.strokeStyle='#bd8aff';ctx.lineWidth=4;ctx.globalAlpha=.72+Math.sin(game.time*20)*.2;ctx.beginPath();ctx.ellipse(p.x,p.y-p.h*.55,34,42,0,0,Math.PI*2);ctx.stroke();ctx.restore();}
+    if(p.invertedControls>0){ctx.save();ctx.strokeStyle='#b9a3e8';ctx.lineWidth=3;ctx.globalAlpha=.55+Math.sin(game.time*18)*.25;ctx.setLineDash([5,5]);ctx.beginPath();ctx.ellipse(p.x,p.y-p.h*.55,39,49,0,0,Math.PI*2);ctx.stroke();ctx.restore();}
+    if(p.burnTimer>0){ctx.save();ctx.globalAlpha=.55+Math.sin(game.time*22)*.2;ctx.strokeStyle='#ff8242';ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(p.x,p.y-p.h*.52,33+Math.sin(game.time*16)*3,46+Math.cos(game.time*14)*3,0,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#ffb34e';for(let i=0;i<5;i++){const fx=p.x+Math.sin(game.time*9+i*2.4)*24,fy=p.y-p.h*.65+Math.cos(game.time*12+i)*12-16;ctx.beginPath();ctx.ellipse(fx,fy,3,8,Math.sin(game.time*7+i),0,Math.PI*2);ctx.fill();}ctx.restore();}
     // Player indicator.
     const labelW=p.isBoss?92:48;ctx.font=p.isBoss?'900 11px system-ui':'900 12px system-ui';ctx.textAlign='center';ctx.fillStyle='rgba(7,12,33,.85)';roundedRect(p.x-labelW/2,p.y-p.h-24,labelW,18,6,ctx.fillStyle,'rgba(255,255,255,.2)');
     ctx.fillStyle=fighterAccent;ctx.fillText(p.label,p.x,p.y-p.h-11);
@@ -2395,13 +2808,13 @@
 
   function drawProjectiles(){
     for(const b of game.projectiles){
-      const music=b.type==='music', shadow=b.type==='shadow', wool=b.type==='wool', wind=b.type==='wind', bullet=b.type==='bullet', water=b.type==='water', bomb=b.type==='bomb';
+      const music=b.type==='music', shadow=b.type==='shadow', wool=b.type==='wool', wind=b.type==='wind', bullet=b.type==='bullet', water=b.type==='water', bomb=b.type==='bomb', boomerang=b.type==='boomerang', tea=b.type==='weedTea', thunderbolt=b.type==='thunderbolt', havocBolt=b.type==='havocBolt';
       const owner=game.fighters[b.owner];
       const img=images[owner?.fighterId||'migton']?.projectile;
       if(img&&img.complete&&img.naturalWidth>0){
-        ctx.save();ctx.translate(b.x,b.y);ctx.rotate(bomb?(b.rotation||0):music?Math.max(-.12,Math.min(.12,b.vy*.035)):Math.atan2(b.vy,b.vx));
-        ctx.shadowColor=music?'#b69cff':shadow?'#9a68ff':wool?'#e7e9ee':wind?'#b5d8ef':bullet?'#d76a64':water?'#76d9ed':bomb?'#d9a86d':'#ff9c42';ctx.shadowBlur=shadow?13:music?5:wool?2:wind?4:bullet?1:water?6:bomb?5:3;
-        const size=music?36:shadow?48:wool?46:wind?42:bullet?18:water?42:bomb?48:44;ctx.drawImage(img,-size/2,-size/2,size,size);ctx.restore();
+        ctx.save();ctx.translate(b.x,b.y);ctx.rotate(bomb?(b.rotation||0):boomerang?(b.rotation||0):b.verticalShot?(b.rotation||0):music?Math.max(-.12,Math.min(.12,b.vy*.035)):Math.atan2(b.vy,b.vx));
+        ctx.shadowColor=music?'#b69cff':shadow?'#9a68ff':wool?'#e7e9ee':wind?'#b5d8ef':bullet?'#d76a64':water?'#76d9ed':bomb?'#d9a86d':boomerang?'#e8cf83':tea?'#b6b88a':thunderbolt?'#bdeaff':havocBolt?'#a9c8e8':'#ff9c42';ctx.shadowBlur=shadow?13:music?5:wool?2:wind?4:bullet?1:water?6:bomb?5:boomerang?9:tea?4:thunderbolt?12:havocBolt?15:3;
+        const size=music?36:shadow?48:wool?46:wind?42:bullet?18:water?42:bomb?48:boomerang?46:tea?42:thunderbolt?44:havocBolt?46:44;ctx.drawImage(img,-size/2,-size/2,size,size);ctx.restore();
       }else if(music){
         ctx.save();ctx.fillStyle='#d5c5ff';ctx.font='bold 38px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor='#9b7cff';ctx.shadowBlur=12;ctx.fillText('♪',b.x,b.y);ctx.restore();
       }else if(shadow){
@@ -2410,6 +2823,14 @@
         ctx.save();ctx.strokeStyle='#b7d9ed';ctx.lineWidth=4;ctx.beginPath();ctx.arc(b.x,b.y,15,game.time*3,game.time*3+Math.PI*1.55);ctx.arc(b.x+3,b.y-2,8,-game.time*4,-game.time*4+Math.PI*1.45);ctx.stroke();ctx.restore();
       }else if(water){
         ctx.save();const g=ctx.createRadialGradient(b.x-4,b.y-5,2,b.x,b.y,21);g.addColorStop(0,'#f2ffff');g.addColorStop(.42,'#8cdeeb');g.addColorStop(1,'rgba(55,151,190,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,21,0,Math.PI*2);ctx.fill();ctx.restore();
+      }else if(boomerang){
+        ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.rotation||0);ctx.fillStyle='#e8cf83';ctx.strokeStyle='#765a2e';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-17,-12);ctx.lineTo(-5,-9);ctx.lineTo(0,-20);ctx.lineTo(6,-9);ctx.lineTo(18,-12);ctx.lineTo(14,2);ctx.lineTo(0,8);ctx.lineTo(-14,2);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
+      }else if(tea){
+        ctx.save();ctx.fillStyle='#d9e3cf';ctx.strokeStyle='#64745a';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect?ctx.roundRect(b.x-12,b.y-10,24,20,5):ctx.rect(b.x-12,b.y-10,24,20);ctx.fill();ctx.stroke();ctx.beginPath();ctx.arc(b.x+13,b.y,7,-Math.PI/2,Math.PI/2);ctx.stroke();ctx.restore();
+      }else if(thunderbolt){
+        ctx.save();ctx.strokeStyle='#d9f4ff';ctx.lineWidth=6;ctx.shadowColor='#6ecbff';ctx.shadowBlur=14;ctx.beginPath();ctx.moveTo(b.x-12,b.y-12);ctx.lineTo(b.x+5,b.y-3);ctx.lineTo(b.x-5,b.y+8);ctx.lineTo(b.x+13,b.y+15);ctx.stroke();ctx.restore();
+      }else if(havocBolt){
+        ctx.save();const glow=ctx.createRadialGradient(b.x-5,b.y-5,2,b.x,b.y,23);glow.addColorStop(0,'#f4fbff');glow.addColorStop(.35,'#a9c8e8');glow.addColorStop(.78,'#547da8');glow.addColorStop(1,'rgba(64,103,150,0)');ctx.fillStyle=glow;ctx.beginPath();ctx.arc(b.x,b.y,23,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#dbeeff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(b.x-9,b.y+1);ctx.lineTo(b.x-1,b.y-7);ctx.lineTo(b.x+4,b.y+1);ctx.lineTo(b.x+11,b.y-5);ctx.stroke();ctx.restore();
       }else if(bomb){
         ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.rotation||0);ctx.fillStyle='#333941';ctx.strokeStyle='#c8a57b';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,16,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#d9b68c';ctx.fillRect(-4,-18,8,5);ctx.strokeStyle='#f2d78a';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(1,-19);ctx.quadraticCurveTo(10,-28,15,-19);ctx.stroke();ctx.restore();
       }else if(bullet){
@@ -2420,14 +2841,14 @@
       }else{
         const g=ctx.createRadialGradient(b.x,b.y,2,b.x,b.y,19);g.addColorStop(0,'#fff7c6');g.addColorStop(.35,'#ffd34e');g.addColorStop(1,'rgba(255,77,35,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,19,0,Math.PI*2);ctx.fill();
       }
-      ctx.globalAlpha=.28;ctx.strokeStyle=music?'#b9a6ff':shadow?'#a987ff':wool?'#d9dce2':wind?'#b5d8ef':bullet?'#d98782':water?'#8cdeeb':bomb?'#d9a86d':'#ffbf69';ctx.lineWidth=shadow?6:music?3:wool?4:wind?4:bullet?2:water?4:bomb?5:5;ctx.beginPath();ctx.moveTo(b.x-b.vx*2,b.y-b.vy*2);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.globalAlpha=1;
+      ctx.globalAlpha=.28;ctx.strokeStyle=music?'#b9a6ff':shadow?'#a987ff':wool?'#d9dce2':wind?'#b5d8ef':bullet?'#d98782':water?'#8cdeeb':bomb?'#d9a86d':boomerang?'#e8cf83':tea?'#b6b88a':thunderbolt?'#bdeaff':havocBolt?'#a9c8e8':'#ffbf69';ctx.lineWidth=shadow?6:music?3:wool?4:wind?4:bullet?2:water?4:bomb?5:boomerang?4:tea?3:thunderbolt?4:havocBolt?5:5;ctx.beginPath();ctx.moveTo(b.x-b.vx*2,b.y-b.vy*2);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.globalAlpha=1;
     }
   }
   function drawParticles(){for(const q of game.particles){ctx.globalAlpha=Math.max(0,q.life/q.max);ctx.fillStyle=q.color;ctx.beginPath();ctx.arc(q.x,q.y,q.size,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;}
   function drawArena(){
     ctx.save();ctx.setTransform(scaleX,0,0,scaleY,0,0);
     if(game.shake>0){const sx=(Math.random()-.5)*game.shake,sy=(Math.random()-.5)*game.shake;ctx.translate(sx,sy);game.shake=Math.max(0,game.shake-.45);}
-    drawBackground();drawStage();drawProjectiles();game.fighters.forEach(drawFighter);drawPlayerPointer();drawParticles();
+    drawBackground();drawStage();drawProjectiles();drawLightningEffects();game.fighters.forEach(drawFighter);drawPlayerPointer();drawParticles();
     // A thin blast-zone reminder.
     ctx.save();ctx.strokeStyle='rgba(255,123,159,.18)';ctx.setLineDash([8,12]);ctx.lineWidth=2;ctx.strokeRect(18,18,logicalW-36,logicalH-36);ctx.restore();
     ctx.restore();
