@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#19283d" />
-<title>COMMUNIY CLASH v0.21</title>
+<title>COMMUNIY CLASH v0.22</title>
 <style>
   :root{--ink:#f7f8ff;--muted:#aeb8da;--cyan:#5de9ff;--blue:#5b79ff;--pink:#ff5c98;--gold:#ffd46b;--panel:rgba(18,25,58,.86)}
   *{box-sizing:border-box}
@@ -1045,6 +1045,15 @@
     .map-actions{flex-basis:30px!important;}
   }
 
+
+  /* v0.22: dois chefes opcionais na seleção e controles de Gloop. */
+  .fighter-tile.gloop-slot{border-color:#669b79!important;background:radial-gradient(circle,#214b39,#111d2d 76%)!important;}
+  .fighter-tile.gloop-slot.boss-unlock-tile{border-color:#92d49e!important;box-shadow:inset 0 0 0 2px rgba(146,212,158,.3),0 0 15px rgba(91,196,120,.18)!important;}
+  .gloop-skull{filter:hue-rotate(78deg) saturate(1.25) drop-shadow(0 3px 3px rgba(0,0,0,.55));}
+  #gameScreen.gloop-player-mode #punchButton,#gameScreen.gloop-player-mode .touch-btn.jump{display:none!important;}
+  #gameScreen.gloop-player-mode .touch-right .touch-btn.fire{grid-column:1 / span 2!important;grid-row:1 / span 2!important;width:100%!important;height:100%!important;min-height:58px!important;}
+  #gameScreen.gloop-player-mode .touch-right{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:minmax(58px,1fr)!important;}
+
 </style>
 </head>
 <body>
@@ -1104,6 +1113,7 @@
       <div class="settings-modal-section feature-options-section"><strong>RECURSOS OPCIONAIS</strong><p>Ative ou desative recursos especiais. As escolhas ficam salvas neste navegador.</p>
         <div class="feature-toggle-list" id="featureToggleList">
           <label class="feature-toggle" for="settingHavocthornPlayable"><input id="settingHavocthornPlayable" type="checkbox"><span><strong>HAVOCTHORN JOGÁVEL</strong><small>Mostra o chefe no quadrado central da seleção de personagens.</small></span></label>
+          <label class="feature-toggle" for="settingGloopPlayable"><input id="settingGloopPlayable" type="checkbox"><span><strong>GLOOP JOGÁVEL</strong><small>Libera Gloop no quadrado de chefe ao lado do Havocthorn.</small></span></label>
           <label class="feature-toggle" for="settingLegacyRoboSprites"><input id="settingLegacyRoboSprites" type="checkbox"><span><strong>ROBÔ GAMER OST</strong><small>Usa os sprites clássicos do Robô Gamer em vez dos novos.</small></span></label>
           <label class="feature-toggle" for="settingRareSquares"><input id="settingRareSquares" type="checkbox"><span><strong>QUADRADOS RAROS</strong><small>Força a versão rara dos quadrados sempre que ela existir.</small></span></label>
         </div>
@@ -1118,7 +1128,7 @@
       <div><div class="eyebrow">Escadaria de desafios</div><h1>Escolha sua <span>torre</span></h1></div>
       <button class="back-btn" id="backTowerMainBtn" type="button">← VOLTAR</button>
     </div>
-    <p class="tower-select-intro">Cada torre tem uma sequência própria, com Havocthorn no último andar. <span id="towerRotationInfo">A rotação muda a cada hora.</span></p>
+    <p class="tower-select-intro">Cada torre tem uma sequência própria, com Havocthorn ou Gloop no último andar. <span id="towerRotationInfo">A rotação muda a cada hora.</span></p>
     <div class="tower-tier-grid" id="towerTierGrid">
       <button class="tower-tier-card" data-tier="novato" type="button"></button>
       <button class="tower-tier-card" data-tier="medio" type="button"></button>
@@ -1148,7 +1158,7 @@
       <div class="settings-panel">
         <div class="players-row"><strong>Combatentes na arena</strong><div class="player-count" id="playerCount"><button class="count-btn active" data-count="2">2</button><button class="count-btn" data-count="3">3</button><button class="count-btn" data-count="4">4</button></div></div>
         <div class="mode-row"><strong>Modo de batalha</strong><div class="mode-pick" id="battleMode"><button class="active" data-mode="ffa">TODOS</button><button data-mode="teams">2V2</button></div></div>
-        <div class="difficulty-row"><strong>Dificuldade dos bots</strong><div class="difficulty-options" id="difficultyOptions"><button data-difficulty="easy">FÁCIL</button><button data-difficulty="medium" class="active">MÉDIO</button><button data-difficulty="hard">DIFÍCIL</button></div></div>
+        <div class="difficulty-row"><strong>Dificuldade dos bots</strong><div class="difficulty-options" id="difficultyOptions"><button data-difficulty="easy">FÁCIL</button><button data-difficulty="medium" class="active">MÉDIO</button><button data-difficulty="hard">DIFÍCIL</button><button data-difficulty="insane">INSANO</button></div></div>
         <div class="difficulty-note" id="difficultyHelp">Médio: bots atentos, mas dão espaço para reagir.</div>
         <div class="player-help" id="playerHelp">Só você na arena. Use para testar os controles.</div>
       </div>
@@ -1249,19 +1259,19 @@
     migton:{
       id:'migton', name:'MIGTON', title:'Mestre do Fogo', role:'Lutador de fogo',
       description:'Migton combina socos de fogo e bolas de fogo. Seus ataques têm 15% de chance de causar knockback extra e 20% de chance de incendiar o alvo por 3 segundos, aumentando o knockback recebido em 2% por segundo.',
-      assets:{idle:'sprites/migton_idle.png',right:'sprites/migton_right.png',left:'sprites/migton_left.png',punch:'sprites/migton_punch.png',launcher:'sprites/migton_launcher.png',jump:'sprites/migton_jump.png',projectile:'projectiles/fireball.png'},
+      assets:{idle:'sprites/migton_idle.png',right:'sprites/migton_right.png',left:'sprites/migton_left.png',altpunch:'sprites/migton_altpunch.png',punch:'sprites/migton_punch.png',launcher:'sprites/migton_launcher.png',jump:'sprites/migton_jump.png',projectile:'projectiles/fireball.png'},
       square:['squares/migton.png'], rare:['squares/migton_rare.png'], jumpPower:13.2, projectileType:'fireball', punchReach:86, punchCooldown:0
     },
     wubbox:{
       id:'wubbox', name:'WUBBOX', title:'Wubbox', role:'Atirador musical',
       description:'Wubbox dispara notas musicais em linha reta, com curto alcance e leve rastreamento. Também salta um pouco mais alto.',
-      assets:{idle:'sprites/wubbox_idle.png',right:'sprites/wubbox_right.png',left:'sprites/wubbox_left.png',punch:'sprites/wubbox_punchlaunch.png',launcher:'sprites/wubbox_punchlaunch.png',jump:'sprites/wubbox_jump.png',projectile:'projectiles/music.png'},
+      assets:{idle:'sprites/wubbox_idle.png',right:'sprites/wubbox_right.png',left:'sprites/wubbox_left.png',altpunch:'sprites/wubbox_altpunch.png',punch:'sprites/wubbox_punchlaunch.png',launcher:'sprites/wubbox_punchlaunch.png',jump:'sprites/wubbox_jump.png',projectile:'projectiles/music.png'},
       square:['square/wubbox.png','squares/wubbox.png'], rare:['square/wubbox_rare.png','squares/wubbox_rare.png'], jumpPower:17.4, projectileType:'music', punchReach:86, punchCooldown:0
     },
     gamer:{
       id:'gamer', name:'ROBÔ GAMER', title:'Robô Gamer', role:'Lutador de longo alcance',
       description:'O Robô Gamer tem um soco de alcance maior, uma bola sombria de longo alcance e 15% de chance de paralisar por 1 segundo.',
-      assets:{idle:'sprites/robo_idle.png',right:'sprites/robo_right.png',left:'sprites/robo_left.png',punch:'sprites/robo_punch.png',launcher:'sprites/robo_launcher.png',jump:'sprites/robo_jump.png',projectile:'projectiles/shadow_ball.png'},
+      assets:{idle:'sprites/robo_idle.png',right:'sprites/robo_right.png',left:'sprites/robo_left.png',altpunch:'sprites/gamer_altpunch.png',punch:'sprites/robo_punch.png',launcher:'sprites/robo_launcher.png',jump:'sprites/robo_jump.png',projectile:'projectiles/shadow_ball.png'},
       legacyAssets:{idle:'sprites/gamer_idle.png',right:'sprites/gamer_right.png',left:'sprites/gamer_left.png',punch:'sprites/gamer_punch.png',launcher:'sprites/gamer_launcher.png',jump:'sprites/gamer_jump.png'},
       square:['square/gamer.png','squares/gamer.png'], rare:['square/gamer_rare.png','squares/gamer_rare.png'], jumpPower:13.2, projectileType:'shadow', punchReach:122, punchCooldown:0, fireRange:590
     },
@@ -1286,37 +1296,50 @@
     allinone:{
       id:'allinone', name:'ALL IN ONE', title:'Tudo em Um', role:'Controlador de água',
       description:'Seus socos e projéteis de água desaceleram os adversários por 1 segundo.',
-      assets:{idle:'sprites/wooper_idle.png',right:'sprites/wooper_right.png',left:'sprites/wooper_left.png',punch:'sprites/wooper_punch.png',launcher:'sprites/wooper_launcher.png',jump:'sprites/wooper_jump.png',projectile:'projectiles/water.png'},
+      assets:{idle:'sprites/wooper_idle.png',right:'sprites/wooper_right.png',left:'sprites/wooper_left.png',altpunch:'sprites/wooper_altpunch.png',punch:'sprites/wooper_punch.png',launcher:'sprites/wooper_launcher.png',jump:'sprites/wooper_jump.png',projectile:'projectiles/water.png'},
       square:['square/allinone.png'], rare:['square/allinone_rare.png'], jumpPower:13.8, projectileType:'water', punchReach:94, punchCooldown:0, fireRange:680
     },
     bombasticus:{
       id:'bombasticus', name:'BOMBASTICUS', title:'Bombasticus', role:'Especialista em explosões',
       description:'Arremessa uma bomba rasteira que rola pela arena e explode em área, causando alto knockback.',
-      assets:{idle:'sprites/bombasticus_idle.png',right:'sprites/bombasticus_right.png',left:'sprites/bombasticus_left.png',punch:'sprites/bombasticus_punch.png',launcher:'sprites/bombasticus_launcher.png',jump:'sprites/bombasticus_jump.png',projectile:'projectiles/bomb.png'},
+      assets:{idle:'sprites/bombasticus_idle.png',right:'sprites/bombasticus_right.png',left:'sprites/bombasticus_left.png',altpunch:'sprites/bombasticus_altpunch.png',punch:'sprites/bombasticus_punch.png',launcher:'sprites/bombasticus_launcher.png',jump:'sprites/bombasticus_jump.png',projectile:'projectiles/bomb.png'},
       square:['square/bombasticus.png','squares/bombasticus.png'], rare:['square/bombasticus_rare.png','squares/bombasticus_rare.png'], jumpPower:13.4, projectileType:'bomb', punchReach:90, punchCooldown:0, fireRange:1250
     },
     exudos:{
       id:'exudos', name:'BODE EXUDOS', title:'Bode Exudos', role:'Controlador de confusão',
       description:'Dispara xícaras de chá. Cada acerto tem 20% de chance de inverter os controles do adversário por 2 segundos. Seu soco tem o mesmo alcance do Robô Gamer.',
-      assets:{idle:'sprites/exudos_idle.png',right:'sprites/exudos_right.png',left:'sprites/exudos_left.png',punch:'sprites/exudos_punch.png',launcher:'sprites/exudos_launcher.png',jump:'sprites/exudos_jump.png',projectile:'projectiles/weed_tea.png'},
+      assets:{idle:'sprites/exudos_idle.png',right:'sprites/exudos_right.png',left:'sprites/exudos_left.png',altpunch:'sprites/exudos_altpunch.png',punch:'sprites/exudos_punch.png',launcher:'sprites/exudos_launcher.png',jump:'sprites/exudos_jump.png',projectile:'projectiles/weed_tea.png'},
       square:['squares/exudos.png','square/exudos.png'], rare:['squares/exudos_rare.png','square/exudos_rare.png'], jumpPower:13.2, projectileType:'weedTea', punchReach:122, punchCooldown:0, fireRange:720
     },
     jhon:{
       id:'jhon', name:'JHON PLACE', title:'Jhon Place', role:'Lutador veloz',
       description:'É um pouco mais rápido que os demais e lança uma coroa em formato de bumerangue, que retorna depois de avançar.',
-      assets:{idle:'sprites/jhon_idle.png',right:'sprites/jhon_right.png',left:'sprites/jhon_left.png',punch:'sprites/jhon_punch.png',launcher:'sprites/jhon_launcher.png',jump:'sprites/jhon_jump.png',projectile:'projectiles/crown.png'},
+      assets:{idle:'sprites/jhon_idle.png',right:'sprites/jhon_right.png',left:'sprites/jhon_left.png',altpunch:'sprites/jhon_altpunch.png',punch:'sprites/jhon_punch.png',launcher:'sprites/jhon_launcher.png',jump:'sprites/jhon_jump.png',projectile:'projectiles/crown.png'},
       square:['squares/jhon.png','square/jhon.png'], rare:['squares/jhon_rare.png','square/jhon_rare.png'], jumpPower:13.2, projectileType:'boomerang', punchReach:90, punchCooldown:0, speedMultiplier:1.16, fireRange:780
     },
     ragdoll:{
       id:'ragdoll', name:'RAGDOLL', title:'Ragdoll', role:'Condutor de tempestades',
       description:'Salta tão alto quanto Wubbox. Seu raio marca o adversário e, 0,4 segundo depois, chama um relâmpago do céu que o arremessa.',
-      assets:{idle:'sprites/ragdoll_idle.png',right:'sprites/ragdoll_right.png',left:'sprites/ragdoll_left.png',punch:'sprites/ragdoll_punch.png',launcher:'sprites/ragdoll_launcher.png',jump:'sprites/ragdoll_jump.png',projectile:'projectiles/thunderbolt.png'},
+      assets:{idle:'sprites/ragdoll_idle.png',right:'sprites/ragdoll_right.png',left:'sprites/ragdoll_left.png',altpunch:'sprites/ragdoll_altpunch.png',punch:'sprites/ragdoll_punch.png',launcher:'sprites/ragdoll_launcher.png',jump:'sprites/ragdoll_jump.png',projectile:'projectiles/thunderbolt.png'},
       square:['squares/ragdoll.png','square/ragdoll.png'], rare:['squares/ragdoll_rare.png','square/ragdoll_rare.png'], jumpPower:17.4, projectileType:'thunderbolt', punchReach:90, punchCooldown:0, fireRange:760
+    },
+    jk:{
+      id:'jk', name:'JK', title:'JK', role:'Feixe perfurante',
+      description:'JK dispara um feixe de luz curto e largo, em formato de cone. O feixe atravessa adversários e causa knockback; não usa sprite de projétil.',
+      assets:{idle:'sprites/jk_idle.png',right:'sprites/jk_right.png',left:'sprites/jk_left.png',punch:'sprites/jk_punch.png',altpunch:'sprites/jk_altpunch.png',launcher:'sprites/jk_launcher.png',jump:'sprites/jk_jump.png'},
+      square:['squares/jk.png','square/jk.png'], rare:['squares/jk_rare.png','square/jk_rare.png'], jumpPower:13.2, punchReach:90, punchCooldown:0, fireRange:380
+    },
+    gloop:{
+      id:'gloop', name:'GLOOP', title:'Gloop', role:'Chefe saltitante',
+      description:'Gloop avança saltando de um lado ao outro, sem perseguir adversários. A partir do estágio 4, dispara slimes que reduzem a velocidade. Cada eliminação faz Gloop avançar de estágio.',
+      assets:{idle:'sprites/gloop_1.png',right:'sprites/gloop_1.png',left:'sprites/gloop_1.png',jump:'sprites/gloop_1.png',punch:'sprites/gloop_1.png',launcher:'sprites/gloop_4.png',stage1:'sprites/gloop_1.png',stage2:'sprites/gloop_2.png',stage3:'sprites/gloop_3.png',stage4:'sprites/gloop_4.png',stage5:'sprites/gloop_5.png',stage6:'sprites/gloop_6.png',stage7:'sprites/gloop_7.png'},
+      square:['squares/gloop.png','square/gloop.png'], rare:[], jumpPower:12.0, projectileType:'gloopSlime', punchReach:0, punchCooldown:0, fireRange:800,
+      bossCharacter:true,bossDamageMultiplier:1.18,bossKnockbackResistance:.62,bossSpeedMultiplier:.9
     },
     havocthorn:{
       id:'havocthorn', name:'HAVOCTHORN', title:'Havocthorn', role:'Chefe jogável',
       description:'Um chefe jogável: hitbox ampliada, resistência a knockback e ataques que empurram mais. Dispara um mini projétil de energia que aumenta o tempo de recarga dos disparos do inimigo atingido por 2 segundos.',
-      assets:{idle:'sprites/havoc_idle.png',right:'sprites/havoc_right.png',left:'sprites/havoc_left.png',punch:'sprites/havoc_punch.png',launcher:'sprites/havoc_launcher.png',jump:'sprites/havoc_jump.png',projectile:'projectiles/mini_havoc.png'},
+      assets:{idle:'sprites/havoc_idle.png',right:'sprites/havoc_right.png',left:'sprites/havoc_left.png',altpunch:'sprites/havoc_altpunch.png',punch:'sprites/havoc_punch.png',launcher:'sprites/havoc_launcher.png',jump:'sprites/havoc_jump.png',projectile:'projectiles/mini_havoc.png'},
       square:['square/havocthorn.png'], rare:['square/havocthorn_rare.png'], jumpPower:12.8, projectileType:'havoc', punchReach:112, punchCooldown:0, fireRange:760,
       bossCharacter:true,bossDamageMultiplier:1.18,bossKnockbackResistance:.62,bossSpeedMultiplier:.88
     }
@@ -1325,32 +1348,31 @@
     novato:{label:'NOVATO',count:3,bot:'medium',speed:.88,resistance:.62,damage:1.04,order:['migton','?','havocthorn'],description:'Três confrontos. Os chefes já reagem como bots de dificuldade média.'},
     medio:{label:'MÉDIO',count:5,bot:'medium',speed:.92,resistance:.59,damage:1.10,order:['wubbox','?','gamer','?','havocthorn'],description:'Cinco confrontos, com mais pressão e chefes resistentes.'},
     veterano:{label:'VETERANO',count:7,bot:'hard',speed:.96,resistance:.56,damage:1.17,order:['davi','?','gamer','blu','?','beterraba','havocthorn'],description:'Sete confrontos. Os chefes usam a dificuldade difícil.'},
-    insano:{label:'INSANO',count:10,bot:'spicy',speed:.98,resistance:.52,damage:1.24,order:['gamer','?','blu','?','wubbox','beterraba','?','davi','migton','havocthorn'],description:'Dez andares. A última subida usa a dificuldade difícil-apimentado.'}
+    insano:{label:'INSANO',count:10,bot:'insane',speed:.98,resistance:.52,damage:1.24,order:['gamer','?','blu','?','wubbox','beterraba','?','davi','migton','havocthorn'],description:'Dez andares. A última subida usa a dificuldade Insano.'}
   };
-  const TOWER_ROTATION_KEY='communityClashTowerRotation_v2';
+  const TOWER_ROTATION_KEY='communityClashTowerRotation_v3';
   let towerRotationData=null;
-  function availableFighterIds(){return Object.keys(FIGHTERS).filter(id=>id!=='havocthorn'||unlockedHavocthorn);}
+  function availableFighterIds(){return Object.keys(FIGHTERS).filter(id=>(id!=='havocthorn'||unlockedHavocthorn)&&(id!=='gloop'||unlockedGloop));}
   function generateTowerRotations(now=Date.now()){
-    const pool=Object.keys(FIGHTERS).filter(id=>id!=='havocthorn');
+    const pool=Object.keys(FIGHTERS).filter(id=>id!=='havocthorn'&&id!=='gloop');
     const tiers={};
     for(const [key,tier] of Object.entries(TOWER_TIERS)){
       const used=new Set();
       tiers[key]=tier.order.map((id,index)=>{
-        if(index===tier.order.length-1)return 'havocthorn';
+        if(index===tier.order.length-1)return Math.random()<.5?'havocthorn':'gloop';
         if(id!=='?'){used.add(id);return id;}
         const fresh=pool.filter(candidate=>!used.has(candidate));
         const choices=fresh.length?fresh:pool;
         const chosen=choices[Math.floor(Math.random()*choices.length)]||'migton';
         used.add(chosen);return chosen;
       });
-      tiers[key][tiers[key].length-1]='havocthorn';
     }
     return {createdAt:now,tiers};
   }
   function loadTowerRotations(){
     let saved=null;
     try{saved=JSON.parse(localStorage.getItem(TOWER_ROTATION_KEY)||'null');}catch(e){}
-    const valid=saved&&Number.isFinite(Number(saved.createdAt))&&saved.tiers&&Object.keys(TOWER_TIERS).every(key=>Array.isArray(saved.tiers[key])&&saved.tiers[key].length===TOWER_TIERS[key].count&&saved.tiers[key][saved.tiers[key].length-1]==='havocthorn');
+    const valid=saved&&Number.isFinite(Number(saved.createdAt))&&saved.tiers&&Object.keys(TOWER_TIERS).every(key=>Array.isArray(saved.tiers[key])&&saved.tiers[key].length===TOWER_TIERS[key].count&&['havocthorn','gloop'].includes(saved.tiers[key][saved.tiers[key].length-1]));
     if(!valid||Date.now()-Number(saved.createdAt)>=3600000||Date.now()<Number(saved.createdAt)){
       towerRotationData=generateTowerRotations();
       try{localStorage.setItem(TOWER_ROTATION_KEY,JSON.stringify(towerRotationData));}catch(e){}
@@ -1360,12 +1382,12 @@
   function getTowerBossSequence(tierKey){
     const data=loadTowerRotations();
     const sequence=data.tiers[tierKey]||data.tiers.novato;
-    return [...sequence.slice(0,-1),'havocthorn'];
+    return sequence.slice();
   }
   function spritePaths(fighterId,key){
     const fighter=FIGHTERS[fighterId];
     if(!fighter)return [];
-    const src=fighter.assets?.[key];
+    const src=fighter.assets?.[key]||(key==='altpunch'?fighter.assets?.punch:null);
     if(!src)return [];
     if(fighterId==='gamer'&&key!=='projectile'){
       const legacy=fighter.legacyAssets?.[key];
@@ -1374,15 +1396,16 @@
     }
     return [src];
   }
-  let unlockedHavocthorn=false,forceRareSquares=false,useLegacyRoboSprites=false;
+  let unlockedHavocthorn=false,unlockedGloop=false,forceRareSquares=false,useLegacyRoboSprites=false;
   try{
     unlockedHavocthorn=localStorage.getItem('communityClashHavocthornUnlocked')==='1';
+    unlockedGloop=localStorage.getItem('communityClashGloopUnlocked')==='1';
     forceRareSquares=localStorage.getItem('communityClashAllRare')==='1';
     useLegacyRoboSprites=localStorage.getItem('communityClashOldRoboGamer')==='1';
   }catch(e){}
-  function applySlow(target,duration=1){
+  function applySlow(target,duration=1,factor=.56){
     target.slow=Math.max(target.slow||0,duration);
-    target.slowFactor=Math.min(target.slowFactor||1,.56);
+    target.slowFactor=Math.min(target.slowFactor||1,factor);
     spawnBurst(target.x,target.y-target.h*.55,'#8ddce8',9);
   }
   function hasBossTraits(fighter){return !!(fighter&&(fighter.isBoss||fighter.bossTraits||FIGHTERS[fighter.fighterId]?.bossCharacter));}
@@ -1430,7 +1453,7 @@
   const images = {};
   for(const [fighterId,fighter] of Object.entries(FIGHTERS)){
     images[fighterId]={};
-    for(const key of Object.keys(fighter.assets)){
+    for(const key of new Set([...Object.keys(fighter.assets),'altpunch'])){
       const im=new Image();setImageWithFallback(im,spritePaths(fighterId,key));images[fighterId][key]=im;
     }
     const squareImage=new Image();setImageWithFallback(squareImage,squarePaths(fighterId,false));images[fighterId].square=squareImage;
@@ -1440,7 +1463,7 @@
     easy:{label:'FÁCIL',reaction:.38,speed:4.55,accel:.55,punchChance:.42,fireChance:.23,jumpRange:220,randomJump:.012,description:'Fácil: bots reagem e atacam com regularidade, mas são mais lentos e cometem erros.'},
     medium:{label:'MÉDIO',reaction:.29,speed:5.45,accel:.70,punchChance:.52,fireChance:.30,jumpRange:320,randomJump:.022,description:'Médio: bots atentos, equilibrados e com pressão constante.'},
     hard:{label:'DIFÍCIL',reaction:.20,speed:6.05,accel:.78,punchChance:.67,fireChance:.42,jumpRange:410,randomJump:.03,description:'Difícil: bots pressionam mais e aproveitam melhor as oportunidades.'},
-    spicy:{label:'DIFÍCIL-APIMENTADO',reaction:.175,speed:6.22,accel:.81,punchChance:.71,fireChance:.45,jumpRange:430,randomJump:.036,description:'Difícil-apimentado: pressão maior, sem precisão ou velocidade absurdas.'}
+    insane:{label:'INSANO',reaction:.145,speed:6.42,accel:.85,punchChance:.78,fireChance:.54,jumpRange:465,randomJump:.043,description:'Insano: bots reagem mais rápido, pressionam com frequência e aproveitam melhor as aberturas, sem precisão perfeita.'}
   };
   const MAPS = {
     midnight:{name:'Meia Noite',style:'midnight'},
@@ -1481,7 +1504,7 @@
   }
   try{
     const savedDifficulty=localStorage.getItem('communityClashDifficulty');
-    if(BOT_DIFFICULTIES[savedDifficulty])botDifficulty=savedDifficulty;
+    if(BOT_DIFFICULTIES[savedDifficulty])botDifficulty=savedDifficulty;else if(savedDifficulty==='spicy')botDifficulty='insane';
   }catch(e){}
   $('#difficultyOptions').addEventListener('click',e=>{
     const b=e.target.closest('[data-difficulty]');
@@ -1530,9 +1553,9 @@
   // personagens conhecidos, espaços futuros com ?, e Havocthorn no centro.
   function buildRoster(){
     const grid=$('#rosterGrid');grid.innerHTML='';
-    const normalIds=Object.keys(FIGHTERS).filter(id=>id!=='havocthorn');
-    const normalPositions=[[1,1],[1,2],[1,4],[1,5],[2,1],[2,2],[2,4],[2,5],[3,1],[3,2],[3,4]];
-    $('#rosterCount').textContent=`${normalIds.length+(unlockedHavocthorn?1:0)} LUTADORES`;
+    const normalIds=Object.keys(FIGHTERS).filter(id=>id!=='havocthorn'&&id!=='gloop');
+    const normalPositions=[[1,1],[1,2],[1,4],[1,5],[2,1],[2,2],[2,4],[2,5],[3,1],[3,2],[4,1],[4,2]];
+    $('#rosterCount').textContent=`${normalIds.length+(unlockedHavocthorn?1:0)+(unlockedGloop?1:0)} LUTADORES`;
     let fighterIndex=0;
     for(let row=1;row<=5;row++){
       for(let col=1;col<=5;col++){
@@ -1547,6 +1570,18 @@
             const skull=document.createElement('span');skull.className='havoc-skull';skull.setAttribute('aria-hidden','true');tile.appendChild(skull);
             tile.addEventListener('click',()=>{
               $('#selectStatus').textContent='Ative “Havocthorn jogável” nas Configurações para liberar este chefe.';
+              tile.animate([{transform:'translateX(0)'},{transform:'translateX(-3px)'},{transform:'translateX(3px)'},{transform:'translateX(0)'}],{duration:180});
+            });
+          }
+        }else if(row===3&&col===5){
+          tile.classList.add('boss-slot','gloop-slot');
+          if(unlockedGloop){
+            addRosterFighter(tile,'gloop',true);
+          }else{
+            tile.classList.add('boss-locked');tile.setAttribute('aria-label','Gloop bloqueado');tile.title='Gloop bloqueado';
+            const skull=document.createElement('span');skull.className='havoc-skull gloop-skull';skull.setAttribute('aria-hidden','true');tile.appendChild(skull);
+            tile.addEventListener('click',()=>{
+              $('#selectStatus').textContent='Ative “Gloop jogável” nas Configurações para liberar este chefe.';
               tile.animate([{transform:'translateX(0)'},{transform:'translateX(-3px)'},{transform:'translateX(3px)'},{transform:'translateX(0)'}],{duration:180});
             });
           }
@@ -1569,8 +1604,9 @@
   function addRosterFighter(tile,fighterId,isBoss){
     const fighter=FIGHTERS[fighterId];
     if(!fighter)return;
-    const rareRoll=forceRareSquares||Math.random()<.02;
-    tile.className='fighter-tile available'+(isBoss?' boss-slot boss-unlock-tile':'');
+    const hasRare=(fighter.rare||[]).length>0;
+    const rareRoll=hasRare&&(forceRareSquares||Math.random()<.02);
+    tile.className='fighter-tile available'+(isBoss?' boss-slot boss-unlock-tile':'')+(fighterId==='gloop'?' gloop-slot':'');
     if(rareRoll)tile.classList.add('rare-square');
     tile.dataset.fighterId=fighterId;tile.dataset.rare=rareRoll?'1':'0';
     tile.setAttribute('aria-label',fighter.title);tile.title=fighter.title;
@@ -1664,7 +1700,7 @@
       const ladder=document.createElement('div');ladder.className='tower-mini-ladder';
       getTowerBossSequence(key).forEach((fighterId,i)=>{
         const fighter=FIGHTERS[fighterId]||FIGHTERS.havocthorn;
-        const floor=document.createElement('span');floor.className='tower-mini-floor'+(fighterId==='havocthorn'?' final-boss':'');floor.title=`Andar ${i+1}: ${fighter.name}`;
+        const floor=document.createElement('span');floor.className='tower-mini-floor'+(['havocthorn','gloop'].includes(fighterId)?' final-boss':'');floor.title=`Andar ${i+1}: ${fighter.name}`;
         const img=document.createElement('img');img.alt=fighter.name;img.draggable=false;
         setImageWithFallback(img,squarePaths(fighterId,forceRareSquares),()=>{img.remove();floor.dataset.fallback=fighter.name.charAt(0);});
         const num=document.createElement('small');num.textContent=String(i+1);
@@ -1689,14 +1725,14 @@
   $('#settingsModal').addEventListener('click',e=>{if(e.target.id==='settingsModal')$('#settingsCloseBtn').click();});
   function refreshGamerSpriteBank(){
     const fighter=FIGHTERS.gamer;
-    for(const key of Object.keys(fighter.assets)){
+    for(const key of new Set([...Object.keys(fighter.assets),'altpunch'])){
       const img=new Image();setImageWithFallback(img,spritePaths('gamer',key));images.gamer[key]=img;
     }
   }
   function refreshRosterAfterFeatureChange(){
     if(!screens.select.classList.contains('active'))return;
     const previous=selectedFighterId,wasConfirmed=confirmed;
-    if(previous==='havocthorn'&&!unlockedHavocthorn){
+    if((previous==='havocthorn'&&!unlockedHavocthorn)||(previous==='gloop'&&!unlockedGloop)){
       selectedFighterId='migton';selectedSquareRare=false;selectedSquareAsset='';confirmed=false;previewed=false;
     }
     buildRoster();
@@ -1713,17 +1749,22 @@
   function persistFeatureOptions(){
     try{
       localStorage.setItem('communityClashHavocthornUnlocked',unlockedHavocthorn?'1':'0');
+      localStorage.setItem('communityClashGloopUnlocked',unlockedGloop?'1':'0');
       localStorage.setItem('communityClashOldRoboGamer',useLegacyRoboSprites?'1':'0');
       localStorage.setItem('communityClashAllRare',forceRareSquares?'1':'0');
     }catch(e){}
   }
   function syncFeatureOptionInputs(){
     $('#settingHavocthornPlayable').checked=unlockedHavocthorn;
+    $('#settingGloopPlayable').checked=unlockedGloop;
     $('#settingLegacyRoboSprites').checked=useLegacyRoboSprites;
     $('#settingRareSquares').checked=forceRareSquares;
   }
   $('#settingHavocthornPlayable').addEventListener('change',e=>{
     unlockedHavocthorn=e.currentTarget.checked;persistFeatureOptions();refreshRosterAfterFeatureChange();
+  });
+  $('#settingGloopPlayable').addEventListener('change',e=>{
+    unlockedGloop=e.currentTarget.checked;persistFeatureOptions();refreshRosterAfterFeatureChange();
   });
   $('#settingLegacyRoboSprites').addEventListener('change',e=>{
     useLegacyRoboSprites=e.currentTarget.checked;persistFeatureOptions();refreshGamerSpriteBank();
@@ -1841,7 +1882,7 @@
   }
   function makeFighter(id,isHuman,slot,forcedFighterId=null){
     const fighterIds=availableFighterIds();
-    const botFighterIds=Object.keys(FIGHTERS).filter(candidate=>candidate!=='havocthorn');
+    const botFighterIds=Object.keys(FIGHTERS).filter(candidate=>candidate!=='havocthorn'&&candidate!=='gloop');
     const fighterId=isHuman?selectedFighterId:(forcedFighterId||(botFighterIds[Math.floor(Math.random()*botFighterIds.length)]||'migton'));
     const fighter=FIGHTERS[fighterId]||FIGHTERS.migton;
     const rare=isHuman?selectedSquareRare:(forceRareSquares||Math.random()<.02);
@@ -1853,7 +1894,7 @@
       x:300+id*220, y:logicalH*.77, vx:0,vy:0,w:bossTraits?104:54,h:bossTraits?122:70, facing:id%2?1:-1,
       damage:0,stocks:3,kills:0,alive:true,respawn:0,invuln:0,
       attackCd:0,fireCd:0,fireRateDebuffTimer:0,fireRateDebuffMultiplier:1.7,attackTimer:0,launcherTimer:0,attackDirection:'forward',hitStun:0,paralyze:0,slow:0,slowFactor:1,invertedControls:0,burnTimer:0,burnElapsed:0,lastHitBy:-1,
-      onGround:false,dropThroughPlatform:-1,walkTime:Math.random()*500,aiThink:Math.random()*.25,aiTarget:-1,aiJumpCd:.25+Math.random()*.4,aiMoveDir:0,isBoss:false,bossTraits
+      bossAttackCd:.25,gloopStage:1,gloopHopTimer:0,gloopSlimeCd:1.35,gloopDirection:id%2?1:-1,onGround:false,dropThroughPlatform:-1,walkTime:Math.random()*500,aiThink:Math.random()*.25,aiTarget:-1,aiJumpCd:.25+Math.random()*.4,aiMoveDir:0,isBoss:false,bossTraits
     };
   }
   function startMatch(mapId=selectedMap||'midnight',options={}){
@@ -1867,7 +1908,8 @@
       towerLevel=level;
       if(level===1&&!options.continueRun)towerRunBosses=getTowerBossSequence(towerDifficulty);
       if(!towerRunBosses.length)towerRunBosses=getTowerBossSequence(towerDifficulty);
-      towerRunBosses=[...towerRunBosses.slice(0,totalFloors-1),'havocthorn'];
+      const finalBossId=towerRunBosses[totalFloors-1]|| (Math.random()<.5?'havocthorn':'gloop');
+      towerRunBosses=[...towerRunBosses.slice(0,totalFloors-1),finalBossId];
     }
     backgroundCacheHeight=0;stageCacheKey='';
     cancelAnimationFrame(raf);
@@ -1882,7 +1924,9 @@
     if(towerMode){
       const boss=game.fighters[1];
       boss.isBoss=true;boss.label=`CHEFE ${level}/${totalFloors}`;boss.fighterName=`${FIGHTERS[boss.fighterId].name} · CHEFE`;
-      boss.stocks=2;boss.w=boss.fighterId==='havocthorn'?158:142;boss.h=boss.fighterId==='havocthorn'?184:170;boss.bossTraits=true;boss.bossSpeedMultiplier=tier.speed;boss.bossKnockbackResistance=tier.resistance;boss.bossDamageMultiplier=tier.damage*(boss.fighterId==='havocthorn'?1.04:1);
+      boss.stocks=boss.fighterId==='gloop'?7:boss.fighterId==='havocthorn'?5:4;
+      boss.gloopStage=1;boss.w=boss.fighterId==='gloop'?166:boss.fighterId==='havocthorn'?158:142;boss.h=boss.fighterId==='gloop'?174:boss.fighterId==='havocthorn'?184:170;
+      boss.bossTraits=true;boss.bossSpeedMultiplier=tier.speed;boss.bossKnockbackResistance=tier.resistance;boss.bossDamageMultiplier=tier.damage*(boss.fighterId==='havocthorn'?1.04:1);
     }
     const spawnSets={1:[.5],2:[.26,.74],3:[.18,.5,.82],4:[.16,.39,.61,.84]};
     const spawnX=spawnSets[total]||spawnSets[4];
@@ -1900,10 +1944,11 @@
     $('#pauseBtn').textContent='Ⅱ PAUSAR';
     setHumanCount(fighterCount);
     $('#matchInfo').textContent = towerMode ? `TORRE ${tier.label} • CHEFE ${level}/${totalFloors} • ${MAPS[selectedMap].name.toUpperCase()}` : battleMode==='training' ? `CAMPO DE TREINAMENTO • ${MAPS[selectedMap].name.toUpperCase()}` : `${battleMode==='teams'?'2V2':'VS'} • ${BOT_DIFFICULTIES[botDifficulty].label} • ${MAPS[selectedMap].name.toUpperCase()}`;
-    const fireLabels={wubbox:'NOTA MUSICAL',gamer:'BOLA SOMBRIA',davi:'NOVELO',blu:'RAJADA DE VENTO',beterraba:'TRÊS BALAS',migton:'BOLA DE FOGO',allinone:'ÁGUA',bombasticus:'BOMBA',exudos:'XÍCARA',jhon:'COROA',ragdoll:'RAIO',havocthorn:'ENERGIA'};
+    const fireLabels={wubbox:'NOTA MUSICAL',gamer:'BOLA SOMBRIA',davi:'NOVELO',blu:'RAJADA DE VENTO',beterraba:'TRÊS BALAS',migton:'BOLA DE FOGO',allinone:'ÁGUA',bombasticus:'BOMBA',exudos:'XÍCARA',jhon:'COROA',ragdoll:'RAIO',havocthorn:'ENERGIA',jk:'FEIXE',gloop:'SLIME'};
     $('#fireButtonLabel').textContent=fireLabels[selectedFighterId]||'PROJÉTIL';
-    $('#punchButton').textContent=selectedFighterId==='davi'?'GARRAS':selectedFighterId==='beterraba'?'SOCO':'SOCO';
-    $('#controlsHint').textContent=`PC: A/D mover · ${keyLabel(keyMap[0].up)} mirar cima · ${keyLabel(keyMap[0].jump)} pular · ${keyLabel(keyMap[0].down)} mirar baixo/descer · ${keyLabel(keyMap[0].punch)} soco · ${keyLabel(keyMap[0].fire)} projétil`;
+    $('#punchButton').textContent=selectedFighterId==='davi'?'GARRAS':'SOCO';
+    $('#gameScreen').classList.toggle('gloop-player-mode',selectedFighterId==='gloop');
+    $('#controlsHint').textContent=selectedFighterId==='gloop'?`PC: A/D mover · salto automático · ${keyLabel(keyMap[0].fire)} lançar slime`:`PC: A/D mover · ${keyLabel(keyMap[0].up)} mirar cima · ${keyLabel(keyMap[0].jump)} pular · ${keyLabel(keyMap[0].down)} descer plataforma · ${keyLabel(keyMap[0].punch)} soco · ${keyLabel(keyMap[0].fire)} projétil`;
     showScreen('game');
     resizeCanvas();
     game.fighters.forEach((p,i)=>{p.spawnX=logicalW*spawnX[i];p.x=p.spawnX;p.y=game.groundY;});
@@ -1998,7 +2043,10 @@
     const rect=joystickBase.getBoundingClientRect(),cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
     const max=Math.max(10,rect.width*.32),dx=clientX-cx,dy=clientY-cy,dist=Math.hypot(dx,dy),scale=dist>max?max/dist:1;
     const x=dx*scale,y=dy*scale,threshold=rect.width*.14;
+    const wasDown=joystickHeld.down,wasUp=joystickHeld.up;
     joystickHeld.left=x<-threshold;joystickHeld.right=x>threshold;joystickHeld.up=y<-threshold;joystickHeld.down=y>threshold;
+    if(!wasDown&&joystickHeld.down)tryDropFromTouch('down');
+    if(!wasUp&&joystickHeld.up)tryDropFromTouch('up');
     if(joystickKnob)joystickKnob.style.transform=`translate(${x}px,${y}px)`;
     refreshTouchPointers();
   }
@@ -2008,12 +2056,17 @@
     touchHeld.up=actions.includes('up')||joystickHeld.up;touchHeld.down=actions.includes('down')||joystickHeld.down;
     $$('.touch-btn').forEach(btn=>btn.classList.toggle('pressed',actions.includes(btn.dataset.control)||!!joystickHeld[btn.dataset.control]));
   }
+  function tryDropFromTouch(action){
+    if(!game||game.paused||game.ended||touchDownComboUsed)return;
+    const p=game.fighters[0];if(!p||!p.isHuman||!p.alive)return;
+    const effectiveDown=p.invertedControls>0?'up':'down';
+    if(action===effectiveDown&&dropThroughPlatform(p))touchDownComboUsed=true;
+  }
   function humanAimDirection(p){
     const slot=p.slot??0;
-    let up=hasControl(slot,'up')||(p.isHuman&&slot===0&&touchHeld.up);
-    let down=hasControl(slot,'down')||(p.isHuman&&slot===0&&touchHeld.down);
-    if(p.invertedControls>0){const swap=up;up=down;down=swap;}
-    if(up&&!down)return 'up';if(down&&!up)return 'down';return 'forward';
+    const up=hasControl(slot,'up')||(p.isHuman&&slot===0&&touchHeld.up);
+    if(up&&p.invertedControls<=0)return 'up';
+    return 'forward';
   }
   function mappedAttackAction(p,rawAction){
     if(p.invertedControls>0){if(rawAction==='punch')return 'fire';if(rawAction==='fire')return 'punch';}
@@ -2028,7 +2081,6 @@
     const p=game.fighters[0];if(!p||!p.alive)return;
     if(action==='jump')jump(p);
     else if(action==='punch'||action==='fire'){
-      if(touchHeld.down||touchHeld.up)touchDownComboUsed=true;
       executeHumanAttack(p,action);
     }
   }
@@ -2040,6 +2092,7 @@
     const btn=e.target.closest('.touch-btn');if(!btn)return;
     e.preventDefault();try{touchRoot.setPointerCapture(e.pointerId);}catch(err){}
     const action=btn.dataset.control;activeTouchPointers.set(e.pointerId,{action});
+    if(action==='down'||action==='up')tryDropFromTouch(action);
     if(!['left','right','up','down'].includes(action))triggerTouchAction(action);
     refreshTouchPointers();
   });
@@ -2050,26 +2103,19 @@
     const btn=getTouchButtonAt(e.clientX,e.clientY),nextAction=btn?btn.dataset.control:null;
     const prev=activeTouchPointers.get(e.pointerId)?.action;if(prev===nextAction)return;
     activeTouchPointers.set(e.pointerId,{action:nextAction});
+    if(nextAction==='down'||nextAction==='up')tryDropFromTouch(nextAction);
     if(nextAction&&!['left','right','up','down'].includes(nextAction))triggerTouchAction(nextAction);
     refreshTouchPointers();
   });
   const finishTouch=e=>{
     if(joystickPointerId===e.pointerId){
-      const releasedDown=joystickHeld.down,releasedUp=joystickHeld.up;
-      const p=game?.fighters[0];
       resetJoystick();
-      const dropInput=p&&((releasedDown&&p.invertedControls<=0)||(releasedUp&&p.invertedControls>0));
-      if(dropInput&&!touchDownComboUsed&&game&&!game.paused&&!game.ended)dropThroughPlatform(p);
       if(!touchHeld.down&&!touchHeld.up)touchDownComboUsed=false;
       return;
     }
     const held=activeTouchPointers.get(e.pointerId)?.action;
     if(activeTouchPointers.delete(e.pointerId)){
       refreshTouchPointers();
-      if((held==='down'||held==='up')&&!touchDownComboUsed&&game&&!game.paused&&!game.ended){
-        const p=game.fighters[0],dropInput=p&&((held==='down'&&p.invertedControls<=0)||(held==='up'&&p.invertedControls>0));
-        if(dropInput)dropThroughPlatform(p);
-      }
       if(!touchHeld.down&&!touchHeld.up)touchDownComboUsed=false;
     }
   };
@@ -2078,7 +2124,12 @@
 
   function jump(p){
     if(!p.alive||p.respawn>0)return;
-    if(p.onGround){p.vy=-(FIGHTERS[p.fighterId]?.jumpPower||13.2);p.onGround=false;spawnBurst(p.x,p.y-5,PLAYER_COLORS[p.id],7);}
+    if(p.onGround){
+      const fighter=FIGHTERS[p.fighterId]||{};
+      const stageBoost=p.fighterId==='gloop'?1+.10*Math.max(0,(p.gloopStage||1)-1):1;
+      const playableBoost=p.fighterId==='gloop'&&!p.isBoss?1.25:1;
+      p.vy=-(fighter.jumpPower||13.2)*stageBoost*playableBoost;p.onGround=false;spawnBurst(p.x,p.y-5,p.fighterId==='gloop'?'#8be39b':PLAYER_COLORS[p.id],7);
+    }
   }
   function dropThroughPlatform(p){
     if(!game||!p||!p.alive||p.respawn>0||!p.onGround)return false;
@@ -2087,11 +2138,12 @@
     if(supportIndex<1)return false;
     p.dropThroughPlatform=supportIndex;
     p.onGround=false;
-    p.vy=Math.max(3.8,p.vy||0);
+    p.vy=Math.max(18.5,p.vy||0);p.y+=4;
     return true;
   }
   function punch(p,aim='forward'){
     if(!p.alive||p.respawn>0)return;
+    if(aim==='down')aim='forward';
     const fighter=FIGHTERS[p.fighterId]||FIGHTERS.migton;
     const daviAir=p.fighterId==='davi'&&!p.onGround;
     const reach=daviAir?(fighter.airPunchReach||132):(fighter.punchReach||86);
@@ -2100,20 +2152,23 @@
     p.attackCd=0;p.attackTimer=daviAir ? .24 : .18;p.attackDirection=aim;
     const clawColor=p.fighterId==='davi'?'#d6dce8':p.fighterId==='gamer'?'#a98cff':'#ff9f5a';
     const burstX=aim==='forward'?p.x+p.facing*reach*.42:p.x;
-    const burstY=aim==='up'?p.y-p.h*.9:aim==='down'?p.y-8:p.y-(daviAir?48:40);
+    const burstY=aim==='up'?p.y-p.h*.9:p.y-(daviAir?48:40);
     spawnBurst(burstX,burstY,clawColor,daviAir?9:5);
     for(const t of game.fighters){
       if(t===p||!t.alive||t.respawn>0||t.invuln>0||(battleMode==='teams'&&t.team===p.team))continue;
       const dx=t.x-p.x,dy=(t.y-t.h/2)-(p.y-p.h/2),hurtbox=fighterHurtbox(t);
       let connected=false,kx=8.4,ky=-6.0;
       if(aim==='up'){connected=Math.abs(dx)<reach*.72+hurtbox.halfW&&dy<-12&&Math.abs(dy)<reach+hurtbox.halfH*.35;kx=4.8;ky=-9.4;}
-      else if(aim==='down'){connected=Math.abs(dx)<reach*.72+hurtbox.halfW&&dy>12&&Math.abs(dy)<reach+hurtbox.halfH*.35;kx=4.8;ky=8.6;}
       else connected=Math.abs(dx)<reach+hurtbox.halfW&&Math.abs(dy)<vertical+hurtbox.halfH*.3&&dx*p.facing>0;
       if(connected)hit(t,p,damage,daviAir?9.1:kx,daviAir?-7.1:ky,aim==='forward'?null:p.x);
     }
   }
   function launchProjectile(p,shot,aim='forward'){
-    if(aim==='up'||aim==='down'){
+    if(aim==='down')aim='forward';
+    if(shot.type==='jkBeam'){
+      const vertical=aim==='up';
+      shot.x=vertical?p.x:p.x+p.facing*(p.w*.48+3);shot.y=p.y-p.h*.60;shot.directionX=vertical?0:p.facing;shot.directionY=vertical?-1:0;shot.verticalBeam=vertical;shot.length=164;shot.width=76;shot.rotation=vertical?-Math.PI/2:0;shot.vx=0;shot.vy=0;shot.hitTargets=shot.hitTargets||[];
+    }else if(aim==='up'){
       const speed=Math.max(7,Math.hypot(shot.vx||0,shot.vy||0));
       shot.x=p.x+p.facing*8;shot.y=p.y-p.h*.62;shot.vx=(shot.verticalSpread||0)*speed;
       shot.vy=(aim==='up'?-1:1)*speed;shot.verticalShot=true;shot.verticalGravity=shot.type==='bomb'?.78:(shot.gravity??.28);
@@ -2156,6 +2211,14 @@
       setFireCooldown(p,.9);launchProjectile(p,{type:'thunderbolt',x,y,vx:p.facing*11.2,vy:0,owner:p.id,life:2.0,r:17,damage:0},aim);spawnBurst(x,y,'#bdeaff',10);
     }else if(p.fighterId==='havocthorn'){
       setFireCooldown(p,.94);launchProjectile(p,{type:'havocBolt',x,y,vx:p.facing*10.3,vy:-.1,owner:p.id,life:2.25,r:19,damage:12,fireDebuffDuration:2},aim);spawnBurst(x,y,'#a9c8e8',12);
+    }else if(p.fighterId==='jk'){
+      setFireCooldown(p,.68);launchProjectile(p,{type:'jkBeam',x,y,vx:0,vy:0,owner:p.id,life:.19,r:0,damage:12.5,pierce:true,hitTargets:[],maxHits:8},aim);spawnBurst(x,y,'#e8f8ff',13);
+    }else if(p.fighterId==='gloop'){
+      const stage=Math.max(1,Math.min(7,p.gloopStage||1));
+      const rank=Math.max(0,stage-3);
+      const slowAmount=Math.min(.55,.10*rank*(p.isBoss?1:1.25));
+      setFireCooldown(p,p.isBoss?2.1/(1+.10*(stage-1)):1.2);
+      launchProjectile(p,{type:'gloopSlime',x,y,vx:p.facing*8.2,vy:-.1,owner:p.id,life:2.3,r:17,damage:5.5,slowFactor:1-slowAmount,slowDuration:1.35},aim);spawnBurst(x,y,'#8be39b',11);
     }else{
       setFireCooldown(p,.56);launchProjectile(p,{type:'fireball',x,y,vx:p.facing*10.8,vy:-.7,owner:p.id,life:2.0,r:18,damage:10},aim);spawnBurst(x,y,'#ffb34d',8);
     }
@@ -2227,7 +2290,7 @@
     if(p.invertedControls>0)dir=-dir;
     const downPressed=consumeControl(s,'down'),upPressed=consumeControl(s,'up');
     const dropCommand=p.invertedControls>0?upPressed:downPressed;
-    if(dropCommand&&!hasControl(s,'punch')&&!hasControl(s,'fire'))dropThroughPlatform(p);
+    if(dropCommand)dropThroughPlatform(p);
     const fs=Math.min(3,dt*60);
     const fighter=FIGHTERS[p.fighterId]||FIGHTERS.migton;
     const airControl=!p.onGround?(fighter.airControl||1):1;
@@ -2237,9 +2300,16 @@
     if(dir!==0){p.vx+=dir*.78*airControl*slowFactor*bossMove*speedFactor*fs;p.facing=dir>0?1:-1;}else p.vx*=Math.pow(p.onGround?.79:.988,fs);
     const maxSpeed=6.5*(!p.onGround?(fighter.airControl||1):1)*slowFactor*bossMove*speedFactor;
     p.vx=Math.max(-maxSpeed,Math.min(maxSpeed,p.vx));
-    if(consumeControl(s,'jump'))jump(p);
-    if(consumeControl(s,'punch'))executeHumanAttack(p,'punch');
-    if(consumeControl(s,'fire'))executeHumanAttack(p,'fire');
+    if(p.fighterId==='gloop'){
+      consumeControl(s,'jump');consumeControl(s,'punch');
+      p.gloopHopTimer=Math.max(0,(p.gloopHopTimer||0)-dt);
+      if(p.onGround&&p.gloopHopTimer<=0){jump(p);p.gloopHopTimer=.72/(1.25*(1+.10*Math.max(0,(p.gloopStage||1)-1)));}
+      if(consumeControl(s,'fire'))executeHumanAttack(p,'fire');
+    }else{
+      if(consumeControl(s,'jump'))jump(p);
+      if(consumeControl(s,'punch'))executeHumanAttack(p,'punch');
+      if(consumeControl(s,'fire'))executeHumanAttack(p,'fire');
+    }
   }
   // A IA compensa a inversão: emite o comando oposto e o efeito o converte
   // no movimento/ataque pretendido, evitando que bots fiquem presos ou ataquem errado.
@@ -2254,9 +2324,70 @@
     const actualAim=inverted?(rawAim==='up'?'down':rawAim==='down'?'up':rawAim):rawAim;
     if(actualAction==='punch')punch(p,actualAim);else shoot(p,actualAim);
   }
+  function updateGloopBossAI(p,dt,rules){
+    const stage=Math.max(1,Math.min(7,p.gloopStage||1));
+    const boost=1+.10*(stage-1),fs=Math.min(3,dt*60);
+    let direction=p.gloopDirection||1;
+    const edge=Math.max(100,p.w*.72);
+    if(p.x<=edge)direction=1;
+    else if(p.x>=logicalW-edge)direction=-1;
+    p.gloopDirection=direction;p.facing=direction;p.aiMoveDir=direction;
+    const slowFactor=p.slow>0?(p.slowFactor||.56):1;
+    const speed=(rules.speed*(p.bossSpeedMultiplier||.9))*(1+.035*(stage-1))*slowFactor;
+    p.vx+=direction*rules.accel*(p.bossSpeedMultiplier||.9)*slowFactor*fs;
+    p.vx=Math.max(-speed,Math.min(speed,p.vx));
+    p.gloopHopTimer=Math.max(0,(p.gloopHopTimer||0)-dt);
+    if(p.onGround&&p.gloopHopTimer<=0){jump(p);p.gloopHopTimer=.86/boost;}
+    if(stage>=4){
+      p.gloopSlimeCd=Math.max(0,(p.gloopSlimeCd||0)-dt);
+      if(p.gloopSlimeCd<=0&&p.fireCd<=0){shoot(p,'forward');p.gloopSlimeCd=2.35/boost;}
+    }
+  }
+  function updateStandardBossAI(p,dt,rules,difficultyKey){
+    const foes=game.fighters.filter(t=>t!==p&&t.alive&&t.respawn<=0&&(battleMode!=='teams'||t.team!==p.team));
+    if(!foes.length){p.aiMoveDir=0;p.vx*=.94;return;}
+    const target=foes.reduce((best,t)=>{const d=Math.hypot(t.x-p.x,(t.y-t.h*.5)-(p.y-p.h*.5));return !best||d<best.d?{p:t,d}:best;},null).p;
+    p.aiTarget=target.id;
+    const dx=target.x-p.x,dy=(target.y-target.h*.5)-(p.y-p.h*.5),dist=Math.abs(dx),direction=Math.sign(dx)||p.facing;
+    p.facing=direction;
+    const fighter=FIGHTERS[p.fighterId]||{};
+    const ranged=(fighter.fireRange||0)>600;
+    const desiredGap=ranged?190:142;
+    if(dist>desiredGap+42)p.aiMoveDir=direction;
+    else if(dist<82)p.aiMoveDir=-direction;
+    else p.aiMoveDir=0;
+    if(dy<-76&&dist<330&&p.onGround&&p.aiJumpCd<=0){jump(p);p.aiJumpCd=difficultyKey==='insane'?.68:difficultyKey==='hard'?.82:1.02;}
+    p.bossAttackCd=Math.max(0,(p.bossAttackCd||0)-dt);
+    if(p.bossAttackCd<=0){
+      const punchRange=(fighter.punchReach||92)+56;
+      const height=p.fighterId==='davi'&&!p.onGround?(fighter.airPunchVertical||112):94;
+      const verticalAim=dy<-58?'up':'forward';
+      if(dist<=punchRange&&Math.abs(dy)<height){executeBotCommand(p,'punch',verticalAim);}
+      else if(p.fireCd<=0&&dist<Math.min(760,(fighter.fireRange||580)+85)&&Math.abs(dy)<255){executeBotCommand(p,'fire',dy<-72?'up':'forward');}
+      else if(dist<punchRange+62&&Math.abs(dy)<145){executeBotCommand(p,'punch','forward');}
+      const cadence=difficultyKey==='insane'?.39:difficultyKey==='hard'?.51:difficultyKey==='medium'?.64:.78;
+      p.bossAttackCd=cadence*(.88+Math.random()*.24);
+    }
+    const fs=Math.min(3,dt*60),slowFactor=p.slow>0?(p.slowFactor||.56):1;
+    const pressure=difficultyKey==='insane'?1.23:difficultyKey==='hard'?1.14:difficultyKey==='medium'?1.07:1;
+    const bossMove=(p.bossSpeedMultiplier||.9)*pressure;
+    if(p.aiMoveDir)p.vx+=p.aiMoveDir*rules.accel*bossMove*slowFactor*fs;
+    else p.vx*=Math.pow(p.onGround?.82:.96,fs);
+    const max=rules.speed*bossMove*slowFactor;
+    p.vx=Math.max(-max,Math.min(max,p.vx));
+    p.aiJumpCd=Math.max(0,p.aiJumpCd-dt);
+  }
   function updateBot(p,dt){
-    const bossRules={novato:'medium',medio:'medium',veterano:'hard',insano:'spicy'};
-    const difficultyKey=p.isBoss?(bossRules[game.towerDifficulty]||'medium'):botDifficulty;
+    if(p.isBoss){
+      const bossRules={novato:'medium',medio:'medium',veterano:'hard',insano:'insane'};
+      const difficultyKey=bossRules[game.towerDifficulty]||'medium';
+      const rules=BOT_DIFFICULTIES[difficultyKey]||BOT_DIFFICULTIES.medium;
+      if(p.fighterId==='gloop')updateGloopBossAI(p,dt,rules);
+      else updateStandardBossAI(p,dt,rules,difficultyKey);
+      return;
+    }
+
+    const difficultyKey=botDifficulty;
     const rules=BOT_DIFFICULTIES[difficultyKey]||BOT_DIFFICULTIES.medium;
     const fs=Math.min(3,dt*60);
     p.aiThink-=dt;
@@ -2290,15 +2421,15 @@
       // Pulos acontecem por necessidade, com uma pequena chance de erro natural.
       const elevatedTarget=dy<-60&&dist<rules.jumpRange;
       const occasionalJump=Math.random()<rules.randomJump;
-      const daviAirApproach=p.fighterId==='davi'&&dist<rules.jumpRange*1.35&&Math.random()<(difficultyKey==='easy'?.18:difficultyKey==='spicy'?.43:difficultyKey==='hard'?.38:.28);
+      const daviAirApproach=p.fighterId==='davi'&&dist<rules.jumpRange*1.35&&Math.random()<(difficultyKey==='easy'?.18:difficultyKey==='insane'?.43:difficultyKey==='hard'?.38:.28);
       if(p.onGround&&p.aiJumpCd<=0&&(elevatedTarget||occasionalJump||daviAirApproach)){
         jump(p);p.aiJumpCd=1.0+Math.random()*.65+rules.reaction;
       }
 
       // Ataques dependem da dificuldade e da distância; não há acerto garantido.
-      const punchRange=(p.fighterId==='davi'&&!p.onGround?(fighter.airPunchReach||132):(fighter.punchReach||86))+(difficultyKey==='easy'?-8:(difficultyKey==='hard'||difficultyKey==='spicy')?8:0);
+      const punchRange=(p.fighterId==='davi'&&!p.onGround?(fighter.airPunchReach||132):(fighter.punchReach||86))+(difficultyKey==='easy'?-8:(difficultyKey==='hard'||difficultyKey==='insane')?8:0);
       const punchHeight=p.fighterId==='davi'&&!p.onGround?(fighter.airPunchVertical||112):76;
-      const aimDirection=dy<-62?'up':dy>82?'down':'forward';
+      const aimDirection=dy<-62?'up':'forward';
       if(dist<punchRange&&Math.abs(dy)<punchHeight&&Math.random()<rules.punchChance){
         executeBotCommand(p,'punch',aimDirection);
       }else{
@@ -2359,7 +2490,8 @@
     p.onGround=frozen?p.onGround:false;
     // Main floor and floating platforms (one-way platforms).
     if(!frozen){
-      for(let platformIndex=0;platformIndex<game.platforms.length;platformIndex++){
+      const platformLimit=p.fighterId==='gloop'&&p.isBoss?1:game.platforms.length;
+      for(let platformIndex=0;platformIndex<platformLimit;platformIndex++){
         const plat=game.platforms[platformIndex];
         if(p.dropThroughPlatform===platformIndex){
           if(p.y>plat.y+12)p.dropThroughPlatform=-1;
@@ -2378,6 +2510,8 @@
     p.alive=false;
     if(battleMode==='training'&&p.isHuman){p.stocks=3;p.damage=0;p.respawn=1.0;p.vx=0;p.vy=0;p.lastHitBy=-1;spawnBurst(Math.max(45,Math.min(logicalW-45,p.x)),Math.max(80,Math.min(logicalH-80,p.y-30)),'#7da9cc',16);updateHud();return;}
     p.stocks--;p.respawn=p.stocks>0?1.15:0;
+    if(p.fighterId==='gloop'&&p.stocks>0){p.gloopStage=p.isBoss?Math.min(7,8-p.stocks):(p.stocks===2?4:7);p.gloopHopTimer=.25;p.gloopSlimeCd=.75;}
+    updateHud();
     const killer=game.fighters[p.lastHitBy];
     if(killer&&killer!==p){killer.kills++;addFeed(killer,p);}
     else addFeed(null,p);
@@ -2440,12 +2574,23 @@
       const steps=9,dx=(bolt.x%71)-35;ctx.moveTo(bolt.x+dx*.3,0);for(let i=1;i<=steps;i++){const yy=bolt.yBottom*i/steps;const xx=bolt.x+Math.sin(i*9.3+bolt.seed)*17;ctx.lineTo(xx,yy);}ctx.stroke();ctx.strokeStyle='#ffffff';ctx.lineWidth=2.5;ctx.stroke();ctx.restore();
     }
   }
+  function jkBeamHitsFighter(beam,target){
+    const box=fighterHurtbox(target),cx=(box.left+box.right)/2,cy=(box.top+box.bottom)/2;
+    const along=beam.verticalBeam?(beam.y-cy):(cx-beam.x)*(beam.directionX||1);
+    if(along< -box.halfW*.35||along>beam.length+box.halfW*.35)return false;
+    const progress=Math.max(0,Math.min(1,along/beam.length));
+    const halfWidth=beam.width*(.12+.38*progress);
+    const lateral=beam.verticalBeam?Math.abs(cx-beam.x):Math.abs(cy-beam.y);
+    return lateral<=halfWidth+(beam.verticalBeam?box.halfW:box.halfH)*.45;
+  }
   function updateProjectiles(dt){
     const frameScale=Math.min(3,dt*60);
     updateLightningEffects(dt);
     for(const b of game.projectiles){
       b.life-=dt;
-      if(b.type==='boomerang'){
+      if(b.type==='jkBeam'){
+        // Feixe instantâneo: permanece parado durante poucos frames para atravessar múltiplos alvos.
+      }else if(b.type==='boomerang'){
         b.age=(b.age||0)+dt;b.spin=(b.spin||0)+.42*frameScale;
         if(!b.returning){
           if(b.verticalShot){b.vy+=(b.verticalGravity||.22)*frameScale;b.rotation=b.vy<0?-Math.PI/2:Math.PI/2;}
@@ -2538,13 +2683,18 @@
       for(const t of game.fighters){
         if(!t.alive||t.respawn>0||t.id===b.owner||t.invuln>0||(battleMode==='teams'&&t.team===game.fighters[b.owner]?.team)||(b.hitTargets&&b.hitTargets.includes(t.id)))continue;
         const hitRadius=b.type==='bullet'?10:b.type==='wool'?19:b.type==='bomb'?20:b.type==='water'?18:b.type==='music'?15:b.type==='boomerang'?20:b.r||18;
-        if(circleHitsFighter(b.x,b.y,hitRadius,t)){
+        const collides=b.type==='jkBeam'?jkBeamHitsFighter(b,t):circleHitsFighter(b.x,b.y,hitRadius,t);
+        if(collides){
           if(b.type==='bomb'){explodeBomb(b);break;}
           const owner=game.fighters[b.owner];if(owner){
             if(b.type==='thunderbolt'){
               game.lightningWarnings.push({targetId:t.id,ownerId:owner.id,timer:.4,done:false});spawnBurst(t.x,t.y-t.h*.65,'#c8efff',12);b.life=0;break;
             }
-            hit(t,owner,b.damage,b.type==='music'?6.7:b.type==='shadow'?7.6:b.type==='wool'?8.2:b.type==='wind'?7.1:b.type==='bullet'?4.6:b.type==='boomerang'?7.8:b.type==='havocBolt'?8.8:7.0,b.type==='music'?-4.6:b.type==='shadow'?-5.2:b.type==='wool'?-6.4:b.type==='wind'?-4.8:b.type==='bullet'?-2.2:b.type==='boomerang'?-5.5:b.type==='havocBolt'?-5.8:-4.8);
+            hit(t,owner,b.damage,b.type==='jkBeam'?10.2:b.type==='music'?6.7:b.type==='shadow'?7.6:b.type==='wool'?8.2:b.type==='wind'?7.1:b.type==='bullet'?4.6:b.type==='boomerang'?7.8:b.type==='havocBolt'?8.8:7.0,b.type==='jkBeam'?-6.6:b.type==='music'?-4.6:b.type==='shadow'?-5.2:b.type==='wool'?-6.4:b.type==='wind'?-4.8:b.type==='bullet'?-2.2:b.type==='boomerang'?-5.5:b.type==='havocBolt'?-5.8:-4.8,b.type==='jkBeam'?b.x+(b.directionX||0)*b.length*.5:null);
+            if(b.type==='gloopSlime'){
+              applySlow(t,b.slowDuration||1.35,b.slowFactor||.9);
+              spawnBurst(t.x,t.y-t.h*.55,'#8be39b',13);
+            }
             if(b.type==='havocBolt'){
               t.fireRateDebuffTimer=Math.max(t.fireRateDebuffTimer||0,b.fireDebuffDuration||2);
               t.fireCd=Math.min(2.5,(t.fireCd||0)+.45);
@@ -2559,7 +2709,7 @@
           if(b.pierce){
             b.hitTargets=b.hitTargets||[];b.hitTargets.push(t.id);
             if(b.hitTargets.length>=(b.maxHits||5)){b.life=0;break;}
-            b.x+=Math.sign(b.vx||1)*12;
+            if(b.type!=='jkBeam')b.x+=Math.sign(b.vx||1)*12;
             continue;
           }
           b.life=0;break;
@@ -2729,7 +2879,8 @@
   function spriteFor(p){
     if(p.respawn>0||!p.alive)return null;
     const bank=images[p.fighterId]||images.migton;
-    if(p.attackTimer>0)return p.attackDirection&&p.attackDirection!=='forward'?bank.jump:bank.punch;
+    if(p.fighterId==='gloop')return bank['stage'+Math.max(1,Math.min(7,p.gloopStage||1))]||bank.stage1||bank.idle;
+    if(p.attackTimer>0)return p.attackDirection==='up'?(bank.altpunch||bank.punch):bank.punch;
     if(p.launcherTimer>0)return bank.launcher;
     if(!p.onGround)return bank.jump;
     if(Math.abs(p.vx)>.65){const frame=Math.floor(p.walkTime/0.17);if(p.fighterId==='blu')return bank.idle;if(p.fighterId==='beterraba')return frame%2===0?bank.idle:bank.right;if(p.fighterId==='gamer')return frame%2===0?bank.right:bank.left;if(frame%4===0)return bank.right;if(frame%4===2)return bank.left;return bank.idle;}
@@ -2808,7 +2959,13 @@
 
   function drawProjectiles(){
     for(const b of game.projectiles){
-      const music=b.type==='music', shadow=b.type==='shadow', wool=b.type==='wool', wind=b.type==='wind', bullet=b.type==='bullet', water=b.type==='water', bomb=b.type==='bomb', boomerang=b.type==='boomerang', tea=b.type==='weedTea', thunderbolt=b.type==='thunderbolt', havocBolt=b.type==='havocBolt';
+      const music=b.type==='music', shadow=b.type==='shadow', wool=b.type==='wool', wind=b.type==='wind', bullet=b.type==='bullet', water=b.type==='water', bomb=b.type==='bomb', boomerang=b.type==='boomerang', tea=b.type==='weedTea', thunderbolt=b.type==='thunderbolt', havocBolt=b.type==='havocBolt', slime=b.type==='gloopSlime', beam=b.type==='jkBeam';
+      if(beam){
+        ctx.save();ctx.translate(b.x,b.y);if(b.verticalBeam)ctx.rotate(-Math.PI/2);else if(b.directionX<0)ctx.rotate(Math.PI);
+        const g=ctx.createLinearGradient(0,0,b.length,0);g.addColorStop(0,'rgba(240,255,255,.92)');g.addColorStop(.35,'rgba(149,228,255,.88)');g.addColorStop(1,'rgba(87,157,255,.10)');
+        ctx.shadowColor='#b7efff';ctx.shadowBlur=24;ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-7);ctx.lineTo(b.length,-b.width/2);ctx.lineTo(b.length,b.width/2);ctx.lineTo(0,7);ctx.closePath();ctx.fill();ctx.strokeStyle='rgba(241,253,255,.9)';ctx.lineWidth=2;ctx.stroke();ctx.restore();continue;
+      }
+      if(slime){ctx.save();const glow=ctx.createRadialGradient(b.x-5,b.y-6,2,b.x,b.y,23);glow.addColorStop(0,'#eaffdb');glow.addColorStop(.4,'#8fe48d');glow.addColorStop(1,'rgba(66,160,88,0)');ctx.fillStyle=glow;ctx.beginPath();ctx.ellipse(b.x,b.y,22,17,Math.sin(game.time*9)*.15,0,Math.PI*2);ctx.fill();ctx.fillStyle='#9ae99a';ctx.beginPath();ctx.arc(b.x-7,b.y-3,5,0,Math.PI*2);ctx.arc(b.x+7,b.y-2,4,0,Math.PI*2);ctx.fill();ctx.restore();continue;}
       const owner=game.fighters[b.owner];
       const img=images[owner?.fighterId||'migton']?.projectile;
       if(img&&img.complete&&img.naturalWidth>0){
